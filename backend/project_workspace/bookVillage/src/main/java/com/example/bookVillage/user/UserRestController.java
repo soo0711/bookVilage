@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,8 +43,8 @@ public class UserRestController {
 		return result;
 	}
 	
-	// 아이디 중복 확인 api		get으로 할 지 post로 할 지
-	@GetMapping("/is-duplicated-id")
+	// 아이디 중복 확인 api		
+	@PostMapping("/is-duplicated-id")
 	public Map<String, Object> isDuplicatedId(
 			@RequestParam("loginId") String loginId){
 	
@@ -126,5 +125,8 @@ public class UserRestController {
 		
 		return result;
 	}
+	
+	// 로그아웃 api
+	
 	
 }
