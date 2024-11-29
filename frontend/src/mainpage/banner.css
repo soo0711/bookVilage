@@ -1,0 +1,67 @@
+/* 배너 전체 스타일 */
+.banner {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  
+ 
+  .banner-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+ 
+.prev-btn,
+.next-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.prev-btn img,
+.next-btn img {
+  width: 25px; /* 화살표 이미지 너비 */
+  height: 25px; /* 화살표 이미지 높이 */
+}
+
+/* 왼쪽 화살표 위치 */
+.prev-btn {
+  left: 10px;
+}
+
+/* 오른쪽 화살표 위치 */
+.next-btn {
+  right: 10px;
+}
+  
+  
+  /* 하단 네비게이션 점 */
+  .dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+  
+  /* .dot {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .dot.active {
+    background-color: rgba(255, 255, 255, 1);
+  } */
+  

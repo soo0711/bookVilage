@@ -1,0 +1,129 @@
+/* 전체 헤더 스타일 */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* 전체 헤더 스타일 */
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 10px 20px;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  /* 회원가입 및 로그인 */
+  .auth-section {
+    display: flex;
+    justify-content: flex-end;
+    width: 90%;
+  }
+  
+  .auth-section a {
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+    margin-left: 15px;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+  }
+  
+  /* 메인 헤더: 로고와 검색창을 수평 정렬 */
+  .main-header {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    /* position: relative; */
+    gap: 10px;
+  }
+  
+  /* 로고와 타이틀 섹션 */
+  .logo-title {
+    display: flex;
+    align-items: center;
+    margin-right: 0px; /* 왼쪽 정렬 */
+    margin-top: 30px;
+  }
+  
+  .logo {
+    width: 80px;
+    height: px;
+    margin-right: 5px; /* 로고와 타이틀 간 간격 */
+  }
+  
+  .title {
+    height: 30px;
+    width: auto;
+    margin-right: 10px;
+  }
+  
+  /* 검색창 */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    height: 50px;
+    left: 50%; /* 페이지 중심으로 이동 */
+    transform: translateX(-50%); /* 완벽히 중앙에 배치 */
+    width: 60%; /* 검색창 너비 */
+    background-color: #f6f0fa;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    padding: 5px 10px;
+    margin-top: 20px;
+    margin-left: 10px;
+  }
+  
+  /* 메뉴 버튼 (검색창 왼쪽 끝 내부) */
+  .menu-button {
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+  }
+  
+  /* 검색 입력창 */
+  .search-input {
+    flex: 1;
+    border: none;
+    background-color: transparent;
+    font-size: 20px;
+    padding-left: 10px;
+  }
+  
+  .search-input:focus {
+    outline: none;
+  }
+  
+  /* 검색 아이콘 (검색창 오른쪽 끝) */
+  .search-icon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .search-icon img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  /* 메뉴 */
+  .nav-menu {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    width: 100%;
+    margin-top: 40px;
+  }
+  
+  .nav-menu a {
+    text-decoration: none;
+    color: black;
+    font-size: 21px;
+    font-weight: 500;
+  }
+  
+  .nav-menu a:hover {
+    text-decoration: underline;
+  }
+  
