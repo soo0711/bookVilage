@@ -1,5 +1,6 @@
 package com.example.bookVillage.user;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.bookVillage.common.EncryptUtils;
 import com.example.bookVillage.user.bo.UserBO;
 import com.example.bookVillage.user.entity.UserEntity;
 
@@ -29,12 +31,12 @@ public class UserRestController {
 			@RequestParam("password") String password,
 			@RequestParam("name") String name,
 			@RequestParam("phoneNumber") String phoneNumber,
-			@RequestParam("email") String email) {
+			@RequestParam("email") String email) throws NoSuchAlgorithmException {
 		
 		// 해시 비밀번호
-		
+		String hashedPassword = EncryptUtils.sha256(password);
 		// user db insert
-		Integer userId = userBO.addUser(loginId, password, name, phoneNumber, email);
+		Integer userId = userBO.addUser(loginId, hashedPassword, name, phoneNumber, email);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 200);
@@ -69,7 +71,7 @@ public class UserRestController {
 	public Map<String, Object> signIn(
 			@RequestParam("loginId") String loginId,
 			@RequestParam("password") String password,
-			HttpServletRequest request){
+			HttpServletRequest request) throws NoSuchAlgorithmException{
 		
 		// db select - id가 있는지
 		UserEntity user = userBO.getUserEntityByLoginId(loginId);
@@ -82,7 +84,9 @@ public class UserRestController {
 		}
 		
 		// db select - id, pw 다 맞는지
-		user = userBO.getUserEntityByLoginIdPassword(loginId, password);
+		// 해시 비밀번호
+		String hashedPassword = EncryptUtils.sha256(password);
+		user = userBO.getUserEntityByLoginIdPassword(loginId, hashedPassword);
 		
 		if (user != null) {
 			// 로그인 세션 
