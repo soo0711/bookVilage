@@ -68,14 +68,20 @@ public class bookMeetingRestController {
 		//bookMeetingId로 주최자가 로그인한 사람인지 비교
 		BookMeetingEntity bookMeetingEntity = bookMeetingBO.getBookMeetingEntityByBookMeetingId(bookMeetingId);
 	
+		int count = 0;
 		if(bookMeetingEntity.getHostLoginid() == userLoginId) {
-			bookMeetingBO.updateBookMeeting(bookMeetingId, userLoginId, schedule, place, total);
+			count = bookMeetingBO.updateBookMeeting(bookMeetingId, userLoginId, schedule, place, total);
 		}
 		
 		
 		Map<String, Object> result = new HashMap<>();
-		result.put("code", 200);
-		result.put("result", "독서모임 수정 성공");
+		if(count > 0 ) {
+			result.put("code", 200);
+			result.put("result", "독서모임 수정 성공");
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "수정에 실패했습니다.");
+		}
 		
 
 	

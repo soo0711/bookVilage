@@ -34,15 +34,18 @@ public class BookMeetingBO {
 		return bookMeetingRepository.findById(bookMeetingId);
 	}
 	
-	public void updateBookMeeting(int bookMeetingId, String userLoginId, String schedule, String place, int total) {
+	public int updateBookMeeting(int bookMeetingId, String userLoginId, String schedule, String place, int total) {
 		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.findById(bookMeetingId);
-		bookMeetingEntity = bookMeetingEntity.toBuilder() // 기존 내용은 그대로
-                .schedule(schedule)
-                .place(place)
-                .total(total)
-                .build();
-		bookMeetingRepository.save(bookMeetingEntity); // 데이터 있으면 수정
-		
+		if(bookMeetingEntity != null) {
+			bookMeetingEntity = bookMeetingEntity.toBuilder() // 기존 내용은 그대로
+	                .schedule(schedule)
+	                .place(place)
+	                .total(total)
+	                .build();
+			bookMeetingRepository.save(bookMeetingEntity); // 데이터 있으면 수정
+			return 1;
+		}
+		return 0;
 	}
 	
 	public int deleteBookMeeting(int bookMeetingId) {
