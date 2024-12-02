@@ -3,9 +3,12 @@ package com.example.bookVillage.bookMeeting;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.antlr.v4.runtime.ParserInterpreter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +18,7 @@ import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
 
 import jakarta.servlet.http.HttpSession;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/bookMeeting")
 @RestController
 public class bookMeetingRestController {
@@ -31,14 +35,17 @@ public class bookMeetingRestController {
 	 */
 	@PostMapping("/create")
 	public Map<String, Object> bookMeetingCreate(
-			@RequestParam("schedule") String schedule,
-			@RequestParam("place") String place,
-			@RequestParam("total") int total,
+			@RequestBody Map<String, String> requestBody,
 			HttpSession session){
 		
-
 		String userLoginId = (String) session.getAttribute("userLoginId");
-		// user db insert
+		
+		String schedule = requestBody.get("schedule");
+		String place = requestBody.get("place");
+		Integer total = Integer.parseInt(requestBody.get("total"));
+		
+
+		// bookmeeting db insert
 		Integer bookMeetingId = bookMeetingBO.addBookMeeting(userLoginId, schedule, place, total);
 		
 		Map<String, Object> result = new HashMap<>();
@@ -56,11 +63,13 @@ public class bookMeetingRestController {
 	
 	@PostMapping("/update")
 	public Map<String, Object> bookMeetingUpdate(
-			@RequestParam("schedule") String schedule,
-			@RequestParam("place") String place,
-			@RequestParam("total") int total,
-			@RequestParam("bookMeetingId") int bookMeetingId,
+			@RequestBody Map<String, String> requestBody,
 			HttpSession session){
+		
+		String schedule = requestBody.get("schedule");
+		String place = requestBody.get("place");
+		Integer total = Integer.parseInt(requestBody.get("total"));
+		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
 		
 		//로그인한 사용자
 		String userLoginId = (String) session.getAttribute("userLoginId");
@@ -69,7 +78,7 @@ public class bookMeetingRestController {
 		BookMeetingEntity bookMeetingEntity = bookMeetingBO.getBookMeetingEntityByBookMeetingId(bookMeetingId);
 	
 		int count = 0;
-		if(bookMeetingEntity.getHostLoginid() == userLoginId) {
+		if(bookMeetingEntity.getHostLoginid().equals(userLoginId)) {
 			count = bookMeetingBO.updateBookMeeting(bookMeetingId, userLoginId, schedule, place, total);
 		}
 		
@@ -89,7 +98,11 @@ public class bookMeetingRestController {
 	}
 	
 	@DeleteMapping("/delete")
-	public Map<String, Object> delete(@RequestParam("bookMeetingId") int bookMeetingId, HttpSession session) {
+	public Map<String, Object> delete(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session) {
+		
+		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
 		
 		int count = bookMeetingBO.deleteBookMeeting(bookMeetingId);
 		// 응답값

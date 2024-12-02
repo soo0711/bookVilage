@@ -30,11 +30,13 @@ public class UserRestController {
 	// 회원가입 api
 	@PostMapping("/sign-up")
 	public Map<String, Object> signUp(
-			@RequestParam("loginId") String loginId,
-			@RequestParam("password") String password,
-			@RequestParam("name") String name,
-			@RequestParam("phoneNumber") String phoneNumber,
-			@RequestParam("email") String email) throws NoSuchAlgorithmException {
+			@RequestBody Map<String, String> requestBody) throws NoSuchAlgorithmException {
+		
+		String loginId = requestBody.get("loginId");
+		String password = requestBody.get("password");
+		String name = requestBody.get("name");
+		String phoneNumber = requestBody.get("phoneNumber");
+		String email = requestBody.get("email");
 		
 		// 해시 비밀번호
 		String hashedPassword = EncryptUtils.sha256(password);
@@ -51,8 +53,10 @@ public class UserRestController {
 	// 아이디 중복 확인 api		
 	@PostMapping("/is-duplicated-id")
 	public Map<String, Object> isDuplicatedId(
-			@RequestParam("loginId") String loginId){
+			@RequestBody Map<String, String> requestBody){
 	
+		String loginId = requestBody.get("loginId");
+		
 		// DB select - Integer로 받기
 		UserEntity user = userBO.getUserEntityByLoginId(loginId);
 		
@@ -115,9 +119,11 @@ public class UserRestController {
 	// 아이디 찾기 api
 	@PostMapping("/find-id")
 	public Map<String, Object> findId(
-			@RequestParam("name") String name,
-			@RequestParam("phoneNumber") String phoneNumber,
-			@RequestParam("email") String email){
+			@RequestBody Map<String, String> requestBody){
+		
+		String name = requestBody.get("name");
+		String phoneNumber = requestBody.get("phoneNumber");
+		String email = requestBody.get("email");
 		
 		// db select
 		UserEntity user = userBO.getUserEntityByNamePhoneNumberEmail(name, phoneNumber, email);
@@ -134,8 +140,6 @@ public class UserRestController {
 		
 		return result;
 	}
-	
-	// 로그아웃 api
 	
 	
 }
