@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,7 @@ import com.example.bookVillage.user.entity.UserEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/user")
 @RestController
 public class UserRestController {
@@ -69,9 +72,11 @@ public class UserRestController {
 	// 로그인 api
 	@PostMapping("/sign-in")
 	public Map<String, Object> signIn(
-			@RequestParam("loginId") String loginId,
-			@RequestParam("password") String password,
+			@RequestBody Map<String, String> requestBody,
 			HttpServletRequest request) throws NoSuchAlgorithmException{
+		
+		String loginId = requestBody.get("loginId");
+	    String password = requestBody.get("password");
 		
 		// db select - id가 있는지
 		UserEntity user = userBO.getUserEntityByLoginId(loginId);

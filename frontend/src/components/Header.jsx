@@ -1,12 +1,14 @@
 import React from "react";
 import "./Header.css";
+import { Link } from "react-router-dom"; //추기
 
 const Header = () => {
   return (
     <header className="header">
       <div className="auth-section">
         <a href="/user/sign-up-view">회원가입</a>
-        <a href="/user/sign-in-view">로그인</a>
+        {/* <a href="/user/sign-in-view">로그인</a> */}
+        <Link to="/login">로그인</Link> {/* 로그인 링크 수정 */}
       </div>
 
       
