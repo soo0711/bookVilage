@@ -16,7 +16,7 @@ const Banner = () => {
       setCurrentIndex((prevIndex) =>
         prevIndex === banners.length - 1 ? 0 : prevIndex + 1
       );
-    }, 3000);
+    }, 7000);
     return () => clearInterval(interval);
   }, [banners.length]);
 
@@ -44,10 +44,10 @@ const Banner = () => {
           alt={banners[currentIndex].alt}
         />
       </div>
-      <button className="prev-btn" onClick={handlePrev}>
+      <button className="next-btn" onClick={handlePrev}>
         <img src="/assets/left.png" alt="이전" />
       </button>
-      <button className="next-btn" onClick={handleNext}>
+      <button className="prev-btn" onClick={handleNext}>
         <img src="/assets/right.png" alt="다음" />
       </button>
 
