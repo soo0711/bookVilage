@@ -1,45 +1,52 @@
-
-import React from "react";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
-import Banner from "./components/Banner";
-import Notice from "./components/Notice";
-import High from "./components/High";
+import MainPage from "./components/MainPage";
 import LoginPage from "./components/LoginPage";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SignupPage from "./components/SignupPage";
+import FindIdPage from "./components/FindIdPage";
+import FindPasswordPage from "./components/FindPasswordPage";
 
 function App() {
-  // return (
-  //   <div className="App">
-  //     <Header />
-  //      <Banner />
-  //     <High /> 
-  //      <Notice /> 
-  //   </div>
-  // );
-  const handleLogin = (userId) => {
-    console.log("Logged in user:", userId);
-    // 로그인 처리 로직
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+
+  const handleLogin = (loginId) => {
+    setIsLoggedIn(true);
+    setUsername(loginId); // 로그인한 사용자 이름
   };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUsername("");
+  };
+
   return (
     <Router>
-      <div className="App">
-        <Header />
-        <Routes>
-          {/* 홈 페이지 */}
-          <Route
-            path="/"
-            element={
-              <>
-                <Banner />
-                <High />
-                <Notice />
-              </>
-            }
-          />
-          {/* 로그인 페이지 */}
-          <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route
+          path="/home-view"
+          element={
+            <>
+             
+              <Header
+                isLoggedIn={isLoggedIn}
+                username={username}
+                onLogout={handleLogout}
+              />
+              <MainPage />
+            </>
+          }
+        />
+        //로그인 페이지
+        <Route path="/user/sign-in-view" element={<LoginPage onLogin={handleLogin} />} />
+       
+        <Route path="/user/sign-up-view" element={<SignupPage />} />
+        //기본 경로 url
+        <Route path="*" element={<Navigate to="/home-view" />} />
+        <Route path="/find-id" element={<FindIdPage />} />
+        <Route path="/find-password" element={<FindPasswordPage />} />
+      </Routes>
     </Router>
   );
 }
