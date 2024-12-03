@@ -27,7 +27,8 @@ public class BookRegisterBO {
 	
 	public Integer addBookRegisterAndImage(Integer userId, String userLoginId, String title, String author, String publisher, String review, 
 								String point, String b_condition, String description, String place, List<MultipartFile> files) {
-		
+		if (bookRegisterRepository.getByUserIdAndTitle(userId, title) == null) {
+			
 		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.save(
 				BookRegisterEntity.builder()
 				.userId(userId)
@@ -46,9 +47,14 @@ public class BookRegisterBO {
 		List<String> imagePath = fileManagerService.saveFile(userLoginId, files);
 		
 		// 이미지 insert
-		addBookRegisterImage(bookRegisterEntity.getId(), imagePath);		
+		addBookRegisterImage(bookRegisterEntity.getId(), imagePath);	
 		
-		return bookRegisterEntity == null? null : bookRegisterEntity.getId();
+		return bookRegisterEntity.getId();
+		
+		} 
+		
+		return null;
+	
 	}
 	
 	public void addBookRegisterImage(Integer bookRegisterId, List<String> imagePath) {
@@ -60,5 +66,34 @@ public class BookRegisterBO {
 				.build()
 				);
 		}
+	}
+	
+	public Integer updateBookRegister(int userId, int bookRegisterId, String review, String point, String b_condition, String description, String place) {
+		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);
+		if (bookRegisterEntity != null) {
+			bookRegisterEntity = bookRegisterEntity.toBuilder() // 기존 내용은 그대로
+	                .review(review)
+	                .point(point)
+	                .b_condition(b_condition)
+	                .description(description)
+	                .place(place)
+	                .build();
+			bookRegisterRepository.save(bookRegisterEntity); // 데이터 있으면 수정
+			
+			return bookRegisterEntity.getId();
+		}
+		return null;
+	}
+	
+	public Integer deleteBookRegister(int userId, int bookRegisterId) {
+		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);
+		
+		if (bookRegisterEntity != null) {
+			bookRegisterRepository.delete(bookRegisterEntity);
+			
+			return 1; // 삭제 성공
+		}
+		
+		return 0; // 삭제 실패
 	}
 }
