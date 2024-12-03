@@ -69,7 +69,7 @@ public class bookMeetingRestController {
 		Integer total = Integer.parseInt(requestBody.get("total"));
 		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
 		
-		//로그인한 사용자
+		//로그인한 사용
 		String userLoginId = (String) session.getAttribute("userLoginId");
 		
 		//bookMeetingId로 주최자가 로그인한 사람인지 비교

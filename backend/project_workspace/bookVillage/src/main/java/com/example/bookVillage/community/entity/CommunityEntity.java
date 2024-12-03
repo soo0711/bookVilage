@@ -1,8 +1,9 @@
-package com.example.bookVillage.bookMeeting.entity;
+package com.example.bookVillage.community.entity;
 
 import java.util.Date;
 
 import org.hibernate.annotations.UpdateTimestamp;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,26 +19,22 @@ import lombok.ToString;
 
 @Entity
 @ToString
-@Table(name = "bookmeeting")
+@Table(name = "community")
 @Getter
 @Builder(toBuilder = true) 
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookMeetingEntity {
+public class CommunityEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "hostLoginid")
-	private String hostLoginid;
+	@Column(name = "userId")
+	private int userId;
 	
-	private String schedule;
+	private String subject;
 	
-	private String place;
-	
-	private String closeYN;
-	
-	private int total;
+	private String content;
 	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp
@@ -46,11 +43,6 @@ public class BookMeetingEntity {
 	@Column(name = "updatedAt")
 	@UpdateTimestamp
 	private Date updatedAt;
-
-	public static Object builder() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
 
 

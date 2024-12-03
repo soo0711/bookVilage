@@ -1,4 +1,4 @@
-package com.example.bookVillage.bookMeeting.entity;
+package com.example.bookVillage.communityComment.entity;
 
 import java.util.Date;
 
@@ -18,39 +18,28 @@ import lombok.ToString;
 
 @Entity
 @ToString
-@Table(name = "bookmeeting")
+@Table(name = "community_comment")
 @Getter
 @Builder(toBuilder = true) 
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookMeetingEntity {
+public class CommunityCommentEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "hostLoginid")
-	private String hostLoginid;
+	@Column(name = "communityId")
+	private int communityId;
 	
-	private String schedule;
+	@Column(name = "userId")
+	private int userId;
 	
-	private String place;
-	
-	private String closeYN;
-	
-	private int total;
+	private String content;
 	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp
 	private Date createdAt;
 	
-	@Column(name = "updatedAt")
-	@UpdateTimestamp
-	private Date updatedAt;
 
-	public static Object builder() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
-
-
