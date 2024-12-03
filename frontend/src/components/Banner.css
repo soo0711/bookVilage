@@ -1,45 +1,45 @@
 
 .banner {
-    position: relative;
-    width: 100%;
-    margin: 0 auto;
-    overflow: hidden;
-    margin-top: 20px;
-  }
-  
- 
-  .banner-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  
- 
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+
+.banner-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+
 .prev-btn,
 .next-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  z-index: 10;
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+background-color: transparent;
+border: none;
+cursor: pointer;
+z-index: 10;
 }
 
 .prev-btn img,
 .next-btn img {
-  width: 25px; 
-  height: 25px; 
+width: 25px; 
+height: 25px; 
 }
 
 
 .prev-btn {
-  left: 10px;
+right: 100px;
 }
 
 
 .next-btn {
-  right: 10px;
+left: 100px;
 }
-  
-  
+
+
