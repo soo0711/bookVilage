@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
+import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity.BookMeetingEntityBuilder;
 import com.example.bookVillage.bookMeeting.repository.BookMeetingRepository;
 import com.example.bookVillage.user.entity.UserEntity;
 
@@ -16,7 +17,7 @@ public class BookMeetingBO {
 			String place, int total) {
 		
 		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.save(
-				BookMeetingEntity.builder()
+				((BookMeetingEntityBuilder) BookMeetingEntity.builder())
 				.hostLoginid(hostLoginid)
 				.schedule(schedule)
 				.place(place)
