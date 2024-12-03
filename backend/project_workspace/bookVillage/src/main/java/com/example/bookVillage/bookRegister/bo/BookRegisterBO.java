@@ -1,5 +1,6 @@
 package com.example.bookVillage.bookRegister.bo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bookVillage.bookRegister.entity.BookRegisterEntity;
 import com.example.bookVillage.bookRegister.entity.BookRegisterImageEntity;
-import com.example.bookVillage.bookRegister.repository.BookRegisterImageRepository;
 import com.example.bookVillage.bookRegister.repository.BookRegisterRepository;
 import com.example.bookVillage.common.FileManagerService;
 
@@ -19,7 +19,7 @@ public class BookRegisterBO {
 	private BookRegisterRepository bookRegisterRepository;
 	
 	@Autowired
-	private BookRegisterImageRepository bookRegisterImageRepository;
+	private BookRegisterImageBO bookRegisterImageBO;
 	
 	@Autowired
 	private FileManagerService fileManagerService;
@@ -47,7 +47,7 @@ public class BookRegisterBO {
 		List<String> imagePath = fileManagerService.saveFile(userLoginId, files);
 		
 		// 이미지 insert
-		addBookRegisterImage(bookRegisterEntity.getId(), imagePath);	
+		bookRegisterImageBO.addBookRegisterImage(bookRegisterEntity.getId(), imagePath);	
 		
 		return bookRegisterEntity.getId();
 		
@@ -57,16 +57,6 @@ public class BookRegisterBO {
 	
 	}
 	
-	public void addBookRegisterImage(Integer bookRegisterId, List<String> imagePath) {
-		for (String image : imagePath) {
-			bookRegisterImageRepository.save(
-				BookRegisterImageEntity.builder()
-				.bookRegisterId(bookRegisterId)
-				.imagePath(image)
-				.build()
-				);
-		}
-	}
 	
 	public Integer updateBookRegister(int userId, int bookRegisterId, String review, String point, String b_condition, String description, String place) {
 		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);
@@ -89,6 +79,20 @@ public class BookRegisterBO {
 		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);
 		
 		if (bookRegisterEntity != null) {
+			
+			// 이미지 select - List<String>에 imgPath 넣기
+			List<BookRegisterImageEntity> bookImage = bookRegisterImageBO.getBookRegisterImageByBookRegisterId(bookRegisterId);
+			List<String> imagePath = new ArrayList<>();
+			
+			for (int i = 0 ; i < bookImage.size(); i++) {
+				imagePath.add(bookImage.get(i).getImagePath());
+			}
+			
+			// 이미지 삭제
+			fileManagerService.deleteFile(imagePath);
+			
+			bookRegisterImageBO.deleteBookRegisterImageByBookRegisterId(bookRegisterId);
+			
 			bookRegisterRepository.delete(bookRegisterEntity);
 			
 			return 1; // 삭제 성공
