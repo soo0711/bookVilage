@@ -26,9 +26,9 @@ const FindPasswordPage = () => {
 
   return (
     <div className="find-container">
-      <img src="/assets/logo.png" alt="로고" className="find-logo" />
+      {/* <img src="/assets/logo.png" alt="로고" className="find-logo" />
       <img src="/assets/title.png" alt="타이틀" className="find-title" />
-      
+       */}
       <div className="find-form-container">
         <h2>비밀번호 찾기</h2>
         <form onSubmit={handleSubmit}>

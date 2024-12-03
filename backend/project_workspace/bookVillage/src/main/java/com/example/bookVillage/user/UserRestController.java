@@ -6,10 +6,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bookVillage.common.EncryptUtils;
@@ -42,10 +42,14 @@ public class UserRestController {
 		String hashedPassword = EncryptUtils.sha256(password);
 		// user db insert
 		Integer userId = userBO.addUser(loginId, hashedPassword, name, phoneNumber, email);
-		
 		Map<String, Object> result = new HashMap<>();
-		result.put("code", 200);
-		result.put("result", "성공");
+		if (userId > 1) {
+			result.put("code", 200);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "회원가입을 실패했습니다.");
+		}
 		
 		return result;
 	}
@@ -141,5 +145,19 @@ public class UserRestController {
 		return result;
 	}
 	
+	// 로그아웃
+	@GetMapping("/sign-out")
+	public Map<String, Object> signOut(
+			HttpSession session) {
+		session.removeAttribute("userId");
+		session.removeAttribute("userLoginId");
+		session.removeAttribute("userName");
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
+		
+		return result;
+	}
 	
 }
