@@ -42,10 +42,14 @@ public class UserRestController {
 		String hashedPassword = EncryptUtils.sha256(password);
 		// user db insert
 		Integer userId = userBO.addUser(loginId, hashedPassword, name, phoneNumber, email);
-		
 		Map<String, Object> result = new HashMap<>();
-		result.put("code", 200);
-		result.put("result", "성공");
+		if (userId > 1) {
+			result.put("code", 200);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "회원가입을 실패했습니다.");
+		}
 		
 		return result;
 	}
