@@ -43,7 +43,7 @@ public class UserRestController {
 		// user db insert
 		Integer userId = userBO.addUser(loginId, hashedPassword, name, phoneNumber, email);
 		Map<String, Object> result = new HashMap<>();
-		if (userId > 1) {
+		if (userId > 0) {
 			result.put("code", 200);
 			result.put("result", "성공");
 		} else {

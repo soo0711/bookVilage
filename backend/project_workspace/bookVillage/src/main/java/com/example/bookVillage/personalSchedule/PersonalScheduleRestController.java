@@ -58,7 +58,7 @@ public class PersonalScheduleRestController {
 		
 		// 응답값
 		Map<String, Object> result = new HashMap<>();
-		if(count > 0 ) {
+		if(count > 0) {
 			result.put("code", 200);
 			result.put("result", "성공");
 		} else {
