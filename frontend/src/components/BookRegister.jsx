@@ -55,12 +55,13 @@ const BookRegister = ({ onRegister }) => {
 
       if (response.data.code === 200) {
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(response.data.xml, "application/xml");
+        const xmlDoc = parser.parseFromString(response.data.response, "application/xml");
         const items = xmlDoc.getElementsByTagName("item");
         const results = Array.from(items).map((item) => ({
           title: item.getElementsByTagName("title")[0].textContent,
           author: item.getElementsByTagName("author")[0]?.textContent || "Unknown",
           publisher: item.getElementsByTagName("publisher")[0]?.textContent || "Unknown",
+          isbn13: item.getElementsByTagName("isbn13")[0]?.textContent || "Unknown"
         }));
         setSearchResults(results);
         setIsModalOpen(true); // 모달 열기
@@ -77,6 +78,7 @@ const BookRegister = ({ onRegister }) => {
     setFormData({ ...formData, title: selectedTitle });
     setIsModalOpen(false); // 모달 닫기
   };
+
   return (
     <div>
       <form className="book-register-form" onSubmit={handleSubmit}>
@@ -142,7 +144,7 @@ const BookRegister = ({ onRegister }) => {
           onChange={handleChange}
         />
         <div className="image-upload-section">
-          <label htmlFor="image">책 이미지</label>
+          <label htmlFor="image">책 상태 이미지</label>
           <input
             type="file"
             name="image"
@@ -160,6 +162,23 @@ const BookRegister = ({ onRegister }) => {
         <button type="button" onClick={() => window.history.back()}>이전 목록</button>
         <button type="submit" onClick={handleSubmit}>책 등록</button>
       </div>
+
+      {/* 모달이 열리면 검색 결과 표시 */}
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>검색 결과</h3>
+            <ul>
+              {searchResults.map((result, index) => (
+                <li key={index} onClick={() => handleResultSelect(result.title)}>
+                  <strong>{result.title}</strong> - {result.author}, {result.publisher}
+                </li>
+              ))}
+            </ul>
+            <button onClick={() => setIsModalOpen(false)}>닫기</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
