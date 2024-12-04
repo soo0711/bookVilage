@@ -43,7 +43,7 @@ const High = () => {
       <div className="right-section">
         <div className="books-list">
           {books.map((book) => (
-            <div className="book-card" key={book.id}>
+            <div className="book-card-high" key={book.id}>
               <img src={book.image} alt={book.title} className="book-image" />
               <h3 className="book-title">{book.title}</h3>
               <p className="book-rating">평균 ★ {book.rating}</p>

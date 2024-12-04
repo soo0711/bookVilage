@@ -7,7 +7,10 @@ import SignupPage from "./components/SignupPage";
 import FindIdPage from "./components/FindIdPage";
 import FindPasswordPage from "./components/FindPasswordPage";
 import BookRecommend from "./components/BookRecommend";
+import BookMeeting from "./components/BookMeeting";
+import CommunityPage from "./components/CommunityPage";
 import axios from "axios";
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -60,6 +63,11 @@ function App() {
         <Route path="/find-id" element={<FindIdPage />} />
         <Route path="/find-password" element={<FindPasswordPage />} />
         <Route path="/book-recommend" element={<BookRecommend />} />
+        <Route path="/bookMeeting" element={<BookMeeting />} />
+        <Route path="/community" element={<CommunityPage />} />
+
+        
+
         <Route path="*" element={<Navigate to="/home-view" />} />
       </Routes>
     </Router>

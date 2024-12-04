@@ -1,0 +1,51 @@
+/* PostList 스타일 */
+.post-list {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  }
+  
+  .post-list h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .post-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .post-list li {
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 가벼운 그림자 */
+  }
+  
+  .post-list li:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-list h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+  
+  .post-list p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    line-height: 1.5;
+  }
+  

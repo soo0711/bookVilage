@@ -32,22 +32,25 @@
   }
   .button-container {
     display: flex;
-    gap: 20px;
-    justify-content: center;
+    gap: 0;
+    justify-content: flex-start; /* 버튼을 왼쪽으로 정렬 */
+    
     margin-top: 20px;
     width: 80%;
-    margin: 20px auto;
+    margin: 10px auto;
     padding-right: 10%;
   }
   .button-container button {
     flex: 0 1 150px;
-    padding: 12px;
+    padding: 16px;
     background-color: white;
     color: #333;
     border: 1px solid #ebdada;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    margin-left: 60px;
+    gap:5px;
     transition: all 0.3s ease;
   }
   .button-container button:hover {

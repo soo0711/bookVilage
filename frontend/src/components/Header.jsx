@@ -48,7 +48,7 @@ const Header = ({ isLoggedIn, username, onLogout }) => {
 
       <nav className="nav-menu">
         <a href="/book-recommend">책 추천</a>
-        <a href="#community">커뮤니티</a>
+        <a href="/community">커뮤니티</a>
         <a href="/bookmeeting">독서모임</a>
         <a href="/exchange">지역별 교환</a>
       </nav>
