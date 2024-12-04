@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 
 
 def split_csv_file(input_file, output_directory, num_splits=5):
@@ -37,7 +38,6 @@ input_file_path = "merged_books_data.csv"  # 병합된 CSV 파일 경로
 output_directory = "split_files"  # 분할된 파일을 저장할 디렉터리
 
 # 디렉터리 생성
-import os
 
 os.makedirs(output_directory, exist_ok=True)
 
