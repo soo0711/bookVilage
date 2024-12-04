@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./BookRegister.css";
+import axios from "axios"; // Axios 추가
 
 const BookRegister = ({ onRegister }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,9 @@ const BookRegister = ({ onRegister }) => {
     image: "",
     imageUrl: "",
   });
+
+  const [searchResults, setSearchResults] = useState([]); // 검색 결과 저장
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +40,43 @@ const BookRegister = ({ onRegister }) => {
     onRegister(formData);
   };
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!formData.title) {
+      alert("책 제목을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const title = formData.title;
+      const response = await axios.post("http://localhost:80/book/search/title", {
+        title,
+      });
+
+      if (response.data.code === 200) {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(response.data.xml, "application/xml");
+        const items = xmlDoc.getElementsByTagName("item");
+        const results = Array.from(items).map((item) => ({
+          title: item.getElementsByTagName("title")[0].textContent,
+          author: item.getElementsByTagName("author")[0]?.textContent || "Unknown",
+          publisher: item.getElementsByTagName("publisher")[0]?.textContent || "Unknown",
+        }));
+        setSearchResults(results);
+        setIsModalOpen(true); // 모달 열기
+      } else {
+        alert(response.data.error_message || "검색에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("검색 요청 중 에러 발생:", error);
+      alert("서버와의 통신에 문제가 발생했습니다.");
+    }
+  };
+
+  const handleResultSelect = (selectedTitle) => {
+    setFormData({ ...formData, title: selectedTitle });
+    setIsModalOpen(false); // 모달 닫기
+  };
   return (
     <div>
       <form className="book-register-form" onSubmit={handleSubmit}>
@@ -48,6 +89,7 @@ const BookRegister = ({ onRegister }) => {
           onChange={handleChange}
           required
         />
+        <button type="button" onClick={handleSearch}>검색</button>
         <input
           type="text"
           name="author"
