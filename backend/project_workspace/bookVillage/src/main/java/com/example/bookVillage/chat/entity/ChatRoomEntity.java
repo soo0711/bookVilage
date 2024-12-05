@@ -15,7 +15,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
+/*
 @Entity
 @Getter
 @Builder(toBuilder = true)
@@ -38,3 +38,4 @@ public class ChatRoomEntity {
 	@UpdateTimestamp
 	private Date createdAt;
 }
+*/

@@ -1,11 +1,7 @@
 package com.example.bookVillage.chat.bo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import com.example.bookVillage.chat.entity.ChatEntity;
-import com.example.bookVillage.chat.repository.ChatRepository;
-
+/*
 @Service
 public class ChatBO {
 
@@ -36,3 +32,4 @@ public class ChatBO {
 		return chatEntity == null ? null : chatEntity.getId();
 	}
 }
+*/

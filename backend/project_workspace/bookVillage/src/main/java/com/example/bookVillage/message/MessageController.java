@@ -3,12 +3,12 @@ package com.example.bookVillage.message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 import com.example.bookVillage.message.bo.MessageBO;
 import com.example.bookVillage.message.entity.MessageEntity;
 
-@RestController
+@Controller
 public class MessageController {
 
 	@Autowired
@@ -16,8 +16,6 @@ public class MessageController {
 	
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
-	
-	
 	
 	
 	 @MessageMapping("/message")

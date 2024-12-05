@@ -34,9 +34,9 @@ public class BookRegisterEntity {
 	
 	private String title; 
 	
-	private String author; 
+	// private String author; 
 	
-	private String publisher; 
+	private String isbn13; 
 	
 	private String review; 
 	
@@ -46,7 +46,11 @@ public class BookRegisterEntity {
 	
 	private String description; 
 	
+	private String exchange_YN; 
+	
 	private String place;
+	
+	private String stauts;
 	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp

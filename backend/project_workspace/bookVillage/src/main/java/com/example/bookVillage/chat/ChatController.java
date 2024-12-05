@@ -1,3 +1,4 @@
+/*
 package com.example.bookVillage.chat;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/chat")
+//@RequestMapping("/chat")
 public class ChatController {
 	
 	
@@ -23,8 +24,8 @@ public class ChatController {
 	private ChatBO chatBO;
 	
 	
-	@MessageMapping("/message")
-	@SendTo("/sub/chatroom/{chatRoomId}")
+	//@MessageMapping("/message")
+	//@SendTo("/sub/chatroom/{chatRoomId}")
     public ChatEntity chatMessage(
     		@Payload ChatEntity chat,
     		HttpSession session) {
@@ -45,3 +46,4 @@ public class ChatController {
 	        return chat; // 메시지 객체를 반환하여 클라이언트에 전송
 	    }
 }
+*/

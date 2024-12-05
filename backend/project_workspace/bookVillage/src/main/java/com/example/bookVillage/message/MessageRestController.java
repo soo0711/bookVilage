@@ -1,29 +1,24 @@
-/*
-package com.example.bookVillage.chat;
+package com.example.bookVillage.message;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.bookVillage.chat.bo.ChatBO;
-import com.example.bookVillage.chat.entity.ChatEntity;
+import com.example.bookVillage.message.bo.MessageBO;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/chat")
-public class ChatRestController {
+public class MessageRestController {
 
 	@Autowired
-	private ChatBO chatBO;
+    private MessageBO messageBO;
 	
 	@PostMapping("/room")
     public Map<String, Object> chatRoom(
@@ -34,11 +29,11 @@ public class ChatRestController {
 		Integer userId2 = Integer.parseInt(requestBody.get("fromUserId"));
 		
 		// 채팅방 유무
-		Integer chatRoomId = chatBO.getChatRoomByUserId(userId1, userId2);
+		Integer chatRoomId = messageBO.getChatRoomByUserId(userId1, userId2);
 		
 		if (chatRoomId == null) {
 			// 채팅방 생성
-			chatRoomId = chatBO.addChatRoom(userId1, userId2);
+			chatRoomId = messageBO.addChatRoom(userId1, userId2);
 		}
         
 		Map<String, Object> result = new HashMap<>();
@@ -53,9 +48,4 @@ public class ChatRestController {
 		
 		return result;
     }
-	
-
 }
-
-
-*/

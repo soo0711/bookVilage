@@ -25,28 +25,6 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 public class AdminRestController {
 
-	@Autowired
-	private UserBO userBO;
-	
-	@Autowired
-	private BookMeetingBO bookMeetingBO;
-	
-	@Autowired
-	private BookRegisterBO bookRegisterBO;
-	
-	@Autowired
-	private CommunityBO communityBO;
-	
-	@Autowired
-	private CommunityCommentBO communityCommentBO;
-	
-	@Autowired
-	private MessageBO messageBO;
-	
-	@Autowired
-	private BookMeetingBO bookMettingBO;
-	
-
 	/**
 	 * 관리자 - 회원 수정
 	 * @param requestBody

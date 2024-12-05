@@ -1,14 +1,6 @@
 package com.example.bookVillage.chat.bo;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.example.bookVillage.chat.entity.ChatRoomEntity;
-import com.example.bookVillage.chat.repository.ChatRoomRepository;
-
+/*
 @Service
 public class ChatRoomBO {
 
@@ -41,3 +33,4 @@ public class ChatRoomBO {
 	
 
 }
+*/

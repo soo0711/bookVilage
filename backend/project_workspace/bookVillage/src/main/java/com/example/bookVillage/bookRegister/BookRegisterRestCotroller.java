@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +18,7 @@ import com.example.bookVillage.bookRegister.bo.BookRegisterBO;
 
 import jakarta.servlet.http.HttpSession;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/book-register")
 public class BookRegisterRestCotroller {
@@ -29,25 +30,27 @@ public class BookRegisterRestCotroller {
 	@PostMapping("/create")
 	public Map<String, Object> BookRegisterCreate(
 			@RequestPart("metadata") Map<String, String> metadata, // 이미지랑 받기 위해서 requestPart로 JSON 따로 file 따로 받기
-	        @RequestPart("images") List<MultipartFile> files,
+	        @RequestPart(value = "images", required = false) List<MultipartFile> files,
 			HttpSession session){
 		
 		Integer userId = (Integer)session.getAttribute("userId");
 		String userLoginId = (String)session.getAttribute("userLoginId");
 		String title = metadata.get("title");
-		String author = metadata.get("author");
-		String publisher = metadata.get("publisher");
+		String isbn13 = metadata.get("isbn13");
 		String review = metadata.get("review");
 		String point = metadata.get("point");
 		String b_condition = metadata.get("b_condition");
 		String description = metadata.get("description");
+		String exchange_YN = metadata.get("exchange_YN");
 		String place = metadata.get("place");
 
-		Integer BookRegisterId = bookregisterBO.addBookRegisterAndImage(userId, userLoginId, title, author, publisher,
-				review, point, b_condition, description, place, files);
+		Map<String, Object> result = new HashMap<>();
+		
+		// 등록 및 중복 확인
+		Integer BookRegisterId = bookregisterBO.addBookRegisterAndImage(userId, userLoginId, title, isbn13,
+				review, point, b_condition, description, exchange_YN, place, files);
 	
 		
-		Map<String, Object> result = new HashMap<>();
 
 		if(BookRegisterId != null) {
 			result.put("code", 200);
@@ -74,8 +77,11 @@ public class BookRegisterRestCotroller {
 		String b_condition = requestBody.get("b_condition");
 		String description = requestBody.get("description");
 		String place = requestBody.get("place");
+		String stauts = requestBody.get("status");
+		String exchange_YN = requestBody.get("exchange_YN");
 
-		Integer BookRegisterId = bookregisterBO.updateBookRegister(userId, bookRegisterId, review, point, b_condition, description, place);
+		Integer BookRegisterId = bookregisterBO.updateBookRegister(userId, bookRegisterId, review, point,
+				b_condition, description, place, stauts, exchange_YN);
 		
 		Map<String, Object> result = new HashMap<>();
 
