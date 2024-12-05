@@ -7,7 +7,7 @@ import com.example.bookVillage.communityComment.entity.CommunityCommentEntity;
 import com.example.bookVillage.communityComment.repository.CommunityCommentRepository;
 
 @Service
-public class CommutityCommentBO {
+public class CommunityCommentBO {
 	@Autowired
 	private CommunityCommentRepository communityCommentRepository;
 	

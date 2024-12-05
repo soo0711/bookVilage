@@ -18,28 +18,26 @@ import lombok.ToString;
 
 @Entity
 @ToString
-@Table(name = "message")
+@Table(name = "chat_room ")
 @Getter
 @Builder(toBuilder = true) 
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageEntity {
+public class ChatRoomEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "chatroomId ")
-	private int chatroomId ;
+	@Column(name = "userId1")
+	private int userId1;
 	
-	@Column(name = "userId ")
-	private int userId ;
+	@Column(name = "userId2")
+	private int userId2;
 	
-	private String message ;
 	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp
 	private Date createdAt;
-
-
 
 }
