@@ -74,7 +74,7 @@ public class CommunityRestController {
 			return result;
 		}
 		
-		count = communityBO.updateCommunity(communityId, userId, subject, content);
+		count = communityBO.updateCommunity(communityId, subject, content);
 		
 		if(count > 0 ) {
 			result.put("code", 200);

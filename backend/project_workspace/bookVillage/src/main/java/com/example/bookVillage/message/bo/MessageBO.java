@@ -34,4 +34,5 @@ public class MessageBO {
 		
 		 return messageEntity != null ? messageEntity : null;
 	}
+	
 }

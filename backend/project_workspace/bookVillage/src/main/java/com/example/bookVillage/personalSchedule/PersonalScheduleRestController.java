@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
 public class PersonalScheduleRestController {
 	
 	@Autowired
-	private PersonalScheduleBO personalSchduleBO;
+	private PersonalScheduleBO personalScheduleBO;
 
 	// 개인일정 create
 	@PostMapping("/create")
@@ -31,7 +31,7 @@ public class PersonalScheduleRestController {
 		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
 		
 		// personal db insert
-		Integer personalSchduleId = personalSchduleBO.addpersonalSchdule(userId, bookMeetingId);
+		Integer personalSchduleId = personalScheduleBO.addpersonalSchdule(userId, bookMeetingId);
 		
 		Map<String, Object> result = new HashMap<>();
 		if(personalSchduleId != null) {
@@ -54,7 +54,7 @@ public class PersonalScheduleRestController {
 		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
 		
 		// 삭제 bo
-		int count = personalSchduleBO.deletePersonalSchdeuleByUserIdAndBookMeetingId(userId, bookMeetingId);
+		int count = personalScheduleBO.deletePersonalSchdeuleByUserIdAndBookMeetingId(userId, bookMeetingId);
 		
 		// 응답값
 		Map<String, Object> result = new HashMap<>();
