@@ -32,4 +32,16 @@ public class AdminBO {
 	@Autowired
 	private BookMeetingBO bookMettingBO;
 	
+	public Integer deleteBookRegister(int userId, int bookRegisterId) {
+		return bookRegisterBO.deleteBookRegister(userId, bookRegisterId);
+	}
+	
+	public Integer adminUpdateUserByPassword(String loginId, String password, String name, String phoneNumber, String email) {
+		return userBO.updateUserByPassword(loginId, password, name, email, phoneNumber);
+	}
+	
+	public Integer adminUpdateUser(String loginId, String name, String phoneNumber, String email) {
+		return userBO.updateUser(loginId, name, email, phoneNumber);
+	}
+	
 }

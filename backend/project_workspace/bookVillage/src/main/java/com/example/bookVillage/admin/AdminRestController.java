@@ -1,5 +1,6 @@
 package com.example.bookVillage.admin;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,13 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.bookVillage.bookMeeting.bo.BookMeetingBO;
-import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
-import com.example.bookVillage.bookRegister.bo.BookRegisterBO;
-import com.example.bookVillage.community.bo.CommunityBO;
-import com.example.bookVillage.communityComment.bo.CommunityCommentBO;
-import com.example.bookVillage.message.bo.MessageBO;
-import com.example.bookVillage.user.bo.UserBO;
+import com.example.bookVillage.admin.bo.AdminBO;
+import com.example.bookVillage.common.EncryptUtils;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -24,21 +20,24 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/admin")
 @RestController
 public class AdminRestController {
+	
+	@Autowired
+	private AdminBO adminBO;
 
 	/**
 	 * 관리자 - 회원 수정
 	 * @param requestBody
 	 * @param session
 	 * @return
+	 * @throws NoSuchAlgorithmException 
 	 */
 	@PostMapping("/user/update")
 	public Map<String, Object> adminUserUpdate (
 			@RequestBody Map<String, String> requestBody,
-			HttpSession session){
-
+			HttpSession session) throws NoSuchAlgorithmException{
 		
 		Integer userId = Integer.parseInt(requestBody.get("userId"));
-		String loginId = requestBody.get("loginId");
+		String userLoginId = (String) session.getAttribute("userLoginId");
 		String password = requestBody.get("password");
 		String name = requestBody.get("name");
 		String email = requestBody.get("email");
@@ -46,18 +45,16 @@ public class AdminRestController {
 		
 		Map<String, Object> result = new HashMap<>();
 		
-		//로그인한 사용자가 관리자일 경우에만 수정 가능
-		String userLoginId = (String) session.getAttribute("userLoginId");
-		if(userLoginId == "MNG") {
-			result.put("code", 500);
-			result.put("error_message", "관리자만 수정할 수 있습니다.");
-			return result;
-		}
-		
-	
+		String hashedPassword = password; 
 		int count = 0;
 		
-		//count = userBO.adminUpdateUser(loginId, password, name, email, phoneNumber);
+		if (password != null) { // 비밀번호 변경시
+			hashedPassword = EncryptUtils.sha256(password);
+			count = adminBO.adminUpdateUserByPassword(userLoginId, hashedPassword, name, email, phoneNumber);
+		} else { // 비밀번호 변경 x시
+			count = adminBO.adminUpdateUser(userLoginId, name, email, phoneNumber);
+		}
+	
 		
 		
 		
@@ -70,6 +67,28 @@ public class AdminRestController {
 		}
 		
 
+	
+		return result;
+	}
+	
+	@PostMapping("/book-register/delete")
+	public Map<String, Object> bookRegisterDelete(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session){
+		
+		Integer userId = (Integer)session.getAttribute("userId");
+		Integer bookRegisterId = Integer.parseInt(requestBody.get("bookRegisterId"));
+
+		Integer delete = adminBO.deleteBookRegister(userId, bookRegisterId);
+		
+		Map<String, Object> result = new HashMap<>();
+		if (delete == 1) {
+			result.put("code", 200);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("result", "책 삭제 실패");
+		}
 	
 		return result;
 	}

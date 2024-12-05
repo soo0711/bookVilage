@@ -43,5 +43,38 @@ public class UserBO {
 	public UserEntity getUserEntityByNamePhoneNumberEmail(String name, String phoneNumber, String email) {
 		return userRepository.findByNameAndPhoneNumberAndEmail(name, phoneNumber, email);
 	}
+	
+	public Integer updateUserByPassword(String loginId, String password, String name, String phoneNumber, String email) {
+		UserEntity userEntity = userRepository.findByLoginId(loginId);
+		if (userEntity != null) {
+			userEntity = userEntity.toBuilder()
+					.password(password)
+					.name(name)
+					.phoneNumber(phoneNumber)
+					.email(email)
+					.build();
+			userRepository.save(userEntity);	
+			
+			return 1;
+		}
+		
+		return 0;
+	}
+	
+	public Integer updateUser(String loginId, String name, String phoneNumber, String email) {
+		UserEntity userEntity = userRepository.findByLoginId(loginId);
+		if (userEntity != null) {
+			userEntity = userEntity.toBuilder()
+					.name(name)
+					.phoneNumber(phoneNumber)
+					.email(email)
+					.build();
+			userRepository.save(userEntity);	
+			
+			return 1;
+		}
+		
+		return 0;
+	}
 
 }
