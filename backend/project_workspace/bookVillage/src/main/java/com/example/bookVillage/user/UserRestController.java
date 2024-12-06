@@ -16,7 +16,9 @@ import com.example.bookVillage.common.EncryptUtils;
 import com.example.bookVillage.user.bo.UserBO;
 import com.example.bookVillage.user.entity.UserEntity;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -81,7 +83,8 @@ public class UserRestController {
 	@PostMapping("/sign-in")
 	public Map<String, Object> signIn(
 			@RequestBody Map<String, String> requestBody,
-			HttpServletRequest request) throws NoSuchAlgorithmException{
+			HttpServletRequest request,
+			HttpServletResponse response) throws NoSuchAlgorithmException{
 		
 		String loginId = requestBody.get("loginId");
 	    String password = requestBody.get("password");
@@ -107,6 +110,22 @@ public class UserRestController {
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userLoginId", user.getLoginId());
 			session.setAttribute("userName", user.getName());
+			String userId = Integer.toString(user.getId());
+			 // 쿠키에 userId, userLoginId 저장
+			Cookie userIdCookie = new Cookie("userId", userId);
+	        Cookie userLoginIdCookie = new Cookie("userLoginId", user.getLoginId());
+	        
+	        // 쿠키의 유효 기간 설정 (예: 7일)
+	        userIdCookie.setMaxAge(7 * 24 * 60 * 60); // 7일
+	        userLoginIdCookie.setMaxAge(7 * 24 * 60 * 60); // 7일
+	        
+	        // 쿠키의 경로 설정 (전체 도메인에서 접근 가능)
+	        userIdCookie.setPath("/");
+	        userLoginIdCookie.setPath("/");
+
+	        // 쿠키를 클라이언트로 전송
+	        response.addCookie(userIdCookie);
+	        response.addCookie(userLoginIdCookie);
 			
 			result.put("code", 200);
 			result.put("result", "성공");
