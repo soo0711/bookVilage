@@ -88,8 +88,8 @@ public class BookRegisterBO {
 		return null;
 	}
 	
-	public Integer deleteBookRegister(int userId, int bookRegisterId) {
-		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);
+	public Integer deleteBookRegisterById(int bookRegisterId) {
+		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.findById(bookRegisterId).orElse(null);
 		
 		if (bookRegisterEntity != null) {
 			
