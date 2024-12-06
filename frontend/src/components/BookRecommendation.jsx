@@ -1,7 +1,10 @@
 import React from "react";
 import "./BookRecommendation.css";
+import { useNavigate } from 'react-router-dom';
 
 const BookRecommendation = ({ userBooks, username }) => {
+  const navigate = useNavigate();
+
   // 임시 추천 도서 데이터
   const tempRecommendedBooks = [
     {
@@ -21,6 +24,33 @@ const BookRecommendation = ({ userBooks, username }) => {
     },
   ];
 
+  const handleExchangeClick = (book) => {
+    navigate(`/exchange-list/${book.id}`, {
+      state: {
+        book: {
+          id: book.id,
+          title: book.title,
+          image: book.image,
+          rating: book.rating || 4.2
+        },
+        exchangeUsers: [
+          {
+            username: "김채연",
+            location: "서울시 강서구"
+          },
+          {
+            username: "전수현",
+            location: "서울시 강동구"
+          },
+          {
+            username: "조희언",
+            location: "서울시 강동구"
+          }
+        ]
+      }
+    });
+  };
+
   return (
     <div className="book-recommendation">
       <div className="book-container">
@@ -38,7 +68,7 @@ const BookRecommendation = ({ userBooks, username }) => {
         </div>
         
         <div className="recommended-section">
-          <h2>{userBooks[0]?.title} 와 비슷한 책</h2>
+          <h2>{userBooks[0]?.title} 와(과) 비슷한 책</h2>
           <div className="recommended-container">
             <button className="slide-button left">
               <img src="/assets/left.png" alt="이전" />
@@ -49,7 +79,7 @@ const BookRecommendation = ({ userBooks, username }) => {
                   <img src={book.image} alt={book.title} />
                   <h3>{book.title}</h3>
                   <p>{book.author}</p>
-                  <button>교환 리스트</button>
+                  <button onClick={() => handleExchangeClick(book)}>교환 가능 리스트</button>
                 </div>
               ))}
             </div>

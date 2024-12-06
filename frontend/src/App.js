@@ -9,6 +9,7 @@ import FindPasswordPage from "./components/FindPasswordPage";
 import BookRecommend from "./components/BookRecommend";
 import BookMeeting from "./components/BookMeeting";
 import CommunityPage from "./components/CommunityPage";
+import ExchangeList from "./components/ExchangeList";
 import axios from "axios";
 
 
@@ -65,6 +66,7 @@ function App() {
         <Route path="/book-recommend" element={<BookRecommend />} />
         <Route path="/bookMeeting" element={<BookMeeting />} />
         <Route path="/community" element={<CommunityPage />} />
+        <Route path="/exchange-list/:bookId" element={<ExchangeList />} />
 
         
 

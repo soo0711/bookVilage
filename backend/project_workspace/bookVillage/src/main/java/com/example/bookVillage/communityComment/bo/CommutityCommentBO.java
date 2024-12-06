@@ -3,7 +3,6 @@ package com.example.bookVillage.communityComment.bo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.bookVillage.community.entity.CommunityEntity;
 import com.example.bookVillage.communityComment.entity.CommunityCommentEntity;
 import com.example.bookVillage.communityComment.repository.CommunityCommentRepository;
 

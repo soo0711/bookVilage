@@ -1,38 +1,63 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import PostList from "./PostList";
 import PostDetail from "./PostDetail";
-import "./CommunityPage.css";
+import PostForm from "./PostForm";
 import Header from "./Header";
-const CommunityPage = () => {
-  const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null); // 선택된 게시글
+import "./CommunityPage.css";
 
-  // 게시글 목록 조회
-  const fetchPosts = async () => {
-    try {
-      const response = await axios.get("/community/list");
-      if (response.data.code === 200) {
-        setPosts(response.data.result);
-      } else {
-        throw new Error(response.data.error_message);
-      }
-    } catch (error) {
-      console.error("게시글 목록 조회 오류:", error.message);
-    }
+const CommunityPage = () => {
+  const [posts, setPosts] = useState([
+    {
+      id: "공지",
+      subject: "[공지] 상업안전보건법에 의한 고객응대근로자 보호조치",
+      userName: "슬로우앤드_CR",
+      createdAt: "2020-09-01 14:03:53",
+      notice: true,
+      content: "공지사항 내용입니다."
+    },
+    // ... 기존 게시글 데이터
+  ]);
+  
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [isWriting, setIsWriting] = useState(false);
+
+  const handleCreatePost = (newPost) => {
+    const post = {
+      id: posts.length + 1,
+      ...newPost,
+      userName: "사용자****", // 실제로는 로그인된 사용자 정보 사용
+      createdAt: new Date().toLocaleString(),
+      isNew: true
+    };
+    setPosts([...posts, post]);
+    setIsWriting(false);
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
   return (
-    <>
+    <div>
       <Header />
-    <div className="community-page">
-      <h1>커뮤니티 Q&A</h1>
-      <div className="content">
-        <PostList posts={posts} onSelectPost={setSelectedPost} />
+      <div className="community-page">
+        <div className="board-header">
+          <h2>커뮤니티</h2>
+          <button 
+            className="write-button"
+            onClick={() => setIsWriting(true)}
+          >
+            글쓰기
+          </button>
+        </div>
+
+        {!isWriting && !selectedPost && (
+          <PostList posts={posts} onSelectPost={setSelectedPost} />
+        )}
+        
+        {isWriting && (
+          <PostForm 
+            onSubmit={handleCreatePost}
+            onCancel={() => setIsWriting(false)}
+          />
+        )}
+
         {selectedPost && (
           <PostDetail
             post={selectedPost}
@@ -41,7 +66,6 @@ const CommunityPage = () => {
         )}
       </div>
     </div>
-    </>
   );
 };
 
