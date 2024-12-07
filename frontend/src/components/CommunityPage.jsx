@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PostList from "./PostList";
 import PostDetail from "./PostDetail";
 import PostForm from "./PostForm";
@@ -6,6 +7,7 @@ import Header from "./Header";
 import "./CommunityPage.css";
 
 const CommunityPage = () => {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([
     {
       id: "공지",
@@ -33,6 +35,20 @@ const CommunityPage = () => {
     setIsWriting(false);
   };
 
+  const handleWrite = () => {
+    navigate("/community/create");
+  };
+
+  const handleDelete = (postId) => {
+    // 삭제 로직
+    navigate("/community/delete");
+  };
+
+  const handleUpdate = (postId) => {
+    // 수정 로직
+    navigate("/community/update");
+  };
+
   return (
     <div>
       <Header />
@@ -41,7 +57,7 @@ const CommunityPage = () => {
           <h2>커뮤니티</h2>
           <button 
             className="write-button"
-            onClick={() => setIsWriting(true)}
+            onClick={handleWrite}
           >
             글쓰기
           </button>
@@ -62,6 +78,8 @@ const CommunityPage = () => {
           <PostDetail
             post={selectedPost}
             onBack={() => setSelectedPost(null)}
+            onDelete={() => handleDelete(selectedPost.id)}
+            onUpdate={() => handleUpdate(selectedPost.id)}
           />
         )}
       </div>

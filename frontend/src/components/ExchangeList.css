@@ -190,3 +190,35 @@ display: flex;
     transform: translateY(0);
   }
   
+.username-link {
+  cursor: pointer;
+  color: #333;
+  transition: all 0.2s ease;
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.username-link:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+.username-link:active {
+  transform: translateY(0);
+  background-color: #e8e8e8;
+}
+
+.exchange-user-item {
+  padding: 15px;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+  transition: transform 0.2s ease;
+}
+
+.exchange-user-item:hover {
+  transform: translateY(-2px);
+}
+  

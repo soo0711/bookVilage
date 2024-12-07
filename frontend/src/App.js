@@ -7,9 +7,12 @@ import SignupPage from "./components/SignupPage";
 import FindIdPage from "./components/FindIdPage";
 import FindPasswordPage from "./components/FindPasswordPage";
 import BookRecommend from "./components/BookRecommend";
-import ChatPage from "./components/chatPage"; // 채팅 페이지 추가
+import ChatPage from "./components/ChatPage"; // 채팅 페이지 추가
+import ExchangeList from "./components/ExchangeList";
+import CommunityPage from "./components/CommunityPage";
 import axios from "axios";
 import { Stomp } from "@stomp/stompjs";
+import Profile from "./components/Profile";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -77,7 +80,7 @@ function App() {
                 username={username}
                 onLogout={handleLogout}
               />
-              <MainPage />
+            <MainPage />
             </>
           }
         />
@@ -86,10 +89,26 @@ function App() {
         <Route path="/find-id" element={<FindIdPage />} />
         <Route path="/find-password" element={<FindPasswordPage />} />
         <Route path="/book-recommend" element={<BookRecommend />} />
-        <Route
-          path="/chat"
-          element={<ChatPage client={client} username={username} isLoggedIn={isLoggedIn} />}
+        <Route path="/BookMeeting" element={<BookRecommend />} />
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/exchange-list/:bookId" element={<ExchangeList />} />
+        <Route 
+          path="/profile/:username" 
+          element={
+            <>
+              <Header 
+                isLoggedIn={isLoggedIn} 
+                username={username} 
+                onLogout={handleLogout}
+              />
+              <Profile />
+            </>
+          } 
         />
+        {<Route
+          path="/chat/:targetUsername"
+          element={<ChatPage client={client} username={username} isLoggedIn={isLoggedIn} />}
+        /> }
         <Route path="*" element={<Navigate to="/home-view" />} />
       </Routes>
     </Router>

@@ -17,7 +17,7 @@ const Header = ({ isLoggedIn, username, onLogout }) => {
               로그아웃
             </a>
             <a href="/chatRoom" className="auth-link">
-              채팅
+              채팅방 
               </a>
           </>
         ) : (
