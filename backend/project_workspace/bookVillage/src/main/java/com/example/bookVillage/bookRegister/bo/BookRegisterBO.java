@@ -115,4 +115,32 @@ public class BookRegisterBO {
 		
 		return 1; 
 	}
+	
+	public Integer deleteBookRegister(int userId, int bookRegisterId) {
+		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);
+		
+		if (bookRegisterEntity != null) {
+			
+			List<BookRegisterImageEntity> bookImage = bookRegisterImageBO.getBookRegisterImageByBookRegisterId(bookRegisterId);
+			
+			if (bookImage.size() != 0) {
+			// 이미지 select - List<String>에 imgPath 넣기
+			List<String> imagePath = new ArrayList<>();
+			
+			for (int i = 0 ; i < bookImage.size(); i++) {
+				imagePath.add(bookImage.get(i).getImagePath());
+			}
+			
+				// 이미지 삭제
+				fileManagerService.deleteFile(imagePath);
+				
+				bookRegisterImageBO.deleteBookRegisterImageByBookRegisterId(bookRegisterId);
+				
+			}
+			
+			bookRegisterRepository.delete(bookRegisterEntity);
+		}
+		
+		return 1; 
+	}
 }

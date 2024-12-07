@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "./BookRegister.css";
-// import axios from "axios"; // 백엔드 연동시 주석 해제
+import axios from "axios"; // 백엔드 연동시 주석 해제
 
 const BookRegister = ({ onRegister, username }) => {
   const [formData, setFormData] = useState({
     title: "",
     author: "",
-    rating: "5점",
-    exchangeable: "Y",
+    point: "5점",
+    exchangea_YN: "Y",
     condition: "상태 좋음",
     description: "",
     isbn13: "",
@@ -17,7 +17,7 @@ const BookRegister = ({ onRegister, username }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [images, setImages] = useState([]);
-
+/*
   // 임시 검색 함수 (백엔드 연동 전)
   const handleSearch = (e) => {
     e.preventDefault();
@@ -27,12 +27,12 @@ const BookRegister = ({ onRegister, username }) => {
       alert("로그인이 필요합니다. 로그인 후 책 등록이 가능합니다.");
       return;
     } */
-
+/*
     if (!formData.title) {
       alert("책 제목을 입력해주세요.");
       return;
     }
-
+/*
     // 임시 더미 데이터
     const dummyResults = [
       {
@@ -55,8 +55,9 @@ const BookRegister = ({ onRegister, username }) => {
     setSearchResults(dummyResults);
     setIsModalOpen(true);
   };
+  */
 
-  /* 백엔드 연동시 사용할 실제 검색 함수
+//백엔드 연동시 사용할 실제 검색 함수
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!formData.title) {
@@ -84,11 +85,11 @@ const BookRegister = ({ onRegister, username }) => {
         alert(response.data.error_message || "검색에 실패했습니다.");
       }
     } catch (error) {
-      console.error("검색 요청 중 에러   ���:", error);
+      console.error("검색 요청 중 에러 :", error);
       alert("서버와의 통신에 문제가 발생했습니다.");
     }
   };
-  */
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -105,7 +106,7 @@ const BookRegister = ({ onRegister, username }) => {
   const handleDeleteImage = (index) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
-
+/*
   // 임시 제출 함수 수정
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -116,11 +117,11 @@ const BookRegister = ({ onRegister, username }) => {
       author: formData.author,
       imageUrl: images.length > 0 ? URL.createObjectURL(images[0]) : "https://via.placeholder.com/150x200", // 이미지 URL 설정
       isbn13: formData.isbn13,
-      rating: formData.rating,
+      point: formData.point,
       review: formData.review,
       condition: formData.condition,
       description: formData.description,
-      exchangeable: formData.exchangeable
+      exchange_YN: formData.exchange_YN
     };
 
     // onRegister prop으로 전달받은 함수 실행
@@ -128,7 +129,7 @@ const BookRegister = ({ onRegister, username }) => {
       onRegister(bookData);
     }
   };
-
+*/
   /* 백엔드 연동시 사용할 실제 제출 함수
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -137,6 +138,72 @@ const BookRegister = ({ onRegister, username }) => {
     }
   };
   */
+ 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // 필수 데이터 검증
+    if (!formData.title || !formData.author) {
+      alert("책 제목과 저자를 입력해주세요.");
+      return;
+    }
+
+    try {
+      // FormData 생성
+      const data = new FormData();
+
+      // 메타데이터 추가
+      data.append(
+        "metadata",
+        new Blob(
+          [
+            JSON.stringify({
+              title: formData.title,
+              isbn13: formData.isbn13,
+              review: formData.review,
+              point: formData.rating,
+              b_condition: formData.condition,
+              description: formData.description,
+              exchange_YN: formData.exchangeable,
+              place: formData.place,
+            }),
+          ],
+          { type: "application/json" }
+        )
+      );
+
+      // 이미지 파일 추가
+      images.forEach((image) => data.append("images", image));
+
+      // API 호출
+      const response = await axios.post("http://localhost:80/book-register/create", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.data.code === 200) {
+        alert("책 등록이 완료되었습니다!");
+        setFormData({
+          title: "",
+          author: "",
+          rating: "5점",
+          exchangeable: "Y",
+          condition: "상태 좋음",
+          description: "",
+          isbn13: "",
+          review: "",
+          place: "",
+        });
+        setImages([]);
+      } else {
+        alert(response.data.error_message || "책 등록에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("책 등록 요청 중 에러 발생:", error);
+      alert("서버와의 통신에 문제가 발생했습니다.");
+    }
+  };
 
   const handleResultSelect = (result) => {
     setFormData(prev => ({ 
