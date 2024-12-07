@@ -33,7 +33,7 @@ public class CommunityBO {
 	}
 
 
-	public int updateCommunity(Integer communityId, int userId, String subject, String content) {
+	public int updateCommunity(Integer communityId, String subject, String content) {
 	CommunityEntity communityEntity = communityRepository.findById(communityId).orElse(null);
 	if(communityEntity != null) {
 		communityEntity = communityEntity.toBuilder() // 기존 내용은 그대로

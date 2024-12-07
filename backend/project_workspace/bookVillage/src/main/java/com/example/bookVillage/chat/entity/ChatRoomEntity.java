@@ -1,4 +1,4 @@
-package com.example.bookVillage.message.entity;
+package com.example.bookVillage.chat.entity;
 
 import java.util.Date;
 
@@ -15,31 +15,27 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
+/*
 @Entity
-@ToString
-@Table(name = "message")
 @Getter
-@Builder(toBuilder = true) 
-@NoArgsConstructor
+@Builder(toBuilder = true)
 @AllArgsConstructor
-public class MessageEntity {
+@NoArgsConstructor
+@ToString
+@Table(name = "chat_room")
+public class ChatRoomEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "chatroomId ")
-	private int chatroomId ;
+	@Column(name = "userId1")
+	private int userId1;
 	
-	@Column(name = "userId ")
-	private int userId ;
-	
-	private String message ;
+	@Column(name = "userId2")
+	private int userId2;
 	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp
 	private Date createdAt;
-
-
-
 }
+*/

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
+import com.example.bookVillage.community.entity.CommunityEntity;
 import com.example.bookVillage.personalSchedule.entity.PersonalScheduleEntity;
 import com.example.bookVillage.personalSchedule.repository.PersonalScheduleRepository;
 
@@ -36,6 +37,19 @@ public class PersonalScheduleBO {
 		
 		return 0;
 		
+	}
+	
+	public int deletePersonalSchdeule(int personalScheduleId) {
+		
+		PersonalScheduleEntity personSchduleEntity = personalScheduleRepository.findById(personalScheduleId).orElse(null);
+		if (personSchduleEntity != null) {
+			personalScheduleRepository.delete(personSchduleEntity);
+			
+			return 1;
+		}
+		
+		return 0;
+
 	}
 
 }

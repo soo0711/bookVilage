@@ -9,5 +9,5 @@ public interface BookRegisterRepository extends JpaRepository<BookRegisterEntity
 	public BookRegisterEntity getByIdAndUserId(int bookRegister, int userId);
 	
 	
-	public BookRegisterEntity getByUserIdAndTitle(int userId, String title);
+	public BookRegisterEntity getByUserIdAndIsbn13(int userId, String isbn13);
 }

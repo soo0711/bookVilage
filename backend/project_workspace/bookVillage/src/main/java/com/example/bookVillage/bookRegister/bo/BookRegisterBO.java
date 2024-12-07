@@ -25,29 +25,37 @@ public class BookRegisterBO {
 	private FileManagerService fileManagerService;
 	
 	
-	public Integer addBookRegisterAndImage(Integer userId, String userLoginId, String title, String author, String publisher, String review, 
-								String point, String b_condition, String description, String place, List<MultipartFile> files) {
-		if (bookRegisterRepository.getByUserIdAndTitle(userId, title) == null) {
+	public Integer addBookRegisterAndImage(Integer userId, String userLoginId, String title, String isbn13, String review, 
+								String point, String b_condition, String description, String exchange_YN, String place, List<MultipartFile> files) {
+		if (bookRegisterRepository.getByUserIdAndIsbn13(userId, isbn13) == null) { //중복 확인 후
 			
-		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.save(
+			String status = "교환 가능";
+			if (exchange_YN.equals("N") ) {
+				status = "교환 불가";
+			}
+			
+		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.save( // 등록
 				BookRegisterEntity.builder()
 				.userId(userId)
 				.title(title)
-				.author(author)
-				.publisher(publisher)
+				.isbn13(isbn13)
 				.review(review)
 				.point(point)
 				.b_condition(b_condition)
 				.description(description)
+				.exchange_YN(exchange_YN)
 				.place(place)
+				.stauts(status)
 				.build()
 				);
 		
-		// 이미지 저장
-		List<String> imagePath = fileManagerService.saveFile(userLoginId, files);
-		
-		// 이미지 insert
-		bookRegisterImageBO.addBookRegisterImage(bookRegisterEntity.getId(), imagePath);	
+		if (files != null) {
+			// 이미지 저장
+			List<String> imagePath = fileManagerService.saveFile(userLoginId, files);
+			
+			// 이미지 insert
+			bookRegisterImageBO.addBookRegisterImage(bookRegisterEntity.getId(), imagePath);	
+		}
 		
 		return bookRegisterEntity.getId();
 		
@@ -58,8 +66,11 @@ public class BookRegisterBO {
 	}
 	
 	
-	public Integer updateBookRegister(int userId, int bookRegisterId, String review, String point, String b_condition, String description, String place) {
+	public Integer updateBookRegister(int userId, int bookRegisterId, String review, String point, String b_condition, String description, String place, String status, String exchange_YN) {
+		
 		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);
+		
+		
 		if (bookRegisterEntity != null) {
 			bookRegisterEntity = bookRegisterEntity.toBuilder() // 기존 내용은 그대로
 	                .review(review)
@@ -67,6 +78,8 @@ public class BookRegisterBO {
 	                .b_condition(b_condition)
 	                .description(description)
 	                .place(place)
+	                .stauts(status)
+	                .exchange_YN(exchange_YN)
 	                .build();
 			bookRegisterRepository.save(bookRegisterEntity); // 데이터 있으면 수정
 			
@@ -80,24 +93,26 @@ public class BookRegisterBO {
 		
 		if (bookRegisterEntity != null) {
 			
-			// 이미지 select - List<String>에 imgPath 넣기
 			List<BookRegisterImageEntity> bookImage = bookRegisterImageBO.getBookRegisterImageByBookRegisterId(bookRegisterId);
+			
+			if (bookImage.size() != 0) {
+			// 이미지 select - List<String>에 imgPath 넣기
 			List<String> imagePath = new ArrayList<>();
 			
 			for (int i = 0 ; i < bookImage.size(); i++) {
 				imagePath.add(bookImage.get(i).getImagePath());
 			}
 			
-			// 이미지 삭제
-			fileManagerService.deleteFile(imagePath);
-			
-			bookRegisterImageBO.deleteBookRegisterImageByBookRegisterId(bookRegisterId);
+				// 이미지 삭제
+				fileManagerService.deleteFile(imagePath);
+				
+				bookRegisterImageBO.deleteBookRegisterImageByBookRegisterId(bookRegisterId);
+				
+			}
 			
 			bookRegisterRepository.delete(bookRegisterEntity);
-			
-			return 1; // 삭제 성공
 		}
 		
-		return 0; // 삭제 실패
+		return 1; 
 	}
 }

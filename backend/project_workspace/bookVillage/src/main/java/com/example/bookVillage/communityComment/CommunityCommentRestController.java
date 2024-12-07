@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bookVillage.community.entity.CommunityEntity;
-import com.example.bookVillage.communityComment.bo.CommutityCommentBO;
+import com.example.bookVillage.communityComment.bo.CommunityCommentBO;
 import com.example.bookVillage.communityComment.entity.CommunityCommentEntity;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 public class CommunityCommentRestController {
 	@Autowired
-	private CommutityCommentBO communityCommentBO;
+	private CommunityCommentBO communityCommentBO;
 	
 	@PostMapping("/create")
 	public Map<String, Object> communityCommentCreate(

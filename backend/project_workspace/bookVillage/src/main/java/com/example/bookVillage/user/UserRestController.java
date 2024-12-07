@@ -16,7 +16,9 @@ import com.example.bookVillage.common.EncryptUtils;
 import com.example.bookVillage.user.bo.UserBO;
 import com.example.bookVillage.user.entity.UserEntity;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -43,7 +45,7 @@ public class UserRestController {
 		// user db insert
 		Integer userId = userBO.addUser(loginId, hashedPassword, name, phoneNumber, email);
 		Map<String, Object> result = new HashMap<>();
-		if (userId > 1) {
+		if (userId > 0) {
 			result.put("code", 200);
 			result.put("result", "성공");
 		} else {
@@ -81,7 +83,8 @@ public class UserRestController {
 	@PostMapping("/sign-in")
 	public Map<String, Object> signIn(
 			@RequestBody Map<String, String> requestBody,
-			HttpServletRequest request) throws NoSuchAlgorithmException{
+			HttpServletRequest request,
+			HttpServletResponse response) throws NoSuchAlgorithmException{
 		
 		String loginId = requestBody.get("loginId");
 	    String password = requestBody.get("password");
@@ -107,6 +110,31 @@ public class UserRestController {
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userLoginId", user.getLoginId());
 			session.setAttribute("userName", user.getName());
+			String userId = Integer.toString(user.getId());
+			 // 쿠키에 userId, userLoginId 저장
+			Cookie userIdCookie = new Cookie("userId", userId);
+	        Cookie userLoginIdCookie = new Cookie("userLoginId", user.getLoginId());
+	        
+	        userIdCookie.setSecure(true); // HTTPS가 아닌 경우 작동하지 않음
+	        userIdCookie.setHttpOnly(true);
+	        
+	        userLoginIdCookie.setSecure(true); // HTTPS가 아닌 경우 작동하지 않음
+	        userLoginIdCookie.setHttpOnly(true);
+	        
+	        // 쿠키의 유효 기간 설정 (예: 7일)
+	        userIdCookie.setMaxAge(60 * 60); // 1시간
+	        userLoginIdCookie.setMaxAge(60 * 60); // 1시간
+	        
+	        // 쿠키의 경로 설정 (전체 도메인에서 접근 가능)
+	        userIdCookie.setPath("/");
+	        userLoginIdCookie.setPath("/");
+	        
+	        userIdCookie.setAttribute("SameSite", "None");
+	        userLoginIdCookie.setAttribute("SameSite", "None");
+
+	        // 쿠키를 클라이언트로 전송
+	        response.addCookie(userIdCookie);
+	        response.addCookie(userLoginIdCookie);
 			
 			result.put("code", 200);
 			result.put("result", "성공");
@@ -159,5 +187,6 @@ public class UserRestController {
 		
 		return result;
 	}
+	
 	
 }
