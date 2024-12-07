@@ -18,10 +18,12 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [client, setClient] = useState(null); // WebSocket 클라이언트
+  const [userId, setUserId] = useState(null); // userId 상태 추가
 
   const handleLogin = (loginId) => {
-    setIsLoggedIn(true);
-    setUsername(loginId);
+      setIsLoggedIn(true);
+      setUsername(loginId);
+    
   };
 
   const handleLogout = async () => {
