@@ -1,0 +1,71 @@
+.book-meeting-page {
+    background-color: #fffbe6;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    margin: auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top:30px;
+    margin-bottom: 50px;
+  }
+  
+  .book-meeting-page h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    
+  }
+  
+  form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  form button {
+    padding: 10px;
+    background-color: #6c63ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  form button:hover {
+    background-color: #5749d4;
+  }
+  
+  .book-meeting-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .book-meeting-item {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .book-meeting-item button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .book-meeting-item button:hover {
+    background-color: #0056b3;
+  }
+  

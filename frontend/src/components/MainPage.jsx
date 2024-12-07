@@ -3,7 +3,7 @@ import Banner from "./Banner";
 import High from "./High";
 import Notice from "./Notice";
 
-const MainPage = () => {
+const MainPage = ({ isLoggedIn, username }) => {
   return (
     <div className="main-page">
       <Banner />

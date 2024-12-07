@@ -1,0 +1,151 @@
+.chat-container {
+  margin-top: 70px;
+  max-width: 800px;
+  margin: 20px auto;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.chat-header {
+  background: linear-gradient(135deg, #fff0f3, #ffe4e6);
+  padding: 20px;
+  border-bottom: 1px solid #ffd1d1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header h2 {
+  color: #4a4a4a;
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.user-status {
+  color: #2ecc71;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.messages-container {
+  height: 500px;
+  padding: 20px;
+  overflow-y: auto;
+  background: #f8f9fa;
+}
+
+.message {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-content {
+  max-width: 70%;
+  padding: 12px 15px;
+  border-radius: 15px;
+  position: relative;
+}
+
+.sent {
+  align-items: flex-end;
+}
+
+.received {
+  align-items: flex-start;
+}
+
+.sent .message-content {
+  background: linear-gradient(135deg, #ffb6b6, #ff9999);
+  color: #4a4a4a;
+}
+
+.received .message-content {
+  background: white;
+  border: 1px solid #ffe4e6;
+}
+
+.sender-name {
+  font-size: 0.8em;
+  color: #666;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.message-text {
+  margin: 0;
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+
+.message-time {
+  font-size: 0.75em;
+  color: #666;
+  margin-top: 5px;
+  display: block;
+}
+
+.chat-input-container {
+  padding: 20px;
+  background: white;
+  border-top: 1px solid #ffe4e6;
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 1px solid #ffd1d1;
+  border-radius: 25px;
+  font-size: 0.95em;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.chat-input:focus {
+  border-color: #ffb6b6;
+}
+
+.send-button {
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #ffb6b6, #ff9999);
+  color: #4a4a4a;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.95em;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.send-button:hover {
+  background: linear-gradient(135deg, #ff9999, #ff8080);
+  transform: translateY(-2px);
+}
+
+.send-button:active {
+  transform: translateY(1px);
+}
+
+/* 스크롤바 스타일링 */
+.messages-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messages-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.messages-container::-webkit-scrollbar-thumb {
+  background: #ffd1d1;
+  border-radius: 3px;
+}
+
+.messages-container::-webkit-scrollbar-thumb:hover {
+  background: #ffb6b6;
+}

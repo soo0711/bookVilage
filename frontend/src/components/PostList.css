@@ -1,0 +1,170 @@
+/* PostList 스타일 */
+.post-list {
+    flex: 1;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 */
+  }
+  
+  .post-list h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .post-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .post-list li {
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 가벼운 그림자 */
+  }
+  
+  .post-list li:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-list h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+  }
+  
+  .post-list p {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+    line-height: 1.5;
+  }
+  
+  .post-list {
+    width: 100%;
+    margin: 20px 0;
+  }
+  
+  .post-list h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .ec-base-table table {
+    position: relative;
+    width: 100%;
+    border: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+    line-height: 1.5;
+    font-size: 13px;
+  }
+  
+  .ec-base-table th {
+    padding: 18px 0;
+    border-bottom: 1px solid #dfdfdf;
+    color: #353535;
+    vertical-align: middle;
+    font-weight: normal;
+    background: #fbfafa;
+  }
+  
+  .ec-base-table td {
+    padding: 18px 0;
+    border-bottom: 1px solid #dfdfdf;
+    color: #353535;
+    vertical-align: middle;
+  }
+  
+  /* 각 셀의 정렬 및 여백 조정 */
+  .ec-base-table .no-cell {
+    text-align: center;
+    padding: 18px 10px;
+  }
+  
+  .ec-base-table .subject {
+    text-align: left;
+    padding: 18px 30px;
+  }
+  
+  .ec-base-table .name-cell {
+    text-align: center;
+    padding: 18px 10px;
+  }
+  
+  .ec-base-table .date-cell {
+    text-align: right;
+    padding: 18px 20px;
+  }
+  
+  /* 헤더 정렬 */
+  .ec-base-table .title-header {
+    text-align: left;
+    padding-left: 30px;
+  }
+  
+  .ec-base-table .date-header {
+    text-align: right;
+    padding-right: 20px;
+  }
+  
+  .notice-icon {
+    display: inline-block;
+    margin-right: 8px;
+    color: #666;
+  }
+  
+  .new-badge {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 2px 4px;
+    font-size: 10px;
+    color: #fff;
+    background: #ff6b6b;
+    border-radius: 2px;
+  }
+  
+  /* 빈 목록 메시지 */
+  .post-list p {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+  }
+  
+  /* 호버 효과 */
+  .post-item:hover {
+    background-color: #fafafa;
+    cursor: pointer;
+  }
+  
+  /* 공지사항 스타일 */
+  tr.notice td {
+    background-color: #fbfafa;
+  }
+  
+  /* 테이블 반응형 */
+  @media screen and (max-width: 767px) {
+    .ec-base-table colgroup {
+      display: none;
+    }
+    
+    .ec-base-table th,
+    .ec-base-table td {
+      padding: 12px 5px;
+    }
+    
+    .ec-base-table .subject {
+      padding: 12px 10px;
+    }
+  }
+  
