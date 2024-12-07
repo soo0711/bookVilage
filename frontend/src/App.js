@@ -27,7 +27,7 @@ function App() {
   const handleLogout = async () => {
     try {
       const response = await axios.get("http://localhost:80/user/sign-out", {
-        credentials: "include",
+        withCredentials: true  
       });
 
       if (response.data.code === 200) {

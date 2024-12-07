@@ -155,7 +155,8 @@ public class UserRestController {
 	@GetMapping("/sign-out")
 	public Map<String, Object> signOut(
 			HttpSession session) {
-		String userLoginId = (String) session.getAttribute("userLoginId");
+		Integer userId = (Integer)session.getAttribute("userId");
+		String userLoginId = (String)session.getAttribute("userLoginId");
 		
 		session.removeAttribute("userId");
 		session.removeAttribute("userLoginId");
