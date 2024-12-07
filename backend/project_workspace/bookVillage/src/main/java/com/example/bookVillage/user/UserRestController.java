@@ -116,8 +116,8 @@ public class UserRestController {
 	        Cookie userLoginIdCookie = new Cookie("userLoginId", user.getLoginId());
 	        
 	        // 쿠키의 유효 기간 설정 (예: 7일)
-	        userIdCookie.setMaxAge(7 * 24 * 60 * 60); // 7일
-	        userLoginIdCookie.setMaxAge(7 * 24 * 60 * 60); // 7일
+	        userIdCookie.setMaxAge(60 * 60); // 1시간
+	        userLoginIdCookie.setMaxAge(60 * 60); // 1시간
 	        
 	        // 쿠키의 경로 설정 (전체 도메인에서 접근 가능)
 	        userIdCookie.setPath("/");
