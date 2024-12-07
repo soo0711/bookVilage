@@ -1,6 +1,7 @@
 import React from "react";
 import "./Header.css";
 
+
 const Header = ({ isLoggedIn, username, onLogout }) => {
   return (
     <header className="header">

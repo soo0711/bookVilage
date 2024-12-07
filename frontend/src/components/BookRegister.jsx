@@ -37,6 +37,11 @@ const BookRegister = ({ onRegister }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!username) {
+      alert("로그인이 필요합니다. 로그인 후 책 등록이 가능합니다.");
+      return;
+    }
+
     onRegister(formData);
   };
 

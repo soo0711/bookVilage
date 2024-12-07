@@ -115,6 +115,12 @@ public class UserRestController {
 			Cookie userIdCookie = new Cookie("userId", userId);
 	        Cookie userLoginIdCookie = new Cookie("userLoginId", user.getLoginId());
 	        
+	        userIdCookie.setSecure(true); // HTTPS가 아닌 경우 작동하지 않음
+	        userIdCookie.setHttpOnly(true);
+	        
+	        userLoginIdCookie.setSecure(true); // HTTPS가 아닌 경우 작동하지 않음
+	        userLoginIdCookie.setHttpOnly(true);
+	        
 	        // 쿠키의 유효 기간 설정 (예: 7일)
 	        userIdCookie.setMaxAge(60 * 60); // 1시간
 	        userLoginIdCookie.setMaxAge(60 * 60); // 1시간
@@ -122,6 +128,9 @@ public class UserRestController {
 	        // 쿠키의 경로 설정 (전체 도메인에서 접근 가능)
 	        userIdCookie.setPath("/");
 	        userLoginIdCookie.setPath("/");
+	        
+	        userIdCookie.setAttribute("SameSite", "None");
+	        userLoginIdCookie.setAttribute("SameSite", "None");
 
 	        // 쿠키를 클라이언트로 전송
 	        response.addCookie(userIdCookie);
