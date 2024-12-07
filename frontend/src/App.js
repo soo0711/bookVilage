@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import MainPage from "./components/MainPage";
@@ -7,11 +7,14 @@ import SignupPage from "./components/SignupPage";
 import FindIdPage from "./components/FindIdPage";
 import FindPasswordPage from "./components/FindPasswordPage";
 import BookRecommend from "./components/BookRecommend";
+import ChatPage from "./components/chatPage"; // 채팅 페이지 추가
 import axios from "axios";
+import { Stomp } from "@stomp/stompjs";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [client, setClient] = useState(null); // WebSocket 클라이언트
 
   const handleLogin = (loginId) => {
     setIsLoggedIn(true);
@@ -39,6 +42,29 @@ function App() {
     }
   };
 
+  // WebSocket 연결 설정
+  useEffect(() => {
+    const stompClient = Stomp.over(() => new WebSocket("ws://localhost:80/ws"));
+    stompClient.connect(
+      {},
+      () => {
+        console.log("WebSocket Connected");
+        setClient(stompClient);
+      },
+      (error) => {
+        console.error("WebSocket connection error:", error);
+      }
+    );
+
+    return () => {
+      if (stompClient) {
+        stompClient.disconnect(() => {
+          console.log("WebSocket Disconnected");
+        });
+      }
+    };
+  }, []);
+
   return (
     <Router>
       <Routes>
@@ -60,6 +86,10 @@ function App() {
         <Route path="/find-id" element={<FindIdPage />} />
         <Route path="/find-password" element={<FindPasswordPage />} />
         <Route path="/book-recommend" element={<BookRecommend />} />
+        <Route
+          path="/chat"
+          element={<ChatPage client={client} username={username} isLoggedIn={isLoggedIn} />}
+        />
         <Route path="*" element={<Navigate to="/home-view" />} />
       </Routes>
     </Router>
