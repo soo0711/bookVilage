@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RequestMapping("/user")
 @RestController
 public class UserRestController {
@@ -110,32 +113,7 @@ public class UserRestController {
 			session.setAttribute("userId", user.getId());
 			session.setAttribute("userLoginId", user.getLoginId());
 			session.setAttribute("userName", user.getName());
-			String userId = Integer.toString(user.getId());
-			 // 쿠키에 userId, userLoginId 저장
-			Cookie userIdCookie = new Cookie("userId", userId);
-	        Cookie userLoginIdCookie = new Cookie("userLoginId", user.getLoginId());
-	        
-	        userIdCookie.setSecure(true); // HTTPS가 아닌 경우 작동하지 않음
-	        userIdCookie.setHttpOnly(true);
-	        
-	        userLoginIdCookie.setSecure(true); // HTTPS가 아닌 경우 작동하지 않음
-	        userLoginIdCookie.setHttpOnly(true);
-	        
-	        // 쿠키의 유효 기간 설정 (예: 7일)
-	        userIdCookie.setMaxAge(60 * 60); // 1시간
-	        userLoginIdCookie.setMaxAge(60 * 60); // 1시간
-	        
-	        // 쿠키의 경로 설정 (전체 도메인에서 접근 가능)
-	        userIdCookie.setPath("/");
-	        userLoginIdCookie.setPath("/");
-	        
-	        userIdCookie.setAttribute("SameSite", "None");
-	        userLoginIdCookie.setAttribute("SameSite", "None");
-
-	        // 쿠키를 클라이언트로 전송
-	        response.addCookie(userIdCookie);
-	        response.addCookie(userLoginIdCookie);
-			
+		
 			result.put("code", 200);
 			result.put("result", "성공");
 			result.put("userName", user.getName());
@@ -177,6 +155,8 @@ public class UserRestController {
 	@GetMapping("/sign-out")
 	public Map<String, Object> signOut(
 			HttpSession session) {
+		String userLoginId = (String) session.getAttribute("userLoginId");
+		
 		session.removeAttribute("userId");
 		session.removeAttribute("userLoginId");
 		session.removeAttribute("userName");
@@ -187,6 +167,28 @@ public class UserRestController {
 		
 		return result;
 	}
+	
+//	@GetMapping("/api/user-info")
+//	public ResponseEntity<Map<String, Object>> getUserInfo(HttpServletRequest request) {
+//	    HttpSession session = request.getSession(false); // 세션 가져오기 (세션이 없으면 null)
+//	    Map<String, Object> result = new HashMap<>();
+//	    
+//	    if (session != null) {
+//	        Integer userId = (Integer) session.getAttribute("userId");
+//	        String userLoginId = (String) session.getAttribute("userLoginId");
+//	        String username = (String) session.getAttribute("username");
+//	        
+//	        if (userId != null && userLoginId != null) {
+//	            result.put("userId", userId);
+//	            result.put("userLoginId", userLoginId);
+//	            result.put("username", username);
+//	            return ResponseEntity.ok(result);
+//	        }
+//	    }
+//	    
+//	    result.put("error", "로그인되지 않은 사용자");
+//	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+//	}
 	
 	
 }

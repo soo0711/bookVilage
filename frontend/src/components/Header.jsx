@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios"; // axios import
 import "./Header.css";
 
 
 const Header = ({ isLoggedIn, username, onLogout }) => {
+  const [userId, setUserId] = useState(null);
+  const [userLoginId, setUserLoginId] = useState(null);
+  //const [username, username] = useState(null);
+
+  //  // 컴포넌트 마운트 시 API 호출
+  //  useEffect(() => {
+  //   axios.get("http://localhost:80/user/api/user-info",
+  //     { withCredentials: true,}
+  //   )  // 사용자 정보를 가져오는 API 호출
+  //     .then(response => {
+  //       if (response.data.userId && response.data.userLoginId) {
+  //         setUserId(response.data.userId);  // userId 상태 설정
+  //         setUserLoginId(response.data.userLoginId);  // userLoginId 상태 설정
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log("로그인된 사용자 정보 불러오기 실패", error);
+  //     });
+  // }, []);  // 컴포넌트 마운트 시 한 번만 실행되도록 빈 배열 전달
+
+
   return (
     <header className="header">
       {/* 인증 섹션 */}
       <div className="auth-section">
         {isLoggedIn ? (
           <>
-            <a className="username">{username}님</a>
+            <a className="username">{userLoginId}님</a>
             <a href="/mypage" className="auth-link">
               마이페이지
             </a>
