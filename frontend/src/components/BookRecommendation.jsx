@@ -5,26 +5,8 @@ import Header from "./Header";
 
 const BookRecommendation = () => {
   const location = useLocation();
-  const { selectedBook, username } = location.state || {};
+  const { selectedBook, username, recommendedBooks } = location.state || {};
   const isLoggedIn = !!username; // username이 존재하면 로그인 상태로 간주
-
-  const tempRecommendedBooks = [
-    {
-      title: "추천도서 1",
-      author: "작가1",
-      image: "https://via.placeholder.com/150x200",
-    },
-    {
-      title: "추천도서 2",
-      author: "작가2",
-      image: "https://via.placeholder.com/150x200",
-    },
-    {
-      title: "추천도서 3",
-      author: "작가3",
-      image: "https://via.placeholder.com/150x200",
-    },
-  ];
 
   return (
     <>
@@ -54,13 +36,17 @@ const BookRecommendation = () => {
             <h2>{selectedBook?.book.title}와(과) 비슷한 추천 도서</h2>
             <div className="recommended-container">
               <div className="recommended-books">
-                {tempRecommendedBooks.map((book, index) => (
-                  <div key={index} className="book-card">
-                    <img src={book.image} alt={book.title} />
-                    <h3>{book.title}</h3>
-                    <p>{book.author}</p>
-                  </div>
-                ))}
+                {recommendedBooks.length > 0 ? (
+                  recommendedBooks.map((book, index) => (
+                    <div key={index} className="book-card">
+                      <img src={book.cover} alt={book.title} />
+                      <h3>{book.title}</h3>
+                      <p>{book.author}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>추천 도서가 없습니다.</p>
+                )}
               </div>
             </div>
           </div>
