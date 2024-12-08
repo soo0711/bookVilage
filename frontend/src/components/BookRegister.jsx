@@ -6,9 +6,9 @@ const BookRegister = ({ onRegister, username }) => {
   const [formData, setFormData] = useState({
     title: "",
     author: "",
-    point: "5점",
-    exchangea_YN: "Y",
-    condition: "상태 좋음",
+    point: "5",
+    exchange_YN: "Y",
+    b_condition: "A",
     description: "",
     isbn13: "",
     review: "",
@@ -142,60 +142,46 @@ const BookRegister = ({ onRegister, username }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 필수 데이터 검증
     if (!formData.title || !formData.author) {
       alert("책 제목과 저자를 입력해주세요.");
       return;
     }
 
     try {
-      // FormData 생성
       const data = new FormData();
+      
+      // Spring 컨트롤러의 매개변수와 일치하도록 메타데이터 구성
+      const metadata = {
+        title: formData.title,
+        isbn13: formData.isbn13,
+        review: formData.review,
+        point: formData.point,
+        b_condition: formData.b_condition,
+        description: formData.description,
+        exchange_YN: formData.exchange_YN,
+        place: formData.place
+      };
 
-      // 메타데이터 추가
       data.append(
         "metadata",
-        new Blob(
-          [
-            JSON.stringify({
-              title: formData.title,
-              isbn13: formData.isbn13,
-              review: formData.review,
-              point: formData.rating,
-              b_condition: formData.condition,
-              description: formData.description,
-              exchange_YN: formData.exchangeable,
-              place: formData.place,
-            }),
-          ],
-          { type: "application/json" }
-        )
+        new Blob([JSON.stringify(metadata)], { type: "application/json" })
       );
 
       // 이미지 파일 추가
-      images.forEach((image) => data.append("images", image));
+      if (images.length > 0) {
+        images.forEach((image) => data.append("images", image));
+      }
 
-      // API 호출
       const response = await axios.post("http://localhost:80/book-register/create", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true 
       });
 
       if (response.data.code === 200) {
         alert("책 등록이 완료되었습니다!");
-        setFormData({
-          title: "",
-          author: "",
-          rating: "5점",
-          exchangeable: "Y",
-          condition: "상태 좋음",
-          description: "",
-          isbn13: "",
-          review: "",
-          place: "",
-        });
-        setImages([]);
+        window.location.href = "/home-view";
       } else {
         alert(response.data.error_message || "책 등록에 실패했습니다.");
       }
@@ -236,18 +222,18 @@ const BookRegister = ({ onRegister, username }) => {
           onChange={handleChange}
           required
         />
-        <label htmlFor="rating">평점</label>
+        <label htmlFor="point">평점</label>
         <select
-          name="rating"
-          value={formData.rating}
+          name="point"
+          value={formData.point}
           onChange={handleChange}
           required
         >
-          <option value="5점">5점</option>
-          <option value="4   ">4점</option>
-          <option value="3점">3점</option>
-          <option value="2점">2점</option>
-          <option value="1점">1점</option>
+          <option value="5">5점</option>
+          <option value="4">4점</option>
+          <option value="3">3점</option>
+          <option value="2">2점</option>
+          <option value="1">1점</option>
         </select>
         <textarea
           name="review"
@@ -260,9 +246,9 @@ const BookRegister = ({ onRegister, username }) => {
           <label>
             <input
               type="radio"
-              name="exchangeable"
+              name="exchange_YN"
               value="Y"
-              checked={formData.exchangeable === 'Y'}
+              checked={formData.exchange_YN === 'Y'}
               onChange={handleChange}
             />
             교환 가능
@@ -270,24 +256,24 @@ const BookRegister = ({ onRegister, username }) => {
           <label>
             <input
               type="radio"
-              name="exchangeable"
+              name="exchange_YN"
               value="N"
-              checked={formData.exchangeable === 'N'}
+              checked={formData.exchange_YN === 'N'}
               onChange={handleChange}
             />
             교환 불가
           </label>
         </div>
-        <label htmlFor="condition">책 상태</label>
+        <label htmlFor="b_condition">책 상태</label>
         <select
-          name="condition"
-          value={formData.condition}
+          name="b_condition"
+          value={formData.b_condition}
           onChange={handleChange}
           required
         >
-          <option value="상태 좋음">상태 좋음</option>
-          <option value="상태 보통">상태 보통</option>
-          <option value="상태 좋지 않음">상태 좋지 않음</option>
+          <option value="A">상태 좋음</option>
+          <option value="B">상태 보통</option>
+          <option value="C">상태 좋지 않음</option>
         </select>
         <textarea
           name="description"
@@ -295,7 +281,7 @@ const BookRegister = ({ onRegister, username }) => {
           value={formData.description}
           onChange={handleChange}
         />
-        {formData.exchangeable === 'Y' && (
+        {formData.exchange_YN === 'Y' && (
           <>
             <div className="image-preview-container">
               {images.map((image, index) => (
