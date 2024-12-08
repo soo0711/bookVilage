@@ -7,11 +7,7 @@ import SignupPage from "./components/SignupPage";
 import FindIdPage from "./components/FindIdPage";
 import FindPasswordPage from "./components/FindPasswordPage";
 import BookRecommend from "./components/BookRecommend";
-<<<<<<< HEAD
 import ChatPage from "./components/chatPage"; // 채팅 페이지 추가
-=======
-import ChatPage from "./components/ChatPage"; // 채팅 페이지 추가
->>>>>>> chaeyeon
 import ExchangeList from "./components/ExchangeList";
 import CommunityPage from "./components/CommunityPage";
 import axios from "axios";
