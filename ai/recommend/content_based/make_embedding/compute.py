@@ -1,5 +1,8 @@
 from config import DEFAULT_MODEL_NAME  # 설정 파일에서 모델명 가져오기
-from precompute import PrecomputeEmbeddings, sanitize_filename
+from ai.recommend.content_based.make_embedding.precompute import (
+    PrecomputeEmbeddings,
+    sanitize_filename,
+)
 from database import get_db
 import os
 
