@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom'; 
 import "./BookRegister.css";
 // import axios from "axios"; // 백엔드 연동시 주석 해제
 
 const BookRegister = ({ onRegister, username }) => {
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -127,6 +130,9 @@ const BookRegister = ({ onRegister, username }) => {
     if (onRegister) {
       onRegister(bookData);
     }
+
+    // 책 추천 페이지로 이동
+    navigate('/book-recommend');
   };
 
   /* 백엔드 연동시 사용할 실제 제출 함수
@@ -149,9 +155,11 @@ const BookRegister = ({ onRegister, username }) => {
   };
 
   return (
+    <div className="book-register-wrapper">
     <div className="book-register-form">
-      <h2>책 등록하기</h2>
-      <form onSubmit={handleSubmit}>
+    <h2>책 등록하기</h2>
+    <form onSubmit={handleSubmit}>
+      <div className="title-search-container">
         <input
           type="text"
           name="title"
@@ -161,6 +169,7 @@ const BookRegister = ({ onRegister, username }) => {
           required
         />
         <button type="button" onClick={handleSearch}>검색</button>
+      </div>
         <input
           type="text"
           name="author"
@@ -177,7 +186,7 @@ const BookRegister = ({ onRegister, username }) => {
           required
         >
           <option value="5점">5점</option>
-          <option value="4   ">4점</option>
+          <option value="4점">4점</option>
           <option value="3점">3점</option>
           <option value="2점">2점</option>
           <option value="1점">1점</option>
@@ -257,27 +266,32 @@ const BookRegister = ({ onRegister, username }) => {
           </>
         )}
       </form>
+      </div>
       <div className="button-container">
-        <button type="button" onClick={() => window.history.back()}>이전 목록</button>
-        <button type="submit" onClick={handleSubmit}>책 등록</button>
+      <button type="button" onClick={() => navigate('/')}>
+        이전 목록
+      </button>
+      <button type="button" onClick={handleSubmit}>
+        책 등록
+      </button>
       </div>
 
       {/* 모달이 열리면 검색 결과 표시 */}
       {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>검색 결과</h3>
-            <ul>
-              {searchResults.map((result, index) => (
-                <li key={index} onClick={() => handleResultSelect(result)}>
-                  <strong>{result.title}</strong> - {result.author}, {result.isbn13}
-                </li>
-              ))}
-            </ul>
-            <button onClick={() => setIsModalOpen(false)}>닫기</button>
-          </div>
-        </div>
-      )}
+  <div className="modal">
+    <div className="modal-content">
+      <h3>검색 결과</h3>
+      <ul>
+        {searchResults.map((result, index) => (
+          <li key={index} onClick={() => handleResultSelect(result)}>
+            <strong>{result.title}</strong> - {result.author}
+          </li>
+        ))}
+      </ul>
+      <button onClick={() => setIsModalOpen(false)}>닫기</button>
+    </div>
+  </div>
+)}
     </div>
   );
 };
