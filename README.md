@@ -12,6 +12,8 @@ cd ai\recommend\content_based
 
 # 가상환경 활성화
 python -m venv venv
+
+
 venv\Scripts\activate
 
 ![image](https://github.com/user-attachments/assets/17c5a270-76f2-4efd-bb7d-8e6d5b550249)
@@ -22,6 +24,8 @@ venv\Scripts\activate
 # 이제 부터 모든 명령어는 가상환경 활성화 (왼쪽에 venv) 상태에서 실행
 # 의존성 설치
 python -m pip instasll --upgrade pip
+
+
 pip install -r requirements.txt
 
 ![image](https://github.com/user-attachments/assets/da796475-3c2c-4040-aad8-92c8b7653315)
