@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.bookVillage.bookCard.bo.BookCardBO;
+import com.example.bookVillage.bookCard.entity.BookCardEntity;
 import com.example.bookVillage.bookRegister.bo.BookRegisterBO;
 
 import jakarta.servlet.http.HttpSession;
@@ -25,6 +28,9 @@ public class BookRegisterRestCotroller {
 	
 	@Autowired
 	private BookRegisterBO bookregisterBO;
+	
+	@Autowired
+	private BookCardBO bookCardBO;
 
 	// 책 등록
 	@PostMapping("/create")
@@ -118,6 +124,27 @@ public class BookRegisterRestCotroller {
 	
 		return result;
 	}
+	
+	//isbn13 값으로 해당 책 등록 올린 사람 뜨게
+	@GetMapping("/list")
+	public Map<String, Object> BookRegisterListByUserId( 
+			HttpSession session){
+		
+		int userId = (Integer)session.getAttribute("userId");
+		List<BookCardEntity> bookCardList = bookCardBO.BookCard(userId);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
+		result.put("data", bookCardList);
+		
+	
+		return result;
+		
+		
+	}
+	
+	
 	
 	
 	

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom'; 
 import "./BookRegister.css";
 import axios from "axios"; // 백엔드 연동시 주석 해제
+import Header from "./Header";
 
 const BookRegister = ({ onRegister, username }) => {
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -12,6 +16,7 @@ const BookRegister = ({ onRegister, username }) => {
     description: "",
     isbn13: "",
     review: "",
+    place: "", // 교환 장소 추가
   });
 
   const [searchResults, setSearchResults] = useState([]);
@@ -128,6 +133,9 @@ const BookRegister = ({ onRegister, username }) => {
     if (onRegister) {
       onRegister(bookData);
     }
+
+    // 책 추천 페이지로 이동
+    navigate('/book-recommend');
   };
 */
   /* 백엔드 연동시 사용할 실제 제출 함수
@@ -202,117 +210,132 @@ const BookRegister = ({ onRegister, username }) => {
   };
 
   return (
-    <div className="book-register-form">
-      <h2>책 등록하기</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="title"
-          placeholder="책 제목"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-        <button type="button" onClick={handleSearch}>검색</button>
-        <input
-          type="text"
-          name="author"
-          placeholder="책 저자"
-          value={formData.author}
-          onChange={handleChange}
-          required
-        />
-        <label htmlFor="point">평점</label>
-        <select
-          name="point"
-          value={formData.point}
-          onChange={handleChange}
-          required
-        >
-          <option value="5">5점</option>
-          <option value="4">4점</option>
-          <option value="3">3점</option>
-          <option value="2">2점</option>
-          <option value="1">1점</option>
-        </select>
-        <textarea
-          name="review"
-          placeholder="책 리뷰"
-          value={formData.review}
-          onChange={handleChange}
-        />
-        <div className="radio-group">
-          <label>교환여부:</label>
-          <label>
-            <input
-              type="radio"
-              name="exchange_YN"
-              value="Y"
-              checked={formData.exchange_YN === 'Y'}
-              onChange={handleChange}
-            />
-            교환 가능
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="exchange_YN"
-              value="N"
-              checked={formData.exchange_YN === 'N'}
-              onChange={handleChange}
-            />
-            교환 불가
-          </label>
-        </div>
-        <label htmlFor="b_condition">책 상태</label>
-        <select
-          name="b_condition"
-          value={formData.b_condition}
-          onChange={handleChange}
-          required
-        >
-          <option value="A">상태 좋음</option>
-          <option value="B">상태 보통</option>
-          <option value="C">상태 좋지 않음</option>
-        </select>
-        <textarea
-          name="description"
-          placeholder="책 상태 설명 (상태: 4페이지가 살짝 찢어졌어요)"
-          value={formData.description}
-          onChange={handleChange}
-        />
-        {formData.exchange_YN === 'Y' && (
-          <>
-            <div className="image-preview-container">
-              {images.map((image, index) => (
-                <div key={index} className="image-preview-item">
-                  <img 
-                    src={URL.createObjectURL(image)} 
-                    alt={`Preview ${index}`} 
-                  />
-                  <button 
-                    type="button"
-                    className="delete-image-button"
-                    onClick={() => handleDeleteImage(index)}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
 
+    <div className="book-register-wrapper">
+      <div className="book-register-form">
+        <h2>책 등록하기</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="title-search-container">
             <input
-              type="file"
-              multiple
-              accept="image/*"
-              onChange={handleImageChange}
+              type="text"
+              name="title"
+              placeholder="책 제목"
+              value={formData.title}
+              onChange={handleChange}
+              required
             />
-          </>
-        )}
-      </form>
+            <button type="button" onClick={handleSearch}>검색</button>
+          </div>
+          <input
+            type="text"
+            name="author"
+            placeholder="책 저자"
+            value={formData.author}
+            onChange={handleChange}
+            required
+          />
+          <label htmlFor="point">평점</label>
+          <select
+            name="point"
+            value={formData.point}
+            onChange={handleChange}
+            required
+          >
+            <option value="5">5점</option>
+            <option value="4">4점</option>
+            <option value="3">3점</option>
+            <option value="2">2점</option>
+            <option value="1">1점</option>
+          </select>
+          <textarea
+            name="review"
+            placeholder="책 리뷰"
+            value={formData.review}
+            onChange={handleChange}
+          />
+          <div className="radio-group">
+            <label>교환여부:</label>
+            <label>
+              <input
+                type="radio"
+                name="exchange_YN"
+                value="Y"
+                checked={formData.exchange_YN === 'Y'}
+                onChange={handleChange}
+              />
+              교환 가능
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="exchange_YN"
+                value="N"
+                checked={formData.exchange_YN === 'N'}
+                onChange={handleChange}
+              />
+              교환 불가
+            </label>
+          </div>
+          {formData.exchange_YN === 'Y' && (
+            <>
+              <label htmlFor="b_condition">책 상태</label>
+              <select
+                name="b_condition"
+                value={formData.b_condition}
+                onChange={handleChange}
+                required
+              >
+                <option value="A">상태 좋음</option>
+                <option value="B">상태 보통</option>
+                <option value="C">상태 좋지 않음</option>
+              </select>
+              <textarea
+                name="description"
+                placeholder="책 상태 설명 (상태: 4페이지가 살짝 찢어졌어요)"
+                value={formData.description}
+                onChange={handleChange}
+              />
+               <input
+            type="text"
+            name="place"
+            placeholder="교환 장소 입력 (ex. 경기도 성남시)"
+            value={formData.place}
+            onChange={handleChange}
+           />
+              <div className="image-preview-container">
+                {images.map((image, index) => (
+                  <div key={index} className="image-preview-item">
+                    <img 
+                      src={URL.createObjectURL(image)} 
+                      alt={`Preview ${index}`} 
+                    />
+                    <button 
+                      type="button"
+                      className="delete-image-button"
+                      onClick={() => handleDeleteImage(index)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </>
+          )}
+        </form>
+      </div>
       <div className="button-container">
-        <button type="button" onClick={() => window.history.back()}>이전 목록</button>
-        <button type="submit" onClick={handleSubmit}>책 등록</button>
+        <button type="button" onClick={() => navigate('/')}>
+          이전 목록
+        </button>
+        <button type="button" onClick={handleSubmit}>
+          책 등록
+        </button>
       </div>
 
       {/* 모달이 열리면 검색 결과 표시 */}
@@ -323,7 +346,7 @@ const BookRegister = ({ onRegister, username }) => {
             <ul>
               {searchResults.map((result, index) => (
                 <li key={index} onClick={() => handleResultSelect(result)}>
-                  <strong>{result.title}</strong> - {result.author}, {result.isbn13}
+                  <strong>{result.title}</strong> - {result.author}
                 </li>
               ))}
             </ul>

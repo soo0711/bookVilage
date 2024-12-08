@@ -13,6 +13,10 @@ import CommunityPage from "./components/CommunityPage";
 import axios from "axios";
 import { Stomp } from "@stomp/stompjs";
 import Profile from "./components/Profile";
+import BookRegister from "./components/BookRegister";
+import BookRecommendation from "./components/BookRecommendation";
+
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -94,6 +98,9 @@ function App() {
         <Route path="/BookMeeting" element={<BookRecommend />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/exchange-list/:bookId" element={<ExchangeList />} />
+        <Route path="/book-register" element={<BookRegister />} />
+        <Route path="/recommendation" element={<BookRecommendation />} />
+        
         <Route 
           path="/profile/:username" 
           element={

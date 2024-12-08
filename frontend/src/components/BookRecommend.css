@@ -1,0 +1,11 @@
+.book-detail-page {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .book-detail-image {
+    width: 150px;
+    height: auto;
+    margin: 10px 0;
+  }
+  

@@ -1,17 +1,30 @@
+.book-register-wrapper {
+  position: relative;
+  width: 80%;
+  margin: 30px auto;
+}
+
 .book-register-form {
   background-color: #fffbe6;
   padding: 20px;
   border-radius: 10px;
-  width: 80%;
-  margin: auto;
-  margin-top:30px;
+  width: 100%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 60px;
 }
+
 .book-register-form h2 {
   text-align: center;
 }
-.book-register-form input,
-.book-register-form textarea,
+
+.book-register-form textarea{
+  display: block;
+  width: 98%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 .book-register-form select {
   display: block;
   width: 100%;
@@ -20,41 +33,54 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-.book-register-form button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  background-color: #6c63ff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.book-register-form input[name="title"] {
+  flex: 9;
+  display: inline-block;  /* block에서 inline-block으로 변경 */
+  width: auto;  /* 100%에서 auto로 변경 */
+  margin-bottom: 0;
 }
+
+.book-register-form button[type="button"] {
+  flex: 1;
+  display: inline-block;
+  width: auto;
+  background-color: #fffbe6;
+  color: #4a4a4a;
+  border: 1px solid #ebdada;
+}
+
+.book-register-form button[type="button"]:hover {
+  background-color: #fff8d6;
+}
+.title-search-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
 .button-container {
   display: flex;
-  gap: 0;
-  justify-content: flex-start; /* 버튼을 왼쪽으로 정렬 */
-  
-  margin-top: 20px;
-  width: 90%;
-  margin: 5px auto;
-  padding-right: 10%;
+  gap: 20px;
+  position: absolute;
+  bottom: -60px;
+  left: 0;
 }
 .button-container button {
-  flex: 0 1 150px;
-  padding: 16px;
+  padding: 12px 24px;
   background-color: white;
   color: #333;
   border: 1px solid #ebdada;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  margin-left: 30px;
-  gap:5px;
+  margin-left: 15px;
   transition: all 0.3s ease;
+  width: 120px;
 }
 .button-container button:hover {
   background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .modal {
