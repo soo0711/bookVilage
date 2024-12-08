@@ -114,6 +114,13 @@ public class UserRestController {
 			session.setAttribute("userLoginId", user.getLoginId());
 			session.setAttribute("userName", user.getName());
 		
+			 // 세션을 쿠키로 전달 (브라우저가 세션을 기억하게 함)
+	        Cookie cookie = new Cookie("JSESSIONID", session.getId());
+	        cookie.setHttpOnly(true);
+	        cookie.setMaxAge(60 * 60); // 1일 동안 세션 유지
+	        cookie.setPath("/");
+	        response.addCookie(cookie);
+	        
 			result.put("code", 200);
 			result.put("result", "성공");
 			result.put("userName", user.getName());
@@ -169,27 +176,27 @@ public class UserRestController {
 		return result;
 	}
 	
-//	@GetMapping("/api/user-info")
-//	public ResponseEntity<Map<String, Object>> getUserInfo(HttpServletRequest request) {
-//	    HttpSession session = request.getSession(false); // 세션 가져오기 (세션이 없으면 null)
-//	    Map<String, Object> result = new HashMap<>();
-//	    
-//	    if (session != null) {
-//	        Integer userId = (Integer) session.getAttribute("userId");
-//	        String userLoginId = (String) session.getAttribute("userLoginId");
-//	        String username = (String) session.getAttribute("username");
-//	        
-//	        if (userId != null && userLoginId != null) {
-//	            result.put("userId", userId);
-//	            result.put("userLoginId", userLoginId);
-//	            result.put("username", username);
-//	            return ResponseEntity.ok(result);
-//	        }
-//	    }
-//	    
-//	    result.put("error", "로그인되지 않은 사용자");
-//	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
-//	}
+	@GetMapping("/api/user-info")
+	public ResponseEntity<Map<String, Object>> getUserInfo(HttpServletRequest request) {
+	    HttpSession session = request.getSession(false); // 세션 가져오기 (세션이 없으면 null)
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    if (session != null) {
+	        Integer userId = (Integer) session.getAttribute("userId");
+	        String userLoginId = (String) session.getAttribute("userLoginId");
+	        String username = (String) session.getAttribute("username");
+	        
+	        if (userId != null && userLoginId != null) {
+	            result.put("userId", userId);
+	            result.put("userLoginId", userLoginId);
+	            result.put("username", username);
+	            return ResponseEntity.ok(result);
+	        }
+	    }
+	    
+	    result.put("error", "로그인되지 않은 사용자");
+	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+	}
 	
 	
 }

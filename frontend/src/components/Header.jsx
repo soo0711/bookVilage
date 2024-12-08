@@ -8,21 +8,21 @@ const Header = ({ isLoggedIn, username, onLogout }) => {
   const [userLoginId, setUserLoginId] = useState(null);
   //const [username, username] = useState(null);
 
-  //  // 컴포넌트 마운트 시 API 호출
-  //  useEffect(() => {
-  //   axios.get("http://localhost:80/user/api/user-info",
-  //     { withCredentials: true,}
-  //   )  // 사용자 정보를 가져오는 API 호출
-  //     .then(response => {
-  //       if (response.data.userId && response.data.userLoginId) {
-  //         setUserId(response.data.userId);  // userId 상태 설정
-  //         setUserLoginId(response.data.userLoginId);  // userLoginId 상태 설정
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.log("로그인된 사용자 정보 불러오기 실패", error);
-  //     });
-  // }, []);  // 컴포넌트 마운트 시 한 번만 실행되도록 빈 배열 전달
+   // 컴포넌트 마운트 시 API 호출
+   useEffect(() => {
+    axios.get("http://localhost:80/user/api/user-info",
+      { withCredentials: true,}
+    )  // 사용자 정보를 가져오는 API 호출
+      .then(response => {
+        if (response.data.userId && response.data.userLoginId) {
+          setUserId(response.data.userId);  // userId 상태 설정
+          setUserLoginId(response.data.userLoginId);  // userLoginId 상태 설정
+        }
+      })
+      .catch(error => {
+        console.log("로그인된 사용자 정보 불러오기 실패", error);
+      });
+  }, []);  // 컴포넌트 마운트 시 한 번만 실행되도록 빈 배열 전달
 
 
   return (
