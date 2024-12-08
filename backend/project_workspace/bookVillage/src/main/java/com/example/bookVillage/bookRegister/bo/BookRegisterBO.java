@@ -143,4 +143,10 @@ public class BookRegisterBO {
 		
 		return 1; 
 	}
+
+
+	public List<BookRegisterEntity> getBookRegisterByUserId(int userId) {
+		
+		return bookRegisterRepository.findByUserId(userId);
+	}
 }
