@@ -6,6 +6,7 @@ import Header from "./Header";
 const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
   const location = useLocation();
   const { selectedBook, recommendedBooks = [], username: locationUsername } = location.state || {}; // recommendedBooks에 기본값 설정
+<<<<<<< HEAD
   // `username`을 사용하려면, `locationUsername`이 없을 때는 `props`에서 받은 `username`을 사용하도록 처리
   const displayUsername = locationUsername || username;
 
@@ -19,6 +20,11 @@ const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
       }
     });
   };
+=======
+
+  // `username`을 사용하려면, `locationUsername`이 없을 때는 `props`에서 받은 `username`을 사용하도록 처리
+  const displayUsername = locationUsername || username;
+>>>>>>> origin/suhyun-back
 
   return (
     <>
@@ -28,7 +34,10 @@ const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
         username={username}
         onLogout={handleLogout}
       />
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/suhyun-back
 
       <div className="book-recommendation">
         <div className="book-container">

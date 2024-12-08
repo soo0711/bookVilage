@@ -72,6 +72,7 @@
   margin-left: auto;
 }
 
+
 /* 메뉴 버튼 (검색창 왼쪽 끝 내부) */
 .menu-button {
   width: 35px;
@@ -109,7 +110,7 @@
   border: none;
   margin-left: auto;
   cursor: pointer;
-
+  margin-top: 3px;
 }
 
 .search-icon img {
@@ -136,3 +137,4 @@
 .nav-menu a:hover {
   text-decoration: underline;
 }
+

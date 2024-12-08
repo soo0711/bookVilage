@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, useLocation } from 'react-router-dom'; 
 import "./BookRegister.css";
 import axios from "axios"; // 백엔드 연동시 주석 해제
 import Header from "./Header";
 
-const BookRegister = ({ onRegister, username }) => {
+const BookRegister = ({ onRegister, handleLogout }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // useLocation 사용
+
+  // location.state에서 username 가져오기
+  const { username } = location.state || {}; // state로부터 username 가져오기
+  const isLoggedIn = !!username; // username이 존재하면 로그인 상태로 간주
   
   const [formData, setFormData] = useState({
     title: "",
@@ -189,7 +194,7 @@ const BookRegister = ({ onRegister, username }) => {
 
       if (response.data.code === 200) {
         alert("책 등록이 완료되었습니다!");
-        window.location.href = "/home-view";
+        window.location.href = "http://localhost:3000/book-recommend";
       } else {
         alert(response.data.error_message || "책 등록에 실패했습니다.");
       }
@@ -210,7 +215,13 @@ const BookRegister = ({ onRegister, username }) => {
   };
 
   return (
-
+    <>
+          {/* 헤더 컴포넌트 */}
+        <Header
+        isLoggedIn={isLoggedIn}
+        username={username}
+        onLogout={handleLogout}
+        />
     <div className="book-register-wrapper">
       <div className="book-register-form">
         <h2>책 등록하기</h2>
@@ -355,6 +366,7 @@ const BookRegister = ({ onRegister, username }) => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
