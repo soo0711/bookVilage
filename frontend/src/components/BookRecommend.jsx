@@ -9,6 +9,7 @@ const BookRecommend = () => {
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [recommendedBooks, setRecommendedBooks] = useState([]); // 추천 도서 상태 추가
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,13 +47,28 @@ const BookRecommend = () => {
     fetchBooks();
   }, []);
 
-  const handleBookClick = (entry) => {
-    navigate("/recommendation", {
-      state: {
-        selectedBook: entry,
-        username,
-      },
-    });
+  const handleBookClick = async (entry) => {
+    try {
+      // 선택한 책의 ISBN13을 사용하여 추천 도서 API 호출
+      const response = await axios.get(
+        `http://127.0.0.1:8000/recommend/${entry.book.isbn13}`,
+        { withCredentials: true }
+      );
+
+      // 추천 도서 목록을 업데이트
+      setRecommendedBooks(response.data.recommendations || []);
+
+      // 추천 도서를 BookRecommendation으로 전달
+      navigate("/recommendation", {
+        state: {
+          selectedBook: entry,
+          username,
+          recommendedBooks: response.data.recommendations || [],
+        },
+      });
+    } catch (error) {
+      console.error("추천 도서 요청 중 에러 발생:", error);
+    }
   };
 
   if (loading) {
