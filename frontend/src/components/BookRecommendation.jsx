@@ -3,15 +3,21 @@ import { useLocation } from "react-router-dom";
 import "./BookRecommendation.css";
 import Header from "./Header";
 
-const BookRecommendation = () => {
+const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
   const location = useLocation();
-  const { selectedBook, username, recommendedBooks } = location.state || {};
-  const isLoggedIn = !!username; // username이 존재하면 로그인 상태로 간주
+  const { selectedBook, recommendedBooks = [], username: locationUsername } = location.state || {}; // recommendedBooks에 기본값 설정
+
+  // `username`을 사용하려면, `locationUsername`이 없을 때는 `props`에서 받은 `username`을 사용하도록 처리
+  const displayUsername = locationUsername || username;
 
   return (
     <>
       {/* 헤더 컴포넌트 */}
-      <Header isLoggedIn={isLoggedIn} username={username} onLogout={() => console.log("Logout")} />
+      <Header
+        isLoggedIn={isLoggedIn}
+        username={username}
+        onLogout={handleLogout}
+      />
 
       <div className="book-recommendation">
         <div className="book-container">
@@ -20,7 +26,7 @@ const BookRecommendation = () => {
               <div className="user-book">
                 <img src={selectedBook.book.cover} alt={selectedBook.book.title} />
                 <div className="user-book-title">
-                  <h3>{username}님이 선택한 책</h3>
+                  <h3>{displayUsername}님이 선택한 책</h3>
                 </div>
                 <p>제목: {selectedBook.book.title}</p>
                 <p>저자: {selectedBook.book.author}</p>
