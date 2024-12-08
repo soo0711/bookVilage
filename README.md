@@ -6,6 +6,7 @@ https://www.python.org/downloads/
 
 # 추천 알고리즘 폴더로 이동
 cd ai\recommend\content_based
+
 ![image](https://github.com/user-attachments/assets/5e512c29-8f83-4d8f-9167-84d63d97c38a)
 
 
@@ -44,6 +45,8 @@ pip install -r requirements.txt
 파일 저장 후
 python .\decompress_file.py
 명령어 실행
+
+
 ![image](https://github.com/user-attachments/assets/31021545-c6d7-4414-9fd9-bf9bf8b3f676)
 
 # DB 연결
@@ -57,11 +60,13 @@ mysql+pymysql://{username}:{user_password}@{my_sql_ip}:{mysql_port}/{DB_NAME}
 
 # 서버 가동
 uvicorn main:app --reload
+
 ![image](https://github.com/user-attachments/assets/5c9edf8a-7b92-430b-a8cb-924a078e7955)
 
 크롬에서 
 http://127.0.0.1:8000/docs
 접속
+
 ![image](https://github.com/user-attachments/assets/be6b4826-c449-4ffd-825f-62d3b9e371d0)
 
 Tri it out 클릭
