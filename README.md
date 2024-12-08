@@ -30,7 +30,9 @@ pip install -r requirements.txt
 # 설치 완료
 
 # 임베딩 파일 압축 해제
-따로 받은 book_metadata.npy.gz, embeddings.npy.gz, similarities.npy.gz
+https://drive.google.com/drive/folders/1gW_S7U3melPzcinAHKFOYj7aVnYrLMW8?usp=sharing
+
+링크에서 받은 book_metadata.npy.gz, embeddings.npy.gz, similarities.npy.gz
 파일들을 "ai\recommend\content_based\embeddings\klue_bert-base\"
 폴더에 붙여넣기
 
