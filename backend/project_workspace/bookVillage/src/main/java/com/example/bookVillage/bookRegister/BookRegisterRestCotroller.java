@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.bookVillage.bookCard.bo.BookCardBO;
 import com.example.bookVillage.bookCard.entity.BookCardEntity;
 import com.example.bookVillage.bookRegister.bo.BookRegisterBO;
+import com.example.bookVillage.bookRegister.entity.BookRegisterEntity;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -141,6 +142,24 @@ public class BookRegisterRestCotroller {
 	
 		return result;
 		
+	}
+	
+	@PostMapping("/exchange-list")
+	public Map<String, Object> BookRegisterListByIsbn13( 
+			@RequestBody Map<String, String> requestBody, 
+			HttpSession session){
+		
+		int userId = (Integer)session.getAttribute("userId");
+		String isbn13 = requestBody.get("isbn13");
+		List<BookRegisterEntity> bookRegisterList = bookregisterBO.getBookRegisterByIsbn13(isbn13, userId);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
+		result.put("data", bookRegisterList);
+		
+	
+		return result;
 		
 	}
 	

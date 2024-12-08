@@ -4,13 +4,14 @@ import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 import "./BookRecommend.css";
 
-const BookRecommend = () => {
+const BookRecommend = ({ handleLogout }) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [recommendedBooks, setRecommendedBooks] = useState([]); // 추천 도서 상태 추가
   const navigate = useNavigate();
+
 
   useEffect(() => {
     axios
@@ -77,7 +78,12 @@ const BookRecommend = () => {
 
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} username={username} onLogout={() => setIsLoggedIn(false)} />
+      <Header
+        isLoggedIn={isLoggedIn}
+        username={username}
+        onLogout={handleLogout}
+        />
+
       <div className="book-recommendation-page">
         {books.length > 0 ? (
           <div className="book-list">
