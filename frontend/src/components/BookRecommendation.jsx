@@ -1,14 +1,30 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./BookRecommendation.css";
 import Header from "./Header";
 
 const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
   const location = useLocation();
   const { selectedBook, recommendedBooks = [], username: locationUsername } = location.state || {}; // recommendedBooks에 기본값 설정
+<<<<<<< HEAD
 
   // `username`을 사용하려면, `locationUsername`이 없을 때는 `props`에서 받은 `username`을 사용하도록 처리
   const displayUsername = locationUsername || username;
+=======
+  // `username`을 사용하려면, `locationUsername`이 없을 때는 `props`에서 받은 `username`을 사용하도록 처리
+  const displayUsername = locationUsername || username;
+
+  const navigate = useNavigate();
+
+  // 교환 리스트 페이지로 이동
+  const handleExchangeClick = (book) => {
+    navigate(`/exchange-list/${book.isbn13}`, {
+      state: {
+        book: book,  // 클릭한 추천 도서 정보를 전달
+      }
+    });
+  };
+>>>>>>> chaeyeon
 
   return (
     <>
@@ -18,6 +34,10 @@ const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
         username={username}
         onLogout={handleLogout}
       />
+<<<<<<< HEAD
+=======
+
+>>>>>>> chaeyeon
 
       <div className="book-recommendation">
         <div className="book-container">
@@ -48,6 +68,10 @@ const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
                       <img src={book.cover} alt={book.title} />
                       <h3>{book.title}</h3>
                       <p>{book.author}</p>
+                      {/* 교환 리스트 버튼 추가 */}
+                      <button onClick={() => handleExchangeClick(book)}>
+                        교환 리스트 보기
+                      </button>
                     </div>
                   ))
                 ) : (

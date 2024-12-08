@@ -15,4 +15,8 @@ public interface BookRegisterRepository extends JpaRepository<BookRegisterEntity
 
 
 	public List<BookRegisterEntity> findByUserId(Integer userId);
+	
+	public List<BookRegisterEntity> findByIsbn13(String isbn13);
+	
+	public List<BookRegisterEntity> findByIsbn13AndUserIdNot(String isbn13, int userId);
 }

@@ -149,4 +149,9 @@ public class BookRegisterBO {
 		
 		return bookRegisterRepository.findByUserId(userId);
 	}
+	
+	public List<BookRegisterEntity> getBookRegisterByIsbn13(String isbn13, int userId) {
+		
+		return bookRegisterRepository.findByIsbn13AndUserIdNot(isbn13, userId);
+	}
 }
