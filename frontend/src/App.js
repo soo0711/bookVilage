@@ -10,6 +10,7 @@ import BookRecommend from "./components/BookRecommend";
 import ChatPage from "./components/chatPage"; // 채팅 페이지 추가
 import ExchangeList from "./components/ExchangeList";
 import CommunityPage from "./components/CommunityPage";
+import BookMeeting from "./components/BookMeeting";
 import axios from "axios";
 import { Stomp } from "@stomp/stompjs";
 import Profile from "./components/Profile";
@@ -114,7 +115,7 @@ function App() {
         <Route path="/find-id" element={<FindIdPage />} />
         <Route path="/find-password" element={<FindPasswordPage />} />
         <Route path="/book-recommend" element={<BookRecommend />} />
-        <Route path="/BookMeeting" element={<BookRecommend />} />
+        <Route path="/BookMeeting" element={<BookMeeting />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/exchange-list/:bookId" element={<ExchangeList />} />
         <Route 
