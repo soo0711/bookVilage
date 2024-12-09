@@ -1,4 +1,4 @@
-package com.example.bookVillage.bookCard.bo;
+package com.example.bookVillage.card.bo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.bookVillage.book.bo.BookBO;
 import com.example.bookVillage.book.entity.BookEntity;
-import com.example.bookVillage.bookCard.entity.BookCardEntity;
 import com.example.bookVillage.bookRegister.bo.BookRegisterBO;
 import com.example.bookVillage.bookRegister.entity.BookRegisterEntity;
+import com.example.bookVillage.card.entity.BookCardEntity;
 
 @Service
 public class BookCardBO {
@@ -41,10 +41,4 @@ public class BookCardBO {
 		return bookCardList;
 		
 	}
-	
-	
-	
-	
-
-	
 }

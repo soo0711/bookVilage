@@ -1,44 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import './Profile.css';
-import Header from './Header';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import "./Profile.css";
+import Header from "./Header";
+import axios from "axios";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { username } = useParams(); // URL에서 username 가져오기
+  const { userId } = useParams(); // URL에서 userId 가져오기
   const [userInfo, setUserInfo] = useState(null); // 사용자 정보 상태
+  const [exchangeableBooks, setExchangeableBooks] = useState([]); // 교환 가능한 책
+  const [completedExchanges, setCompletedExchanges] = useState([]); // 교환 완료한 책
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null); // 에러 상태
 
-  // 데이터 가져오기
+  useEffect(() => {
+  }, [userId]);
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:80/book-register/list`, {
-          params: { username }, // username을 쿼리 파라미터로 전달
-          withCredentials: true,
-        });
+        const response = await axios.post(
+          "http://localhost:80/user-book/user-profile",
+          { userId }, // userId를 요청 본문에 포함
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true, // 쿠키 전송 허용
+          }
+        );
 
         if (response.data.code === 200) {
-          setUserInfo(response.data.data || {}); // 서버에서 받은 사용자 정보 설정
+          const userData = response.data.data || {};
+          setUserInfo(userData);
+
+          // 데이터 필터링
+          const exchangeable = userData.bookCardList.filter(
+            (book) => book.bookRegister.stauts === "교환 가능"
+          );
+          const completed = userData.bookCardList.filter(
+            (book) => book.bookRegister.stauts === "교환 완료"
+          );
+
+          setExchangeableBooks(exchangeable);
+          setCompletedExchanges(completed);
         } else {
-          setError('사용자 정보를 불러오는 데 문제가 발생했습니다.');
+          setError("사용자 정보를 불러오는 데 문제가 발생했습니다.");
         }
       } catch (err) {
-        setError('서버 요청 중 에러가 발생했습니다.');
+        setError("서버 요청 중 에러가 발생했습니다.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchUserInfo();
-  }, [username]);
+  }, [userId]);
 
   const handleChatClick = () => {
-    navigate(`/chat/${username}`, {
+    navigate(`/chat/${userId}`, {
       state: {
-        targetUser: username,
+        targetUser: userId,
         chatroomId: 1, // 실제 서버에서 채팅방 ID를 생성하거나 가져와야 함
       },
     });
@@ -54,15 +76,16 @@ const Profile = () => {
 
   return (
     <>
-      <Header isLoggedIn={true} username={username} onLogout={() => console.log('Logout')} />
+      <Header isLoggedIn={true} username={userInfo?.username} onLogout={() => console.log("Logout")} />
       <div className="profile-container">
         <div className="profile-header">
           <div className="profile-info">
-            <h2>{username}님의 프로필</h2>
+            <h2>{userInfo?.loginId}님의 프로필</h2>
+            {/* loginId 표시 */}
             <div className="preferred-locations">
               <h3>선호하는 교환 장소</h3>
               <ul>
-                {userInfo.preferredLocations.map((location, index) => (
+                {userInfo?.preferredLocations?.map((location, index) => (
                   <li key={index}>{location}</li>
                 ))}
               </ul>
@@ -74,38 +97,48 @@ const Profile = () => {
         </div>
 
         <div className="books-section">
+          {/* 교환 가능한 책 섹션 */}
           <div className="exchangeable-books">
             <h3>교환 가능한 책</h3>
-            <div className="book-grid">
-              {userInfo.exchangeableBooks.map(book => (
-                <div key={book.id} className="book-card-pro">
-                  <img src={book.imageUrl} alt={book.title} />
-                  <div className="book-info">
-                    <h4>{book.title}</h4>
-                    <p>{book.author}</p>
-                    <p className="condition">상태: {book.condition}</p>
-                    <p className="location">교환 장소: {book.location}</p>
+            {exchangeableBooks.length > 0 ? (
+              <div className="book-grid">
+                {exchangeableBooks.map(({ book, bookRegister }) => (
+                  <div key={bookRegister.id} className="book-card-pro">
+                    <img src={book.cover} alt={book.title} />
+                    <div className="book-info">
+                      <h4>{book.title}</h4>
+                      <p>{book.author}</p>
+                      <p className="condition">상태: {bookRegister.b_condition}</p>
+                      <p className="location">교환 장소: {bookRegister.place}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p>교환 가능한 책이 없습니다.</p>
+            )}
           </div>
 
+          {/* 교환 완료한 책 섹션 */}
           <div className="completed-exchanges">
             <h3>교환 완료한 책</h3>
-            <div className="book-grid">
-              {userInfo.completedExchanges.map(book => (
-                <div key={book.id} className="book-card completed">
-                  <img src={book.imageUrl} alt={book.title} />
-                  <div className="book-info">
-                    <h4>{book.title}</h4>
-                    <p>{book.author}</p>
-                    <p className="exchange-date">교환일: {book.exchangeDate}</p>
-                    <p className="location">교환 장소: {book.location}</p>
+            {completedExchanges.length > 0 ? (
+              <div className="book-grid">
+                {completedExchanges.map(({ book, bookRegister }) => (
+                  <div key={bookRegister.id} className="book-card completed">
+                    <img src={book.cover} alt={book.title} />
+                    <div className="book-info">
+                      <h4>{book.title}</h4>
+                      <p>{book.author}</p>
+                      <p className="exchange-date">등록일: {new Date(bookRegister.createdAt).toLocaleDateString()}</p>
+                      <p className="location">교환 장소: {bookRegister.place}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p>교환 완료된 책이 없습니다.</p>
+            )}
           </div>
         </div>
       </div>

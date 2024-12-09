@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.bookVillage.bookCard.bo.BookCardBO;
-import com.example.bookVillage.bookCard.entity.BookCardEntity;
 import com.example.bookVillage.bookRegister.bo.BookRegisterBO;
-import com.example.bookVillage.bookRegister.entity.BookRegisterEntity;
+import com.example.bookVillage.card.bo.BookCardBO;
+import com.example.bookVillage.card.bo.UserBookBO;
+import com.example.bookVillage.card.bo.UserBookRegisterBO;
+import com.example.bookVillage.card.entity.BookCardEntity;
+import com.example.bookVillage.card.entity.UserBookRegisterEntity;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -32,6 +34,10 @@ public class BookRegisterRestCotroller {
 	
 	@Autowired
 	private BookCardBO bookCardBO;
+	
+	
+	@Autowired
+	private UserBookRegisterBO userBookRegisterBO;
 
 	// 책 등록
 	@PostMapping("/create")
@@ -151,17 +157,20 @@ public class BookRegisterRestCotroller {
 		
 		int userId = (Integer)session.getAttribute("userId");
 		String isbn13 = requestBody.get("isbn13");
-		List<BookRegisterEntity> bookRegisterList = bookregisterBO.getBookRegisterByIsbn13(isbn13, userId);
+		
+		//내가 선택한 책의 isbn13값과 나의 userId를 넘겨 내가 올린 책 뺴고 다른 사람들이 올린 책 정보 가져오기
+		List<UserBookRegisterEntity> userBookRegisterList = userBookRegisterBO.getUserBookRegisterByIsbn13(isbn13, userId);
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 200);
 		result.put("result", "성공");
-		result.put("data", bookRegisterList);
+		result.put("data", userBookRegisterList);
 		
 	
 		return result;
 		
 	}
+	
 	
 	
 	

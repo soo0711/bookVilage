@@ -1,4 +1,4 @@
-package com.example.bookVillage.bookCard.entity;
+package com.example.bookVillage.card.entity;
 
 import com.example.bookVillage.book.entity.BookEntity;
 import com.example.bookVillage.bookRegister.entity.BookRegisterEntity;
@@ -9,9 +9,8 @@ import lombok.ToString;
 @Data
 @ToString
 public class BookCardEntity {
-	   private BookEntity book;
+	
+	private BookEntity book;
 
-	   private BookRegisterEntity bookRegister;
-	   
-
+	private BookRegisterEntity bookRegister;
 }
