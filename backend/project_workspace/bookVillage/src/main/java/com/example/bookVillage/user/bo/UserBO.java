@@ -64,7 +64,7 @@ public class UserBO {
 	}
 	
 	public Integer updateUser(int userId, String name, String phoneNumber, String email) {
-		UserEntity userEntity = userRepository.findById(userId).orElse(null);
+		UserEntity userEntity = userRepository.findById(userId);
 		if (userEntity != null) {
 			userEntity = userEntity.toBuilder()
 					.name(name)
@@ -77,6 +77,11 @@ public class UserBO {
 		}
 		
 		return 0;
+	}
+	
+	
+	public UserEntity getUserEntityById(int userId) {
+		return userRepository.findById(userId);
 	}
 
 }

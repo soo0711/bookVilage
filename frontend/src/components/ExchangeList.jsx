@@ -52,7 +52,7 @@ const ExchangeList = () => {
   }, [bookId]);
 
   const handleUserClick = (userId) => {
-    navigate(`/profile/${userId}`);
+    navigate(`/profile/${userId}`); // userId를 URL 파라미터로 전달
   };
 
   if (loading) {
@@ -86,17 +86,17 @@ const ExchangeList = () => {
           <div className="exchange-users-list">
             {exchangeUsers.length > 0 ? (
               exchangeUsers.map((register) => (
-                <div key={register.id} className="exchange-user-item">
+                <div key={register.bookRegister.id} className="exchange-user-item">
                   <div className="user-info">
                     <h3
-                      onClick={() => handleUserClick(register.userId)}
+                      onClick={() => handleUserClick(register.user.id)} // 클릭 시 userId 전달
                       className="username-link"
                     >
-                      사용자 ID: {register.userId}
+                      사용자 : {register.user.loginId}
                     </h3>
-                    <p className="exchange-location">교환 가능 장소: {register.place}</p>
-                    <p className="exchange-description">설명: {register.description}</p>
-                    <p className="exchange-condition">상태: {register.b_condition}</p>
+                    <p className="exchange-location">교환 가능 장소: {register.bookRegister.place}</p>
+                    <p className="exchange-description">설명: {register.bookRegister.description}</p>
+                    <p className="exchange-condition">상태: {register.bookRegister.b_condition}</p>
                   </div>
                   <button className="chat-button">채팅하기</button>
                 </div>
@@ -107,10 +107,7 @@ const ExchangeList = () => {
           </div>
         </div>
         <div className="back-button-container">
-          <button
-            className="back-button"
-            onClick={() => navigate("/")}
-          >
+          <button className="back-button" onClick={() => navigate("/")}>
             이전 목록
           </button>
         </div>
