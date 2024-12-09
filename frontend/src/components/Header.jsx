@@ -7,6 +7,10 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout }) => {
   const [userLoginId, setUserLoginId] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(propIsLoggedIn);
 
+  const handleClick = () => {
+    window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
+  };
+  
   useEffect(() => {
     setIsLoggedIn(propIsLoggedIn);
   }, [propIsLoggedIn]);
@@ -52,7 +56,7 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout }) => {
         )}
       </div>
 
-      <div className="main-header">
+      <div className="main-header" onClick={handleClick}>
         <div className="logo-title-group">
           <img src="/assets/logo.png" alt="로고" className="logo" />
           <img src="/assets/title.png" alt="동네북 타이틀" className="title" />

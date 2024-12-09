@@ -4,8 +4,10 @@ import "./Profile.css";
 import Header from "./Header";
 import axios from "axios";
 
-const Profile = () => {
+const Profile = ({ handleLogout }) => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
   const { userId } = useParams(); // URL에서 userId 가져오기
   const [userInfo, setUserInfo] = useState(null); // 사용자 정보 상태
   const [exchangeableBooks, setExchangeableBooks] = useState([]); // 교환 가능한 책
@@ -100,7 +102,12 @@ const Profile = () => {
 
   return (
     <>
-      <Header isLoggedIn={true} username={userInfo?.username} onLogout={() => console.log("Logout")} />
+      <Header
+        isLoggedIn={isLoggedIn}
+        username={username}
+        onLogout={handleLogout}
+        />
+        
       <div className="profile-container">
         <div className="profile-header">
           <div className="profile-info">

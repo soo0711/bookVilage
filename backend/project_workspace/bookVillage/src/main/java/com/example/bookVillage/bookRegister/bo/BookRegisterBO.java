@@ -154,4 +154,10 @@ public class BookRegisterBO {
 		
 		return bookRegisterRepository.findByIsbn13AndUserIdNot(isbn13, userId);
 	}
+	
+	public List<Object[]> getBookAvgPoint(){
+		return bookRegisterRepository.findBookAvgPoint();
+	}
+
+
 }

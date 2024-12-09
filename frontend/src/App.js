@@ -101,7 +101,7 @@ function App() {
         <Route path="/book-register" element={<BookRegister username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/recommendation" element={<BookRecommendation username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         
-        <Route path="/profile/:userId" element={<Profile />} />
+        <Route path="/profile/:userId" element={<Profile  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         {<Route
           path="/chat/:chatRoomId"
           element={<ChatPage client={client} username={username} isLoggedIn={isLoggedIn} />}

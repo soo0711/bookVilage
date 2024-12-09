@@ -54,6 +54,37 @@ public class UserBookBO {
 		return userBook;
 	}
 	
+	public List<BookCardEntity> getUserBookList(){
+		
+		List<BookCardEntity> bookCardList = new ArrayList<>();
+		
+		List<Object[]> bookRegisterList = bookRegisterBO.getBookAvgPoint();
+		
+		for(Object[] bookRegister : bookRegisterList) {
+			
+			Double avg = (Double) bookRegister[0];
+			String avg_toString = Double.toString(avg);
+			String isbn = (String) bookRegister[1];
+			
+			BookEntity book = bookBO.getBookByIsbn13(isbn);
+			
+			BookCardEntity bookCard =	new BookCardEntity();
+			
+			BookRegisterEntity bookRegisterEntity = new BookRegisterEntity();
+			bookRegisterEntity.setIsbn13(isbn);
+			bookRegisterEntity.setPoint(avg_toString);
+			
+			bookCard.setBook(book);
+			bookCard.setBookRegister(bookRegisterEntity);
+			
+			bookCardList.add(bookCard);
+			
+		}
+
+		
+		return bookCardList;
+	}
+	
 	
 	
 }
