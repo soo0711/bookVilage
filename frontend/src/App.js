@@ -103,7 +103,7 @@ function App() {
         
         <Route path="/profile/:userId" element={<Profile />} />
         {<Route
-          path="/chat/:targetUsername"
+          path="/chat/:chatRoomId"
           element={<ChatPage client={client} username={username} isLoggedIn={isLoggedIn} />}
         /> }
         <Route path="*" element={<Navigate to="/home-view" />} />

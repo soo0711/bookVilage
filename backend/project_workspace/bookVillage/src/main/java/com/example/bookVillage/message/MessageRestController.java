@@ -48,4 +48,6 @@ public class MessageRestController {
 		
 		return result;
     }
+	
+	
 }

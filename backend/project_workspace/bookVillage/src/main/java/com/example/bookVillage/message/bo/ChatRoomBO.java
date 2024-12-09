@@ -35,4 +35,9 @@ public class ChatRoomBO {
 		ChatRoomEntity chatRoomEntity = chatRoomRepository.findChatRoomByUserId1AndUserId2(min, max);
 		return chatRoomEntity == null ? null : chatRoomEntity.getId();
 	}
+	
+	
+	public ChatRoomEntity getChatRoomEntityByChatRoomId(int chatRoomId) {
+		return chatRoomRepository.findById(chatRoomId);
+	}
 }
