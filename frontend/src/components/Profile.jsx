@@ -14,19 +14,10 @@ const Profile = ({ handleLogout }) => {
   const [completedExchanges, setCompletedExchanges] = useState([]); // 교환 완료한 책
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null); // 에러 상태
+  const [myId, setMyId] = useState(null); // myId 상태 추가
 
   useEffect(() => {
-    axios
-      .get("http://localhost:80/user/api/user-info", { withCredentials: true })
-      .then((response) => {
-        if (response.data.userId && response.data.userLoginId) {
-          setIsLoggedIn(true);
-          setUsername(response.data.userLoginId);
-        }
-      })
-      .catch((error) => {
-        console.error("사용자 정보 가져오기 실패:", error);
-      });
+
     const fetchUserInfo = async () => {
       try {
         const response = await axios.post(
@@ -43,7 +34,8 @@ const Profile = ({ handleLogout }) => {
         if (response.data.code === 200) {
           const userData = response.data.data || {};
           setUserInfo(userData);
-
+          const myId = response.data.myId;
+          setMyId(myId); // myId 상태 업데이트
           // 데이터 필터링
           const exchangeable = userData.bookCardList.filter(
             (book) => book.bookRegister.stauts === "교환 가능"
@@ -90,6 +82,7 @@ const Profile = ({ handleLogout }) => {
             state: {
               targetUser: userId, // 상대방 userId
               chatroomId: chatRoomId, // 채팅방 IDm
+              myId: myId,  // myId를 state에 추가로 전달
             },
           });
       } else {
