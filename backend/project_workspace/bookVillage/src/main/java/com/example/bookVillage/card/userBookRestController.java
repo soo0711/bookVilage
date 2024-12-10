@@ -31,6 +31,7 @@ public class userBookRestController {
 			@RequestBody Map<String, String> requestBody, 
 			HttpSession session){
 		int userId = Integer.parseInt(requestBody.get("userId"));
+		int myId = (Integer) session.getAttribute("userId");
 		
 		UserBookEntity userBook = userBookBO.getUserBookByUserId(userId);
 		
@@ -39,6 +40,7 @@ public class userBookRestController {
 	        result.put("code", 200);
 	        result.put("result", "성공");
 	        result.put("data", userBook);
+	        result.put("myId", myId);
 	    } else {
 	        result.put("code", 404);
 	        result.put("result", "사용자 정보를 찾을 수 없습니다.");

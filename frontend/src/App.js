@@ -108,7 +108,7 @@ function App() {
         <Route path="/profile/:userId" element={<Profile  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route
           path="/chat/:chatRoomId"
-          element={<ChatPage  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+          element={<ChatPage client={client}  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="*" element={<Navigate to="/home-view" />} />
       </Routes>
     </Router>

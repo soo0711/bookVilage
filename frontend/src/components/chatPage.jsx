@@ -4,16 +4,12 @@ import "./ChatPage.css";
 import Header from "./Header";
 import axios from "axios";
 
-const ChatPage = ({ client, username, isLoggedIn, handleLogout }) => {
+function ChatPage({ client, username, isLoggedIn, handleLogout }) {
   const location = useLocation();
-  const { chatHistory, targetUser, chatroomId } = location.state || {}; // state에서 채팅 기록 가져오기
+  const { chatHistory, targetUser, chatroomId , myId} = location.state || {}; // state에서 채팅 기록 가져오기
   const [message, setMessage] = useState("");
   const [chatMessages, setChatMessages] = useState(chatHistory || []); // 전달받은 채팅 기록을 상태에 설정
   const [userId, setUserId] = useState(null);
-  const { username: locationUsername } = location.state || {}; // recommendedBooks에 기본값 설정
-
-  const displayUsername = locationUsername || username;
-  //console.log(displayUsername);
 
   // 채팅 기록 불러오기
   useEffect(() => {
@@ -31,6 +27,7 @@ const ChatPage = ({ client, username, isLoggedIn, handleLogout }) => {
 
           if (response.data.code === 200) {
             const messages = response.data.userMessage.messageList || [];
+            
             setChatMessages(messages);
           } else {
             alert("채팅 기록을 불러오는 데 실패했습니다.");
@@ -60,15 +57,14 @@ const ChatPage = ({ client, username, isLoggedIn, handleLogout }) => {
     if (client && message.trim()) {
       const payload = {
         chatroomId: chatroomId, // 채팅방 ID
-        userId: 8, // 전달된 userId 사용
+        userId: myId,
         message: message.trim(), // 메시지 내용
       };
 
-      client.send("/pub/message", {}, JSON.stringify(payload));
+      client.send("/pub/message", {}, JSON.stringify(payload)); // 메시지 전송
       setMessage(""); // 입력 필드 초기화
     }
   };
-
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -78,11 +74,7 @@ const ChatPage = ({ client, username, isLoggedIn, handleLogout }) => {
 
   return (
     <>
-        <Header
-        isLoggedIn={isLoggedIn}
-        username={username}
-        onLogout={handleLogout}
-        />
+      <Header />
       <div className="chat-container">
         <div className="chat-header">
           <h2>채팅방 {chatroomId}</h2>
@@ -91,16 +83,16 @@ const ChatPage = ({ client, username, isLoggedIn, handleLogout }) => {
           </div>
         </div>
 
-         <div className="messages-container">
+        <div className="messages-container">
           {chatMessages.length > 0 ? (
             chatMessages.map((msg, index) => (
               <div
                 key={index}
-                className={`message ${msg.userId === userId ? "sent" : "received"}`}
+                className={`message ${msg.userId === parseInt(myId, 10) ? "sent" : "received"}`}
               >
                 <div className="message-content">
                   <span className="sender-name">
-                    {msg.userId === userId ? "나" : msg.userLoginId}
+                    {msg.userId === parseInt(myId, 10) ? "나" : msg.userLoginId}
                   </span>
                   <p className="message-text">{msg.message}</p>
                   <span className="message-time">
