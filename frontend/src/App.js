@@ -7,6 +7,7 @@ import SignupPage from "./components/SignupPage";
 import FindIdPage from "./components/FindIdPage";
 import FindPasswordPage from "./components/FindPasswordPage";
 import BookRecommend from "./components/BookRecommend";
+import BookMeeting from "./components/BookMeeting";
 import ChatPage from "./components/chatPage"; // 채팅 페이지 추가
 import ExchangeList from "./components/ExchangeList";
 import CommunityPage from "./components/CommunityPage";
@@ -24,10 +25,10 @@ function App() {
   const [client, setClient] = useState(null); // WebSocket 클라이언트
   const [userId, setUserId] = useState(null); // userId 상태 추가
 
-  const handleLogin = (loginId) => {
-      setIsLoggedIn(true);
-      setUsername(loginId);
-    
+  const handleLogin = (loginId, userId) => {
+    setIsLoggedIn(true);
+    setUsername(loginId);
+    setUserId(userId);
   };
 
   const handleLogout = async () => {
@@ -43,11 +44,13 @@ function App() {
         console.error("로그아웃 실패:", response.statusText);
         setIsLoggedIn(false);
         setUsername("");
+        setUserId(null); // 로그아웃 시 userId 초기화
       }
     } catch (error) {
       console.error("로그아웃 요청 중 오류 발생:", error);
       setIsLoggedIn(false);
       setUsername("");
+      setUserId(null); // 로그아웃 시 userId 초기화
     }
   };
 
@@ -84,6 +87,7 @@ function App() {
               <Header
                 isLoggedIn={isLoggedIn}
                 username={username}
+                userId={userId} // 전달 추가
                 onLogout={handleLogout}
               />
             <MainPage />
@@ -95,17 +99,16 @@ function App() {
         <Route path="/find-id" element={<FindIdPage />} />
         <Route path="/find-password" element={<FindPasswordPage />} />
         <Route path="/book-recommend" element={<BookRecommend username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
-        <Route path="/BookMeeting" element={<BookRecommend username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/BookMeeting" element={<BookMeeting username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/community" element={<CommunityPage username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/exchange-list/:bookId" element={<ExchangeList username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/book-register" element={<BookRegister username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/recommendation" element={<BookRecommendation username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         
         <Route path="/profile/:userId" element={<Profile  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
-        {<Route
-          path="/chat/:targetUsername"
-          element={<ChatPage client={client} username={username} isLoggedIn={isLoggedIn} />}
-        /> }
+        <Route
+          path="/chat/:chatRoomId"
+          element={<ChatPage  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="*" element={<Navigate to="/home-view" />} />
       </Routes>
     </Router>

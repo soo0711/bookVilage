@@ -18,10 +18,15 @@ const BookRegister = ({ onRegister, handleLogout }) => {
     point: "5",
     exchange_YN: "Y",
     b_condition: "A",
-    description: "",
+    b_description: "",
     isbn13: "",
     review: "",
     place: "", // 교환 장소 추가
+    cover: "", 
+    description: "", 
+    publisher: "", 
+    pubdate: "", 
+    category: ""
   });
 
   const [searchResults, setSearchResults] = useState([]);
@@ -84,11 +89,25 @@ const BookRegister = ({ onRegister, handleLogout }) => {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(response.data.response, "application/xml");
         const items = xmlDoc.getElementsByTagName("item");
-        const results = Array.from(items).map((item) => ({
-          title: item.getElementsByTagName("title")[0].textContent,
-          author: item.getElementsByTagName("author")[0]?.textContent || "Unknown",
-          isbn13: item.getElementsByTagName("isbn13")[0]?.textContent || "Unknown"
-        }));
+        const results = Array.from(items).map((item) => {
+          const isbn13 = item.getElementsByTagName("isbn13")[0]?.textContent || "Unknown";
+          
+          // isbn13이 Unknown이면 이 항목을 제외
+          if (isbn13 === "Unknown") return null;
+        
+          return {
+            title: item.getElementsByTagName("title")[0].textContent,
+            author: item.getElementsByTagName("author")[0]?.textContent || "Unknown",
+            isbn13: isbn13,
+            cover: item.getElementsByTagName("cover")[0]?.textContent || "Unknown",
+            description: item.getElementsByTagName("description")[0]?.textContent.replace(/<img[^>]*>/g, "").trim() || "Unknown",
+            publisher: item.getElementsByTagName("publisher")[0]?.textContent || "Unknown",
+            pubdate: item.getElementsByTagName("pubDate")[0]?.textContent || "Unknown",
+            category: item.getElementsByTagName("categoryName")[0]?.textContent?.split('>')[1] || "Unknown",
+          };
+        }).filter(item => item !== null); // null을 제외한 결과만 필터링
+
+
         setSearchResults(results);
         setIsModalOpen(true);
       } else {
@@ -166,13 +185,19 @@ const BookRegister = ({ onRegister, handleLogout }) => {
       // Spring 컨트롤러의 매개변수와 일치하도록 메타데이터 구성
       const metadata = {
         title: formData.title,
+        author: formData.author,
         isbn13: formData.isbn13,
         review: formData.review,
         point: formData.point,
         b_condition: formData.b_condition,
-        description: formData.description,
+        b_description: formData.b_description,
         exchange_YN: formData.exchange_YN,
-        place: formData.place
+        place: formData.place,
+        cover: formData.cover, 
+        description: formData.description, 
+        publisher: formData.publisher,  
+        pubdate: formData.pubdate,  
+        category: formData.category, 
       };
 
       data.append(
@@ -209,7 +234,12 @@ const BookRegister = ({ onRegister, handleLogout }) => {
       ...prev, 
       title: result.title,
       author: result.author,
-      isbn13: result.isbn13
+      isbn13: result.isbn13,
+      cover: result.cover,
+      description: result.description,
+      publisher: result.publisher,
+      pubdate: result.pubdate,
+      category: result.category,
     }));
     setIsModalOpen(false);
   };
@@ -301,9 +331,9 @@ const BookRegister = ({ onRegister, handleLogout }) => {
                 <option value="C">상태 좋지 않음</option>
               </select>
               <textarea
-                name="description"
+                name="b_description"
                 placeholder="책 상태 설명 (상태: 4페이지가 살짝 찢어졌어요)"
-                value={formData.description}
+                value={formData.b_description}
                 onChange={handleChange}
               />
                <input
@@ -357,7 +387,7 @@ const BookRegister = ({ onRegister, handleLogout }) => {
             <ul>
               {searchResults.map((result, index) => (
                 <li key={index} onClick={() => handleResultSelect(result)}>
-                  <strong>{result.title}</strong> - {result.author}
+                  <strong>{result.title}</strong> - {result.author} - {result.isbn13}
                 </li>
               ))}
             </ul>

@@ -1,10 +1,7 @@
 package com.example.bookVillage.book.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
-import org.hibernate.annotations.UpdateTimestamp;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +23,6 @@ import lombok.ToString;
 public class BookEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String isbn13;
 
 	

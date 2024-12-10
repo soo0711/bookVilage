@@ -1,5 +1,8 @@
 package com.example.bookVillage.bookRegister;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bookVillage.bookRegister.bo.BookRegisterBO;
 import com.example.bookVillage.card.bo.BookCardBO;
-import com.example.bookVillage.card.bo.UserBookBO;
 import com.example.bookVillage.card.bo.UserBookRegisterBO;
 import com.example.bookVillage.card.entity.BookCardEntity;
 import com.example.bookVillage.card.entity.UserBookRegisterEntity;
@@ -53,15 +55,25 @@ public class BookRegisterRestCotroller {
 		String review = metadata.get("review");
 		String point = metadata.get("point");
 		String b_condition = metadata.get("b_condition");
-		String description = metadata.get("description");
+		String b_description = metadata.get("b_description");
 		String exchange_YN = metadata.get("exchange_YN");
 		String place = metadata.get("place");
+		String cover = metadata.get("cover");
+		String description = metadata.get("description");
+		String author = metadata.get("author");
+		String publisher = metadata.get("publisher");
+		String date = metadata.get("pubdate");
+		String category = metadata.get("category");
+		
 
 		Map<String, Object> result = new HashMap<>();
 		
+		// book DB 중복 및 등록
+		bookregisterBO.addBookEntity(isbn13, title, cover, description, author, publisher, date, category);
+		
 		// 등록 및 중복 확인
 		Integer BookRegisterId = bookregisterBO.addBookRegisterAndImage(userId, userLoginId, title, isbn13,
-				review, point, b_condition, description, exchange_YN, place, files);
+				review, point, b_condition, b_description, exchange_YN, place, files);
 	
 		
 
