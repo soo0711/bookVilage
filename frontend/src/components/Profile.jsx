@@ -16,9 +16,17 @@ const Profile = ({ handleLogout }) => {
   const [error, setError] = useState(null); // 에러 상태
 
   useEffect(() => {
-  }, [userId]);
-
-  useEffect(() => {
+    axios
+      .get("http://localhost:80/user/api/user-info", { withCredentials: true })
+      .then((response) => {
+        if (response.data.userId && response.data.userLoginId) {
+          setIsLoggedIn(true);
+          setUsername(response.data.userLoginId);
+        }
+      })
+      .catch((error) => {
+        console.error("사용자 정보 가져오기 실패:", error);
+      });
     const fetchUserInfo = async () => {
       try {
         const response = await axios.post(
@@ -59,13 +67,38 @@ const Profile = ({ handleLogout }) => {
     fetchUserInfo();
   }, [userId]);
 
-  const handleChatClick = () => {
-    navigate(`/chat/${userId}`, {
-      state: {
-        targetUser: userId,
-        chatroomId: 1, // 실제 서버에서 채팅방 ID를 생성하거나 가져와야 함
-      },
-    });
+  const handleChatClick = async () => {
+    try {
+      // 백엔드로 chatRoomId 요청
+      const response = await axios.post(
+        "http://localhost:80/chat/room", 
+        { fromUserId: userId },  // 상대방 userId를 포함한 요청
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // 쿠키 전송 허용
+        }
+      );
+  
+      if (response.data.code === 200) {
+        const chatRoomId = response.data.chatRoomId;
+
+        
+          // 채팅방으로 이동하고, 채팅 기록을 state로 전달
+          navigate(`/chat/${chatRoomId}`, {
+            state: {
+              targetUser: userId, // 상대방 userId
+              chatroomId: chatRoomId, // 채팅방 IDm
+            },
+          });
+      } else {
+        alert("채팅방 생성에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("채팅방 생성 중 에러:", error);
+      alert("채팅방 생성 중 오류가 발생했습니다.");
+    }
   };
 
   if (loading) {
@@ -82,7 +115,7 @@ const Profile = ({ handleLogout }) => {
         isLoggedIn={isLoggedIn}
         username={username}
         onLogout={handleLogout}
-        />
+      />
         
       <div className="profile-container">
         <div className="profile-header">
