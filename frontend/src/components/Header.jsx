@@ -38,7 +38,7 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout}) => {
         {isLoggedIn ? (
           <>
             <a className="username">{userLoginId}님</a>
-            <a href="/mypage" className="auth-link">
+            <a href="/myPage" className="auth-link">
               마이페이지
             </a>
             <a href="#" onClick={onLogout} className="auth-link">

@@ -28,15 +28,15 @@ const High = () => {
       <div className="right-section">
         <div className="books-list">
           {books.map((bookCard) => (
-            <div className="book-card-high" key={bookCard.book.isbn13}>
-              <img
-                src={bookCard.book.cover}
-                alt={bookCard.book.title}
-                className="book-image"
-              />
-              <h3 className="book-title">{bookCard.book.title}</h3>
-              <p className="book-rating">평균 ★ {bookCard.bookRegister.point}</p>
-            </div>
+            <a href={`/book/${bookCard.book.isbn13}`} className="book-card-high" key={bookCard.book.isbn13}>
+            <img
+              src={bookCard.book.cover}
+              alt={bookCard.book.title}
+              className="book-image"
+            />
+            <h4 className="book-title">{bookCard.book.title}</h4>
+            <p className="book-rating">평균 ★ {bookCard.bookRegister.point}</p>
+            </a>
           ))}
         </div>
       </div>

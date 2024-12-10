@@ -16,7 +16,9 @@ import { Stomp } from "@stomp/stompjs";
 import Profile from "./components/Profile";
 import BookRegister from "./components/BookRegister";
 import BookRecommendation from "./components/BookRecommendation";
-
+import ChatList from './components/ChatList';
+import BookDetail from "./components/BookDetail";
+import MyPage from "./components/MyPage";
 
 
 function App() {
@@ -104,7 +106,10 @@ function App() {
         <Route path="/exchange-list/:bookId" element={<ExchangeList username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/book-register" element={<BookRegister username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/recommendation" element={<BookRecommendation username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
-        
+        <Route path="/profile/:userId" element={<Profile />} />
+        <Route path="/chatlist" element={<ChatList username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>}  />
+        <Route path="/book/:isbn"  element={<BookDetail isLoggedIn={isLoggedIn} username={username} handleLogout={handleLogout}/>} />
+        <Route path="/myPage" element={<MyPage username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/profile/:userId" element={<Profile  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route
           path="/chat/:chatRoomId"
