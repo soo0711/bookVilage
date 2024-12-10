@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import com.example.bookVillage.message.bo.MessageBO;
 import com.example.bookVillage.message.entity.MessageEntity;
 
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MessageController {

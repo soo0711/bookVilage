@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "./ChatPage.css";
 import Header from "./Header";
@@ -6,12 +6,13 @@ import axios from "axios";
 
 function ChatPage({ client, username, isLoggedIn, handleLogout }) {
   const location = useLocation();
-  const { chatHistory, targetUser, chatroomId , myId} = location.state || {}; // state에서 채팅 기록 가져오기
+  const { chatHistory, chatroomId, myId } = location.state || {};
   const [message, setMessage] = useState("");
-  const [chatMessages, setChatMessages] = useState(chatHistory || []); // 전달받은 채팅 기록을 상태에 설정
-  const [userId, setUserId] = useState(null);
+  const [chatMessages, setChatMessages] = useState(chatHistory || []);
+  const [otherUserLoginId, setOtherUserLoginId] = useState("");
+  const messagesEndRef = useRef(null); // 스크롤 제어를 위한 ref 추가
 
-  // 채팅 기록 불러오기
+  // 채팅 기록 및 사용자 정보 불러오기
   useEffect(() => {
     if (chatroomId) {
       const fetchChatHistory = async () => {
@@ -27,7 +28,11 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
 
           if (response.data.code === 200) {
             const messages = response.data.userMessage.messageList || [];
-            
+            const users = response.data.userMessage.userList || [];
+
+            const otherUser = users.find((user) => user.id !== myId);
+            setOtherUserLoginId(otherUser ? otherUser.loginId : "알 수 없음");
+
             setChatMessages(messages);
           } else {
             alert("채팅 기록을 불러오는 데 실패했습니다.");
@@ -40,14 +45,26 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
 
       fetchChatHistory();
     }
-  }, [chatroomId]);
+  }, [chatroomId, myId]);
+
+  // 스크롤을 가장 아래로 내리는 함수
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  // 메시지가 추가될 때마다 스크롤 업데이트
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
 
   // 메시지 수신
   useEffect(() => {
     if (client) {
       client.subscribe(`/sub/chatroom/${chatroomId}`, (message) => {
         const newMessage = JSON.parse(message.body);
-        setChatMessages((prev) => [...prev, newMessage]); // 새로운 메시지를 기존 메시지 목록에 추가
+        setChatMessages((prev) => [...prev, newMessage]);
       });
     }
   }, [client, chatroomId]);
@@ -56,19 +73,19 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
   const sendMessage = () => {
     if (client && message.trim()) {
       const payload = {
-        chatroomId: chatroomId, // 채팅방 ID
+        chatroomId: chatroomId,
         userId: myId,
-        message: message.trim(), // 메시지 내용
+        message: message.trim(),
       };
 
-      client.send("/pub/message", {}, JSON.stringify(payload)); // 메시지 전송
-      setMessage(""); // 입력 필드 초기화
+      client.send("/pub/message", {}, JSON.stringify(payload));
+      setMessage("");
     }
   };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      sendMessage(); // Enter 키 입력 시 메시지 전송
+      sendMessage();
     }
   };
 
@@ -77,7 +94,7 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
       <Header />
       <div className="chat-container">
         <div className="chat-header">
-          <h2>채팅방 {chatroomId}</h2>
+          <h2>채팅방 - {otherUserLoginId}</h2>
           <div className="chat-info">
             <span className="user-status">● 온라인</span>
           </div>
@@ -107,6 +124,8 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
           ) : (
             <p>채팅 기록이 없습니다.</p>
           )}
+          {/* 스크롤 제어용 빈 div */}
+          <div ref={messagesEndRef} />
         </div>
 
         <div className="chat-input-container">

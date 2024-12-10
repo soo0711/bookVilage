@@ -44,7 +44,7 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout}) => {
             <a href="#" onClick={onLogout} className="auth-link">
               로그아웃
             </a>
-            <a href="/chatRoom" className="auth-link">
+            <a href="/chatlist/" className="auth-link">
               채팅방
             </a>
           </>

@@ -1,6 +1,8 @@
 package com.example.bookVillage.message;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bookVillage.card.bo.UserMessageBO;
 import com.example.bookVillage.card.entity.UserMessageEntity;
+import com.example.bookVillage.message.bo.ChatRoomBO;
 import com.example.bookVillage.message.bo.MessageBO;
+import com.example.bookVillage.message.entity.ChatRoomEntity;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,6 +25,8 @@ public class MessageRestController {
 
 	@Autowired
     private MessageBO messageBO;
+	
+	
 	
 	@Autowired
 	private UserMessageBO userMessageBO;
@@ -74,6 +80,36 @@ public class MessageRestController {
 			result.put("code", 500);
 			result.put("error_message", "채팅방 기록 불러오기에  실패했습니다.");
 		}
+		
+		return result;
+    }
+	
+	
+	@PostMapping("/list")
+	public Map<String, Object> chatList(
+    		HttpSession session) {
+		
+		int userId = (Integer) session.getAttribute("userId");
+		List<UserMessageEntity> userMessageList = new ArrayList<>();
+		
+		List<ChatRoomEntity> chatRoomList = messageBO.getChayRommListByUserId(userId);
+		for(int i = 0; i < chatRoomList.size(); i++) {
+			userMessageList.add(userMessageBO.getUserMessageEntityByChatRoomId(chatRoomList.get(i).getId()));
+		}
+        
+		Map<String, Object> result = new HashMap<>();
+		if (chatRoomList != null && !chatRoomList.isEmpty()) {
+	        // 채팅방이 존재하는 경우
+	        result.put("code", 200);
+	        result.put("result", "성공");
+	        result.put("chatRoomList", chatRoomList);  // 채팅방 목록을 전달
+	        result.put("userMessageList", userMessageList);  // 채팅방 내용 전달
+	        result.put("myId", userId);  
+	    } else {
+	        // 채팅방이 존재하지 않는 경우
+	        result.put("code", 500);
+	        result.put("error_message", "채팅방 기록 불러오기에 실패했습니다.");
+	    }
 		
 		return result;
     }

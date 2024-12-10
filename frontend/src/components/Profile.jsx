@@ -113,16 +113,16 @@ const Profile = ({ handleLogout }) => {
       <div className="profile-container">
         <div className="profile-header">
           <div className="profile-info">
-            <h2>{userInfo?.loginId}님의 프로필</h2>
+            <h2>{userInfo?.user?.loginId}님의 프로필</h2>
             {/* loginId 표시 */}
-            <div className="preferred-locations">
+            {/* <div className="preferred-locations">
               <h3>선호하는 교환 장소</h3>
               <ul>
                 {userInfo?.preferredLocations?.map((location, index) => (
                   <li key={index}>{location}</li>
                 ))}
               </ul>
-            </div>
+            </div> */}
           </div>
           <button className="chat-button" onClick={handleChatClick}>
             채팅하기

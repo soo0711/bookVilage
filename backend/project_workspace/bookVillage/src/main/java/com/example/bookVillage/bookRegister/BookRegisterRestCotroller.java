@@ -156,7 +156,7 @@ public class BookRegisterRestCotroller {
 		result.put("code", 200);
 		result.put("result", "성공");
 		result.put("data", bookCardList);
-		
+		result.put("myId", userId);
 	
 		return result;
 		
@@ -177,7 +177,7 @@ public class BookRegisterRestCotroller {
 		result.put("code", 200);
 		result.put("result", "성공");
 		result.put("data", userBookRegisterList);
-		
+		result.put("myId", userId);
 	
 		return result;
 		
