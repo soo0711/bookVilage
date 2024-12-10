@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Header.css";
 
-const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout }) => {
+const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout}) => {
   const [userId, setUserId] = useState(null);
   const [userLoginId, setUserLoginId] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(propIsLoggedIn);
@@ -30,7 +30,7 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout }) => {
       console.log("로그인된 사용자 정보 불러오기 실패", error);
       setIsLoggedIn(false); // API 호출이 실패하면 로그인 상태를 false로 설정
     });
-  }, []);
+  }, [setUserId]);
 
   return (
     <header className="header">

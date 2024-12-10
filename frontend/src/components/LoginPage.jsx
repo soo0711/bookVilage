@@ -31,12 +31,12 @@ const LoginPage = ({ onLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!formData.loginId || !formData.password) {
       alert("아이디와 비밀번호를 입력해주세요.");
       return;
     }
-
+  
     try {
       // Spring Boot API 호출
       const loginId = formData.loginId;
@@ -44,14 +44,14 @@ const LoginPage = ({ onLogin }) => {
       const response = await axios.post("http://localhost:80/user/sign-in", {
         loginId,
         password,
-      },{
+      }, {
         withCredentials: true,
       });
-
+  
       if (response.data.code === 200) {
         // 로그인 성공 처리
         alert(`환영합니다, ${response.data.userName}님!`);
-        onLogin(formData.loginId); // 부모 컴포넌트로 로그인 ID 전달
+        onLogin(response.data.userName, response.data.userId); // 로그인 성공 시 userName과 userId 전달
         navigate("/home-view");
       } else {
         // 로그인 실패 처리

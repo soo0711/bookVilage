@@ -38,7 +38,7 @@ public class MessageBO {
 	}
 	
 	public List<MessageEntity> getMessageListByChatRoomId(int chatRoomId){
-		return messageRepository.findByChatRoomId(chatRoomId);
+		return messageRepository.findByChatroomId(chatRoomId);
 	}
 	
 }

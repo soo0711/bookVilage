@@ -8,6 +8,6 @@ import com.example.bookVillage.message.entity.MessageEntity;
 
 public interface MessageRepository extends JpaRepository<MessageEntity, Integer>{
 
-	public List<MessageEntity> findByChatRoomId(int chatRoomId);
+	public List<MessageEntity> findByChatroomId(int chatRoomId);
 
 }

@@ -16,9 +16,17 @@ const Profile = ({ handleLogout }) => {
   const [error, setError] = useState(null); // 에러 상태
 
   useEffect(() => {
-  }, [userId]);
-
-  useEffect(() => {
+    axios
+      .get("http://localhost:80/user/api/user-info", { withCredentials: true })
+      .then((response) => {
+        if (response.data.userId && response.data.userLoginId) {
+          setIsLoggedIn(true);
+          setUsername(response.data.userLoginId);
+        }
+      })
+      .catch((error) => {
+        console.error("사용자 정보 가져오기 실패:", error);
+      });
     const fetchUserInfo = async () => {
       try {
         const response = await axios.post(
@@ -75,14 +83,15 @@ const Profile = ({ handleLogout }) => {
   
       if (response.data.code === 200) {
         const chatRoomId = response.data.chatRoomId;
+
         
-        // 채팅방으로 이동
-        navigate(`/chat/${chatRoomId}`, {
-          state: {
-            targetUser: userId, // 상대방 userId
-            chatroomId: chatRoomId, // 채팅방 ID
-          },
-        });
+          // 채팅방으로 이동하고, 채팅 기록을 state로 전달
+          navigate(`/chat/${chatRoomId}`, {
+            state: {
+              targetUser: userId, // 상대방 userId
+              chatroomId: chatRoomId, // 채팅방 IDm
+            },
+          });
       } else {
         alert("채팅방 생성에 실패했습니다.");
       }
@@ -106,7 +115,7 @@ const Profile = ({ handleLogout }) => {
         isLoggedIn={isLoggedIn}
         username={username}
         onLogout={handleLogout}
-        />
+      />
         
       <div className="profile-container">
         <div className="profile-header">
