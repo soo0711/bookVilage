@@ -41,12 +41,6 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .book-card-high:hover {
-    transform: translateY(-10px); /* 위로 10px 이동 */
   }
   
   .book-image {
@@ -57,7 +51,7 @@
   }
   
   .book-title {
-    font-size: 16px !important;
+    font-size: 16px;
     font-weight: bold;
     margin: 10px 0 5px;
   }
