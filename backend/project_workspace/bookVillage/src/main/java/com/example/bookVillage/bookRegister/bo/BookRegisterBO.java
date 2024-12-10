@@ -1,12 +1,19 @@
 package com.example.bookVillage.bookRegister.bo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.bookVillage.book.bo.BookBO;
+import com.example.bookVillage.book.entity.BookEntity;
 import com.example.bookVillage.bookRegister.entity.BookRegisterEntity;
 import com.example.bookVillage.bookRegister.entity.BookRegisterImageEntity;
 import com.example.bookVillage.bookRegister.repository.BookRegisterRepository;
@@ -23,6 +30,9 @@ public class BookRegisterBO {
 	
 	@Autowired
 	private FileManagerService fileManagerService;
+	
+	@Autowired
+	private BookBO bookBO;
 	
 	
 	public Integer addBookRegisterAndImage(Integer userId, String userLoginId, String title, String isbn13, String review, 
@@ -159,5 +169,29 @@ public class BookRegisterBO {
 		return bookRegisterRepository.findBookAvgPoint();
 	}
 
+	public BookEntity addBookEntity(String isbn13, String title,String  cover, String description, String author, String publisher, String date, String category) {
+		
+		Date pubdate = null;
+		
+		try {
+			SimpleDateFormat originalFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+		    originalFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+		    // 날짜 파싱
+		    pubdate = originalFormatter.parse(date);
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		java.sql.Date sqlPubDate = new java.sql.Date(pubdate.getTime());
+		
+		BookEntity book = bookBO.getBookByIsbn13(isbn13);
+		if (book == null) {
+			// 등록
+			book = bookBO.addBookEntity(isbn13, title, cover, description, author, publisher, sqlPubDate, category);
+		}
+		return book;
+	}
 
 }
