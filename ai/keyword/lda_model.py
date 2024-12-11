@@ -70,53 +70,32 @@ stopwords = [
     "마",
     "더",
     "그렇다",
-    "의",
-    "당",
-    "좀",
-    "책",
-    "안",
-    "볼",
-    "게",
     "안",
     "정말",
-    "듯",
-    "이제야",
-    "여",
-    "요",
-    "게다가",
     "같다",
     "임",
-    "로서",
-    "이제",
     "만",
     "인",
-    "붙이",
-    "그",
-    "저",
-    "수",
-    "가제",
     "부터",
-    "닷",
+    "저",
+    "우리",
+    "너",
     "저희",
-    "적",
-    "알",
-    "쉬",
-    "못",
-    "꼭",
-    "살",
-    "제",
-    "권",
-    "제",
-    "분",
-    "나",
-    "내",
-    "진작",
-    "전",
-    "뿐",
-    "대한",
-    "대해",
+    "그",
+    "수",
     "책",
-    "좋다",
+    "내용",
+    "사람",
+    "생각",
+    "마음",
+    "추천",
+    "작품",
+    "소설",
+    "정도",
+    "번역",
+    "대한",
+    "느낌",
+    "이해",
 ]
 
 
@@ -135,48 +114,35 @@ def extract_nouns(text):
 # 리뷰 데이터 전처리
 data["cleaned_review"] = data["review_content"].apply(preprocess_review)
 
-# 카테고리별 LDA 토픽 모델링
-categories = data["category"].unique()
-category_topics = {}
+# 명사 추출
+texts = data["cleaned_review"].apply(extract_nouns).tolist()
 
-for category in categories:
-    print(f"\nProcessing category: {category}")
+# 텍스트가 없는 경우 처리
+texts = [text for text in texts if text]
 
-    # 카테고리별 데이터 필터링
-    category_data = data[data["category"] == category]
+# 단어-문서 행렬 생성
+dictionary = corpora.Dictionary(texts)
+corpus = [dictionary.doc2bow(text) for text in texts]
 
-    # 명사 추출
-    texts = category_data["cleaned_review"].apply(extract_nouns).tolist()
+# LDA 모델 생성
+lda_model = models.LdaModel(
+    corpus,
+    id2word=dictionary,
+    num_topics=5,  # 추출할 토픽 수
+    random_state=42,
+    passes=10,  # 학습 반복 횟수
+    iterations=50,
+)
 
-    # 텍스트가 없는 경우 스킵
-    if not any(texts):
-        print(f"Category '{category}' has no valid reviews. Skipping...")
-        continue
+# 토픽 출력
+topics = lda_model.print_topics(num_words=10)
+print("Extracted Topics:")
+for idx, topic in topics:
+    print(f"Topic {idx + 1}: {topic}")
 
-    # 단어-문서 행렬 생성
-    dictionary = corpora.Dictionary(texts)
-    corpus = [dictionary.doc2bow(text) for text in texts]
-
-    # LDA 모델 생성
-    lda_model = models.LdaModel(
-        corpus,
-        id2word=dictionary,
-        num_topics=5,  # 추출할 토픽 수
-        random_state=42,
-        passes=10,  # 학습 반복 횟수
-        iterations=50,
-    )
-
-    # 토픽 저장
-    topics = lda_model.print_topics(num_words=10)
-    category_topics[category] = topics
-
-    # 출력
-    for idx, topic in topics:
-        print(f"Topic {idx + 1}: {topic}")
-
-# 최종 결과 확인
-for category, topics in category_topics.items():
-    print(f"\nCategory: {category}")
-    for idx, topic in topics:
-        print(f"  Topic {idx + 1}: {topic}")
+# 결과 저장 (옵션)
+output_file = "lda_topics.csv"
+pd.DataFrame(topics, columns=["Topic Number", "Keywords"]).to_csv(
+    output_file, index=False
+)
+print(f"Topics saved to {output_file}")

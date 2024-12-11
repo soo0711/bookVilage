@@ -90,6 +90,16 @@ stopwords = [
     "제",
     "책",
     "리뷰",
+    "있",
+    "배송",
+    "소설",
+    "좋다",
+    "작품",
+    "뿐",
+    "거",
+    "중",
+    "입니다",
+    "추합니다",
 ]
 
 
@@ -112,43 +122,32 @@ def extract_noun_adj_pairs(text):
     return pairs
 
 
-# 데이터 전처리
+# 데이터 전처리 및 명사-형용사 조합 추출
 data["cleaned_review"] = data["review_content"].apply(preprocess_review)
+data["noun_adj_pairs"] = data["cleaned_review"].apply(extract_noun_adj_pairs)
 
-# 카테고리별 명사-형용사 조합 분석
-categories = data["category"].unique()
-category_results = {}
+# 모든 리뷰에서 추출된 명사-형용사 조합 리스트 생성
+all_pairs = [pair for sublist in data["noun_adj_pairs"] for pair in sublist]
 
-for category in categories:
-    print(f"\nProcessing category: {category}")
+# 명사-형용사 조합 빈도 계산
+pair_counts = Counter(all_pairs)
 
-    # 카테고리별 데이터 필터링
-    category_data = data[data["category"] == category]
+# 자주 사용된 조합 추출 (상위 20개)
+common_pairs = pair_counts.most_common(20)
 
-    # 명사-형용사 조합 추출
-    category_data["noun_adj_pairs"] = category_data["cleaned_review"].apply(
-        extract_noun_adj_pairs
-    )
+# 조합별 리뷰와 리뷰 개수 추출
+pair_reviews = []
+for pair, _ in common_pairs:
+    pair_pattern = f"{pair[0]}.*{pair[1]}"  # 명사와 형용사가 연속적으로 등장하는 패턴
+    matching_reviews = data[data["cleaned_review"].str.contains(pair_pattern, na=False)]
+    pair_reviews.append((pair, len(matching_reviews), matching_reviews))
 
-    # 모든 리뷰에서 추출된 명사-형용사 조합 리스트 생성
-    all_pairs = [
-        pair for sublist in category_data["noun_adj_pairs"] for pair in sublist
-    ]
+# 리뷰 개수로 내림차순 정렬
+sorted_pair_reviews = sorted(pair_reviews, key=lambda x: x[1], reverse=True)
 
-    # 명사-형용사 조합 빈도 계산
-    pair_counts = Counter(all_pairs)
-    common_pairs = pair_counts.most_common(20)  # 상위 20개
-
-    # 결과 저장
-    category_results[category] = common_pairs
-
-    # 출력
-    print(f"Top 20 Noun-Adjective Pairs for '{category}':")
-    for pair, count in common_pairs:
-        print(f"  Pair: {pair}, Count: {count}")
-
-# 최종 결과 확인
-for category, pairs in category_results.items():
-    print(f"\nCategory: {category}")
-    for pair, count in pairs:
-        print(f"  Pair: {pair}, Count: {count}")
+# 출력
+print("Top Noun-Adjective Pairs Sorted by Review Count:")
+for pair, review_count, reviews in sorted_pair_reviews:
+    print(f"Pair: {pair}, Review Count: {review_count}")
+    print("Sample Reviews:")
+    print(reviews["review_content"].head(3).tolist())  # 상위 3개 리뷰 내용 출력

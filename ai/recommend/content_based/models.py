@@ -30,3 +30,19 @@ class BookRegister(Base):
     place = Column(Text)
     createdAt = Column(Date)
     updatedAt = Column(Date)
+
+
+class Reviews(Base):
+    __tablename__ = "reviews"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    isbn13 = Column(String(255), index=True)
+    review_content = Column(Text, nullable=False)
+
+
+class Topics(Base):
+    __tablename__ = "topics"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    isbn13 = Column(String(255), index=True)
+    topic_id = Column(Integer, nullable=False)
+    keywords = Column(Text, nullable=False)
+    wordcloud_url = Column(String(512), nullable=False)

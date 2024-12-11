@@ -2,10 +2,62 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from database import get_db
 from recommend import PrecomputedRecommender
-from models import Book
+from models import Book, Topics, Reviews
 from config import DEFAULT_MODEL_NAME
+from starlette.middleware.cors import CORSMiddleware
+from recommend.content_based.topic_manager import process_and_save_topics
 
 app = FastAPI()
+
+# CORS 설정
+# 모두 허용
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:80"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.on_event("startup")
+def startup_event():
+    process_and_save_topics()
+
+
+@app.get("/topics/{isbn13}")
+def get_topics(isbn13: str, db: Session = Depends(get_db)):
+    topics = db.query(Topics).filter(Topics.isbn13 == isbn13).all()
+    return [
+        {
+            "topic_id": t.topic_id,
+            "keywords": t.keywords,
+            "wordcloud_url": t.wordcloud_url,
+        }
+        for t in topics
+    ]
+
+
+@app.get("/reviews/{isbn13}/{topic_id}")
+def get_reviews_for_topic(isbn13: str, topic_id: int, db: Session = Depends(get_db)):
+    topic = (
+        db.query(Topics)
+        .filter(Topics.isbn13 == isbn13, Topics.topic_id == topic_id)
+        .first()
+    )
+    if not topic:
+        return {"error": "Topic not found"}
+    keyword_list = topic.keywords.split(", ")
+    reviews = (
+        db.query(Reviews)
+        .filter(
+            Reviews.isbn13 == isbn13,
+            *(Reviews.review_content.contains(k) for k in keyword_list),
+        )
+        .all()
+    )
+    return [r.review_content for r in reviews]
+
 
 # 기본 모델 이름 설정
 default_model_name = DEFAULT_MODEL_NAME
