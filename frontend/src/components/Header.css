@@ -73,22 +73,30 @@
 }
 
 
-/* 메뉴 버튼 (검색창 왼쪽 끝 내부) */
+/* 메뉴 버튼 (검색창 왼쪽 끝) */
 .menu-button {
   width: 35px;
   height: 35px;
-
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  margin-top: 2px;
 }
+
 
 /* 검색 입력창 */
 .search-input {
-
-
+  flex: 1;
   border: none;
   background-color: transparent;
   font-size: 20px;
-
+  text-align: left;
+  margin: 0 10px;
 }
+
 
 .search-input::placeholder {
   color: #aaa;
@@ -99,24 +107,38 @@
   outline: none;
 }
 
-/* 검색 아이콘 (검색창 오른쪽 끝) */
+/* 검색 아이콘 버튼 */
 .search-icon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 35px;
   height: 35px;
-  background-color: transparent;
+  padding: 0;
+  background: none !important; 
+  background-color: transparent; 
   border: none;
-  margin-left: auto;
   cursor: pointer;
-  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-top: 2px;
 }
 
-.search-icon img {
-  width: 35px;
-  height: 35px;
+
+.search-icon:focus,
+.search-icon:active,
+.search-icon:hover,
+.search-icon:visited {
+  background: none !important;
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
+.search-icon img {
+  width: 40px;
+  height: 40px;
+}
+
 
 /* 메뉴 */
 .nav-menu {

@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import "./Header.css";
 
-const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout}) => {
+const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout, setBooks}) => {
+  const navigate = useNavigate();  // useNavigate 훅 사용
   const [userId, setUserId] = useState(null);
   const [userLoginId, setUserLoginId] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(propIsLoggedIn);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      // 검색어를 URL 쿼리로 전달
+      navigate(`/search?title=${searchQuery}`);
+    }
+  };
 
   const handleClick = () => {
     window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
@@ -63,15 +73,20 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout}) => {
         </div>
 
         <div className="search-bar">
-          <img src="/assets/menu.png" alt="메뉴 버튼" className="menu-button" />
+          <button type="button" className="menu-button">
+            <img src="/assets/menu.png" alt="메뉴 버튼" />
+          </button>
           <input
             type="text"
             placeholder="Hinted search text"
             className="search-input"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button className="search-icon">
+          <button type="submit" className="search-icon" onClick={handleSearch}>
             <img src="/assets/search.png" alt="검색 아이콘" />
           </button>
+
         </div>
       </div>
 
