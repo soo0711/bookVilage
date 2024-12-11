@@ -106,11 +106,10 @@ public class MessageRestController {
 	        result.put("userMessageList", userMessageList);  // 채팅방 내용 전달
 	        result.put("myId", userId);  
 	    } else {
-	        // 채팅방이 존재하지 않는 경우
-	        result.put("code", 500);
-	        result.put("error_message", "채팅방 기록 불러오기에 실패했습니다.");
+	        // 채팅방이 없는 경우
+	        result.put("code", 204); // No Content
+	        result.put("result", "진행 중인 채팅이 없습니다.");
 	    }
-		
 		return result;
     }
 	

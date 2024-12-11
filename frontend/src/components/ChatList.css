@@ -107,3 +107,10 @@
     min-width: 20px;
     text-align: center;
   }
+
+  .no-chat-rooms {
+    text-align: center;
+    color: #777;
+    font-size: 1.2em;
+    margin-top: 20px;
+  }

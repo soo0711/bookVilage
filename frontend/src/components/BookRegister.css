@@ -300,3 +300,18 @@
   color: #666;
   font-size: 14px;
 }
+
+.select-group {
+  display: flex;
+  gap: 10px; /* 선택 박스 간격 조정 */
+  align-items: center; /* 라벨과 셀렉트 박스 수직 정렬 */
+}
+
+.select-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-wrap select {
+  min-width: 150px; /* 선택 박스 최소 너비 설정 */
+}
