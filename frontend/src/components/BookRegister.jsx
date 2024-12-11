@@ -32,47 +32,6 @@ const BookRegister = ({ onRegister, handleLogout }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [images, setImages] = useState([]);
-/*
-  // 임시 검색 함수 (백엔드 연동 전)
-  const handleSearch = (e) => {
-    e.preventDefault();
-    
-    // 로그인 체크 임시 주석처리
-    /* if (!username) {
-      alert("로그인이 필요합니다. 로그인 후 책 등록이 가능합니다.");
-      return;
-    } */
-/*
-    if (!formData.title) {
-      alert("책 제목을 입력해주세요.");
-      return;
-    }
-/*
-    // 임시 더미 데이터
-    const dummyResults = [
-      {
-        title: "해리포터와 마법사의 돌",
-        author: "J.K. 롤링",
-        isbn13: "9788983920775"
-      },
-      {
-        title: "해리포터와 비밀의 방",
-        author: "J.K. 롤링",
-        isbn13: "9788983920776"
-      },
-      {
-        title: "해리포터와 아즈카반의 죄수",
-        author: "J.K. 롤링",
-        isbn13: "9788983920777"
-      }
-    ];
-    
-    setSearchResults(dummyResults);
-    setIsModalOpen(true);
-  };
-  */
-
-//백엔드 연동시 사용할 실제 검색 함수
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!formData.title) {
@@ -135,41 +94,7 @@ const BookRegister = ({ onRegister, handleLogout }) => {
   const handleDeleteImage = (index) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
-/*
-  // 임시 제출 함수 수정
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // 등록할 책 데이터 구성
-    const bookData = {
-      title: formData.title,
-      author: formData.author,
-      imageUrl: images.length > 0 ? URL.createObjectURL(images[0]) : "https://via.placeholder.com/150x200", // 이미지 URL 설정
-      isbn13: formData.isbn13,
-      point: formData.point,
-      review: formData.review,
-      condition: formData.condition,
-      description: formData.description,
-      exchange_YN: formData.exchange_YN
-    };
 
-    // onRegister prop으로 전달받은 함수 실행
-    if (onRegister) {
-      onRegister(bookData);
-    }
-
-    // 책 추천 페이지로 이동
-    navigate('/book-recommend');
-  };
-*/
-  /* 백엔드 연동시 사용할 실제 제출 함수
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (onRegister) {
-      await onRegister(formData);
-    }
-  };
-  */
  
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -336,13 +261,55 @@ const BookRegister = ({ onRegister, handleLogout }) => {
                 value={formData.b_description}
                 onChange={handleChange}
               />
-               <input
-            type="text"
-            name="place"
-            placeholder="교환 장소 입력 (ex. 경기도 성남시)"
-            value={formData.place}
-            onChange={handleChange}
-           />
+               <div className="search-box public-srch02">
+              <div className="sch-in sch-in-ty1">
+                <div className="select-group">
+                  <span className="select-wrap">
+                    <label htmlFor="sidoCd">지역</label>
+                    <select name="sidoCd" id="sidoCd" title="지역선택">
+                      <option value="ALL">시/도 전체</option>
+                      <option value="6110000">서울특별시</option>
+                      <option value="6260000">부산광역시</option>
+                      <option value="6270000">대구광역시</option>
+                      <option value="6280000">인천광역시</option>
+                      <option value="6290000">광주광역시</option>
+                      <option value="6300000">대전광역시</option>
+                      <option value="6310000">울산광역시</option>
+                      <option value="6200000">세종특별자치시</option>
+                      <option value="6410000">경기도</option>
+                      <option value="6530000">강원특별자치도</option>
+                      <option value="6430000">충청북도</option>
+                      <option value="6440000">충청남도</option>
+                      <option value="6540000">전북특별자치도</option>
+                      <option value="6460000">전라남도</option>
+                      <option value="6470000">경상북도</option>
+                      <option value="6480000">경상남도</option>
+                      <option value="6500000">제주특별자치도</option>
+                    </select>
+                  </span>
+                  <span className="select-wrap">
+                    <label htmlFor="siggCd" className="hide2">
+                      <span>시/군/구 선택</span>
+                    </label>
+                    <select name="siggCd" id="siggCd" title="시/군/구 선택">
+                      <option value="ALL">시/군/구 전체</option>
+                      <option value="3220000">강남구</option>
+                      <option value="3240000">강동구</option>
+                      <option value="3080000">강북구</option>
+                    </select>
+                  </span>
+                  <span className="select-wrap">
+                    <label htmlFor="emdongCd" className="hide2">읍/면/동 선택</label>
+                    <select name="emdongCd" id="emdongCd" title="읍/면/동 선택">
+                      <option value="ALL">읍/면/동 전체</option>
+                      <option value="3230055">가락1동</option>
+                      <option value="3230056">가락2동</option>
+                      <option value="3230054">가락본동</option>
+                    </select>
+                  </span>
+                </div>
+              </div>
+            </div>
               <div className="image-preview-container">
                 {images.map((image, index) => (
                   <div key={index} className="image-preview-item">
