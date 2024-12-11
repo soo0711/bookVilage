@@ -387,7 +387,7 @@ const BookRegister = ({ onRegister, handleLogout }) => {
             <ul>
               {searchResults.map((result, index) => (
                 <li key={index} onClick={() => handleResultSelect(result)}>
-                  <strong>{result.title}</strong> - {result.author} - {result.isbn13}
+                  <strong>{result.title}</strong> - {result.author}
                 </li>
               ))}
             </ul>
