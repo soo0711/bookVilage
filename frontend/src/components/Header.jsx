@@ -56,8 +56,8 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout}) => {
         )}
       </div>
 
-      <div className="main-header" onClick={handleClick}>
-        <div className="logo-title-group">
+      <div className="main-header">
+        <div className="logo-title-group" onClick={handleClick}>
           <img src="/assets/logo.png" alt="로고" className="logo" />
           <img src="/assets/title.png" alt="동네북 타이틀" className="title" />
         </div>
