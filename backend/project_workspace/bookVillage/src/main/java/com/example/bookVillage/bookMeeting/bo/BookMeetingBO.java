@@ -13,12 +13,14 @@ public class BookMeetingBO {
 	@Autowired
 	private BookMeetingRepository bookMeetingRepository;
 	
-	public Integer addBookMeeting(String hostLoginid, String schedule,
+	public Integer addBookMeeting(String subject, String content,String hostLoginid, String schedule,
 			String place, int total) {
 		
 		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.save(
 				((BookMeetingEntityBuilder) BookMeetingEntity.builder())
 				.hostLoginid(hostLoginid)
+				.subject(subject)
+				.content(content)
 				.schedule(schedule)
 				.place(place)
 				.closeYN("N")
@@ -35,10 +37,12 @@ public class BookMeetingBO {
 		return bookMeetingRepository.findById(bookMeetingId);
 	}
 	
-	public int updateBookMeeting(int bookMeetingId, String userLoginId, String schedule, String place, int total) {
+	public int updateBookMeeting(int bookMeetingId, String userLoginId, String subject, String content, String schedule, String place, int total) {
 		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.findById(bookMeetingId);
 		if(bookMeetingEntity != null) {
 			bookMeetingEntity = bookMeetingEntity.toBuilder() // 기존 내용은 그대로
+					.subject(subject)
+					.content(content)
 	                .schedule(schedule)
 	                .place(place)
 	                .total(total)
