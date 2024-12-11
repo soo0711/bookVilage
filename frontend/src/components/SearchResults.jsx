@@ -74,7 +74,7 @@ const handleImageClick = (selectedBook) => {
         <div className="books-grid" >
           {books.map(book => (
             <div key={book.isbn13} className="book-card">
-              <div className="book-cover" onClick={() => handleImageClick(book)}>
+              <div className="book-covers" onClick={() => handleImageClick(book)}>
                 <img src={book.cover} alt={book.title} />
               </div>
               <div className="book-info">

@@ -187,7 +187,7 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
       />
       <div className="mypage-container">
         <div className="mypage-sidebar">
-          <h2>{username}님의 마이페이지</h2>
+          <h2>{userLoginId}님의 마이페이지</h2> {/* userId => name으로 바꿔야함*/}
           <nav className="mypage-nav">
             <button onClick={handleBookRegisterClick}>
               책 등록
@@ -457,7 +457,7 @@ const EditProfile = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     // 사용자 정보 수정 API 호출
-    axios.put("http://localhost:80/user/update", userInfo, { withCredentials: true })
+    axios.post("http://localhost:80/user/update", userInfo, { withCredentials: true })
       .then(response => {
         if (response.data.code === 200) {
           alert("정보 수정이 완료되었습니다.");

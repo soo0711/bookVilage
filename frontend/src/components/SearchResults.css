@@ -50,7 +50,7 @@
   transform: translateY(-5px); /* 호버 시 카드가 살짝 올라오게 */
 }
 
-.book-cover {
+.book-covers {
   flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 설정 */
   width: 100px; /* 고정된 너비 */
   height: 150; /* 고정된 높이 */
@@ -58,7 +58,7 @@
   overflow: hidden;
 }
 
-.book-cover img {
+.book-covers img {
   width: 100%;
   height: 100%;
   object-fit: cover;

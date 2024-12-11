@@ -220,4 +220,29 @@ public class UserRestController {
 		
 		return result;
 	}
+	
+	@PostMapping("/update")
+	public Map<String, Object> userUpdate(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session){
+		
+		int userId = (Integer)session.getAttribute("userId");
+		String name = requestBody.get("name");
+		String phoneNumber = requestBody.get("phoneNumber");
+		String email = requestBody.get("email");
+		
+		// 중복 확인 및 수정
+		Integer user = userBO.updateUser(userId, name, phoneNumber, email);
+		
+		Map<String, Object> result = new HashMap<>();
+		if (user > 0) {
+			result.put("code", 200);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "사용자 정보 수정을 할 수 없습니다.");
+		}
+		
+		return result;
+	}
 }

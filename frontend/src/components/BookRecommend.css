@@ -5,22 +5,22 @@
   align-items: center;  /* 중앙 정렬 */
 }
 
-.book-list {
+.book-lists {
   width: 100%;
   max-width: 1200px;  /* 최대 너비 설정 */
   margin-top: 20px;
   text-align: center;
 }
 
-.book-container {
+.book-containers {
   display: flex;
   flex-wrap: wrap;  /* 여러 줄로 감싸기 */
   justify-content: center;  /* 중앙 정렬 */
-  gap: 20px;  /* 책 카드 간 간격 */
+  gap: 25px;  /* 책 카드 간 간격 */
 }
 
-.book-card {
-  width: 200px;  /* 책 카드의 너비 */
+.book-cardd {
+  width: 150px;  /* 책 카드의 너비 */
   text-align: center;
   cursor: pointer;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -29,11 +29,11 @@
   transition: transform 0.3s;
 }
 
-.book-card:hover {
+.book-cardd:hover {
   transform: scale(1.05);  /* 호버 시 약간 확대 효과 */
 }
 
-.book-card img {
+.book-cardd img {
   width: 100%;
   height: auto;
   border-radius: 4px;
@@ -61,5 +61,5 @@
 }
 
 .register-button-container button:hover {
-  background-color: #0056b3;  /* 버튼 호버 색상 */
+  background-color: #fff20093;  /* 버튼 호버 색상 */
 }

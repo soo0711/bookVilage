@@ -86,13 +86,13 @@ const BookRecommend = ({ handleLogout }) => {
 
       <div className="book-recommendation-page">
         {books.length > 0 ? (
-          <div className="book-list">
+          <div className="book-lists">
             <h2>내가 등록한 책</h2>
-            <div className="book-container">
+            <div className="book-containers">
               {books.map((entry, index) => {
                 const book = entry.book;
                 return (
-                  <div key={index} className="book-card" onClick={() => handleBookClick(entry)}>
+                  <div key={index} className="book-cardd" onClick={() => handleBookClick(entry)}>
                     <img src={book.cover} alt={book.title} />
                     <h3>{book.title}</h3>
                     <p>저자: {book.author}</p>

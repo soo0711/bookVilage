@@ -78,7 +78,7 @@
   width: 35px;
   height: 35px;
   padding: 0;
-  background: none;
+  background: none !important;
   border: none;
   cursor: pointer;
   align-items: center;

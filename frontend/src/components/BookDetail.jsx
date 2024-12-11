@@ -58,7 +58,10 @@ const BookDetail = ({ isLoggedIn, username, handleLogout }) => {
 
   if (loading) return <div>로딩중...</div>;
   if (error) return <div>{error}</div>;
-  if (!bookData) return <div>책 정보를 찾을 수 없습니다.</div>;
+  if (!bookData) {
+    console.log("bookData:", bookData); // 디버깅용
+    return <div>책 정보를 찾을 수 없습니다.</div>;
+  }
 
   return (
     <>
@@ -77,7 +80,7 @@ const BookDetail = ({ isLoggedIn, username, handleLogout }) => {
             <div className="book-meta">
               <p><strong>저자:</strong> {bookData.author}</p>
               <p><strong>출판사:</strong> {bookData.publisher}</p>
-              <p><strong>출판일:</strong> {new Date(bookData.pubdate).toLocaleDateString()}</p>
+              <p><strong>출판일:</strong> {new Date(bookData.pubDate).toLocaleDateString()}</p>
               <p><strong>카테고리:</strong> {bookData.category}</p>
             </div>
             <div className="book-description">
@@ -86,7 +89,7 @@ const BookDetail = ({ isLoggedIn, username, handleLogout }) => {
             </div>
           </div>
         </div>
-          <button type="button" onClick={() => navigate(-1)}>
+          <button type="button" class="back-btn" onClick={() => navigate(-1)}>
           이전으로
         </button>
       </div>
