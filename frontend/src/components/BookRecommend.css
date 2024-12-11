@@ -63,7 +63,3 @@
 .register-button-container button:hover {
   background-color: #0056b3;  /* 버튼 호버 색상 */
 }
-
-.book-exchange{
-  background-color: #03c75a !important;
-}

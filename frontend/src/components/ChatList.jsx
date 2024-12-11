@@ -23,9 +23,8 @@ function ChatList({ username, isLoggedIn }) {
           setMyId(myId);
           console.log(myId);
           const filteredRooms = response.data.userMessageList
-            .filter(item => item.myId !== username) // 내 ID가 아닌 채팅방만
+            .filter(item => item.userList.some(user => user.id !== myId)) // 내 ID가 아닌 유저가 포함된 채팅방 필터링
             .map(item => {
-              // 메시지 목록에서 최신 메시지 찾기
               const latestMessage = item.messageList.reduce((latest, current) => {
                 return new Date(latest.createdAt) > new Date(current.createdAt) ? latest : current;
               }, item.messageList[0]);
@@ -33,7 +32,7 @@ function ChatList({ username, isLoggedIn }) {
               return {
                 ...item.chatRoom,
                 latestMessage,
-                otherUser: item.userList.find(user => user.id !== username)
+                otherUser: item.userList.find(user => user.id !== myId) // myId와 다른 유저만 선택
               };
             });
           setChatRooms(filteredRooms); // 최신 메시지를 포함한 채팅방 목록 설정

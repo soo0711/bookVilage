@@ -70,19 +70,24 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
   }, [client, chatroomId]);
 
   // 메시지 전송
-  const sendMessage = () => {
-    if (client && message.trim()) {
-      const payload = {
-        chatroomId: chatroomId,
-        userId: myId,
-        message: message.trim(),
-      };
+  const [isSending, setIsSending] = useState(false);
 
-      client.send("/pub/message", {}, JSON.stringify(payload));
-      setMessage("");
-    }
-  };
+const sendMessage = () => {
+  if (isSending || !message.trim()) return;
 
+  setIsSending(true);
+  if (client) {
+    const payload = {
+      chatroomId: chatroomId,
+      userId: myId,
+      message: message.trim(),
+    };
+
+    client.send("/pub/message", {}, JSON.stringify(payload));
+    setMessage("");
+  }
+  setIsSending(false);
+};
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       sendMessage();
