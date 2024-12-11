@@ -12,6 +12,8 @@ cd ai\recommend\content_based
 
 # 가상환경 활성화
 python -m venv venv
+
+
 venv\Scripts\activate
 
 ![image](https://github.com/user-attachments/assets/17c5a270-76f2-4efd-bb7d-8e6d5b550249)
@@ -22,7 +24,9 @@ venv\Scripts\activate
 # 이제 부터 모든 명령어는 가상환경 활성화 (왼쪽에 venv) 상태에서 실행
 # 의존성 설치
 python -m pip instasll --upgrade pip
-pip install -r requirements.txt
+
+
+pip install fastapi uvicorn sqlalchemy numpy pymysql
 
 ![image](https://github.com/user-attachments/assets/da796475-3c2c-4040-aad8-92c8b7653315)
 
@@ -45,7 +49,11 @@ https://drive.google.com/drive/folders/1gW_S7U3melPzcinAHKFOYj7aVnYrLMW8?usp=sha
 위의 경로 + embeddings/klue_bert-base하면 됨.
 
 파일 저장 후
+
+"ai\recommend\content_based\embeddings\klue_bert-base" 디렉토리로 이동
+
 python .\decompress_file.py
+
 명령어 실행
 
 
@@ -61,6 +69,13 @@ mysql+pymysql://{username}:{user_password}@{my_sql_ip}:{mysql_port}/{DB_NAME}
 형식으로 DB의 계정 정보와 상태에 맞게 수정
 
 # 서버 가동
+
+ai\recommend\content_based\ 
+
+
+디렉토리로 이동
+
+
 uvicorn main:app --reload
 
 ![image](https://github.com/user-attachments/assets/5c9edf8a-7b92-430b-a8cb-924a078e7955)
