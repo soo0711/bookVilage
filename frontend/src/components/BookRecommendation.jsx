@@ -21,6 +21,14 @@ const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
     });
   };
 
+  const handleImageClick = () => {
+    // ISBN을 이용해 해당 책의 상세 페이지로 이동
+    navigate(`/book/${selectedBook.book.isbn13}`);
+  };
+
+  const handleImageClickExchange = (book) => {
+    navigate(`/book/${book.isbn13}`);
+  };
 
   return (
     <>
@@ -35,7 +43,7 @@ const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
           {selectedBook ? (
             <>
               <div className="user-book">
-                <img src={selectedBook.book.cover} alt={selectedBook.book.title} />
+                <img src={selectedBook.book.cover} alt={selectedBook.book.title} onClick={handleImageClick} />
                 <div className="user-book-title">
                   <h3>{displayUsername}님이 선택한 책</h3>
                 </div>
@@ -56,11 +64,11 @@ const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
                 {recommendedBooks.length > 0 ? (
                   recommendedBooks.map((book, index) => (
                     <div key={index} className="book-card">
-                      <img src={book.cover} alt={book.title} />
+                      <img src={book.cover} onClick={() => handleImageClickExchange(book)}  alt={book.title} />
                       <h3>{book.title}</h3>
                       <p>{book.author}</p>
                       {/* 교환 리스트 버튼 추가 */}
-                      <button onClick={() => handleExchangeClick(book)}>
+                      <button onClick={() => handleExchangeClick(book)} className="book-exchange">
                         교환 리스트 보기
                       </button>
                     </div>
