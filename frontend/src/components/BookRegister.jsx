@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom'; 
 import "./BookRegister.css";
 import axios from "axios"; // 백엔드 연동시 주석 해제
@@ -21,13 +21,88 @@ const BookRegister = ({ onRegister, handleLogout }) => {
     b_description: "",
     isbn13: "",
     review: "",
-    place: "", // 교환 장소 추가
-    cover: "", 
-    description: "", 
-    publisher: "", 
-    pubdate: "", 
-    category: ""
+    place: "",
+    cover: "",
+    description: "",
+    publisher: "",
+    pubdate: "",
+    category: "",
+    sidoCd: "ALL",
+    siggCd: "ALL",
+    emdongCd: "ALL"
   });
+
+  const [sidoList, setSidoList] = useState([]);
+const [sigunguList, setSigunguList] = useState([]);
+const [emdongList, setEmdongList] = useState([]);
+
+useEffect(() => {
+  // 시/도 리스트 가져오기
+  const fetchSidoList = async () => {
+    try {
+      const response = await axios.post("http://localhost:80/region/sido");
+      if (response.data.code === 200) {
+        setSidoList(response.data.sido);
+      } else {
+        alert(response.data.error_message);
+      }
+    } catch (error) {
+      console.error("Error fetching Sido list:", error);
+    }
+  };
+
+  fetchSidoList();
+}, []);
+
+const handleSidoChange = async (e) => {
+  const selectedSido = e.target.value;
+  setFormData((prev) => ({ ...prev, sidoCd: selectedSido, siggCd: "ALL", emdongCd: "ALL" }));
+  
+  if (selectedSido !== "ALL") {
+    try {
+      const response = await axios.post("http://localhost:80/region/sigungu", { sido: selectedSido });
+      if (response.data.code === 200) {
+        setSigunguList(response.data.sigungu);
+      } else {
+        alert(response.data.error_message);
+      }
+    } catch (error) {
+      console.error("Error fetching Sigungu list:", error);
+    }
+  } else {
+    setSigunguList([]);
+    setEmdongList([]);
+  }
+};
+
+const handleSigunguChange = async (e) => {
+  const selectedSigungu = e.target.value;
+  setFormData((prev) => ({ ...prev, siggCd: selectedSigungu, emdongCd: "ALL" }));
+
+  if (selectedSigungu !== "ALL") {
+    try {
+      const response = await axios.post("http://localhost:80/region/emdonge", { 
+        sido: formData.sidoCd, 
+        sigungu: selectedSigungu 
+      });
+
+      if (response.data.code === 200) {
+        setEmdongList(response.data.sido); // 여기를 수정: sido -> emdong
+      } else {
+        alert(response.data.error_message);
+      }
+    } catch (error) {
+      console.error("Error fetching Emdong list:", error);
+    }
+  } else {
+    setEmdongList([]);
+  }
+};
+
+const handleEmdongChange = (e) => {
+  const selectedEmdong = e.target.value;
+  setFormData((prev) => ({ ...prev, emdongCd: selectedEmdong }));
+};
 
   const [searchResults, setSearchResults] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,7 +192,7 @@ const BookRegister = ({ onRegister, handleLogout }) => {
         b_condition: formData.b_condition,
         b_description: formData.b_description,
         exchange_YN: formData.exchange_YN,
-        place: formData.place,
+        place: formData.sidoCd + " " + formData.siggCd + " " + formData.emdongCd,
         cover: formData.cover, 
         description: formData.description, 
         publisher: formData.publisher,  
@@ -263,51 +338,31 @@ const BookRegister = ({ onRegister, handleLogout }) => {
               />
                <div className="search-box public-srch02">
               <div className="sch-in sch-in-ty1">
-                <div className="select-group">
-                  <span className="select-wrap">
-                    <label htmlFor="sidoCd">지역</label>
-                    <select name="sidoCd" id="sidoCd" title="지역선택">
-                      <option value="ALL">시/도 전체</option>
-                      <option value="6110000">서울특별시</option>
-                      <option value="6260000">부산광역시</option>
-                      <option value="6270000">대구광역시</option>
-                      <option value="6280000">인천광역시</option>
-                      <option value="6290000">광주광역시</option>
-                      <option value="6300000">대전광역시</option>
-                      <option value="6310000">울산광역시</option>
-                      <option value="6200000">세종특별자치시</option>
-                      <option value="6410000">경기도</option>
-                      <option value="6530000">강원특별자치도</option>
-                      <option value="6430000">충청북도</option>
-                      <option value="6440000">충청남도</option>
-                      <option value="6540000">전북특별자치도</option>
-                      <option value="6460000">전라남도</option>
-                      <option value="6470000">경상북도</option>
-                      <option value="6480000">경상남도</option>
-                      <option value="6500000">제주특별자치도</option>
-                    </select>
-                  </span>
-                  <span className="select-wrap">
-                    <label htmlFor="siggCd" className="hide2">
-                      <span>시/군/구 선택</span>
-                    </label>
-                    <select name="siggCd" id="siggCd" title="시/군/구 선택">
-                      <option value="ALL">시/군/구 전체</option>
-                      <option value="3220000">강남구</option>
-                      <option value="3240000">강동구</option>
-                      <option value="3080000">강북구</option>
-                    </select>
-                  </span>
-                  <span className="select-wrap">
-                    <label htmlFor="emdongCd" className="hide2">읍/면/동 선택</label>
-                    <select name="emdongCd" id="emdongCd" title="읍/면/동 선택">
-                      <option value="ALL">읍/면/동 전체</option>
-                      <option value="3230055">가락1동</option>
-                      <option value="3230056">가락2동</option>
-                      <option value="3230054">가락본동</option>
-                    </select>
-                  </span>
-                </div>
+              <div className="region-select">
+              <label htmlFor="sidoCd">시/도</label>
+              <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd}>
+                <option value="">시/도 전체</option>
+                {sidoList.map((sido, index) => (
+                  <option key={index} value={sido}>{sido}</option>
+                ))}
+              </select>
+
+              <label htmlFor="siggCd">시/군/구</label>
+              <select name="siggCd" id="siggCd" onChange={handleSigunguChange} value={formData.siggCd}>
+                <option value="">시/군/구 전체</option>
+                {sigunguList.map((sigungu, index) => (
+                  <option key={index} value={sigungu}>{sigungu}</option>
+                ))}
+              </select>
+
+              <label htmlFor="emdongCd">읍/면/동</label>
+              <select name="emdongCd" id="emdongCd" onChange={handleEmdongChange} value={formData.emdongCd}>
+                <option value="">읍/면/동 전체</option>
+                {emdongList.map((emdong, index) => (
+                  <option key={index} value={emdong}>{emdong}</option>
+                ))}
+              </select>
+            </div>
               </div>
             </div>
               <div className="image-preview-container">
@@ -338,7 +393,7 @@ const BookRegister = ({ onRegister, handleLogout }) => {
         </form>
       </div>
       <div className="button-container">
-        <button type="button" onClick={() => navigate('/')}>
+        <button type="button" onClick={() => navigate(-1)}>
           이전 목록
         </button>
         <button type="button" onClick={handleSubmit}>
