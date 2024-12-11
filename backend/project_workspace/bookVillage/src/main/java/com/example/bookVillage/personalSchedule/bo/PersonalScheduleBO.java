@@ -3,6 +3,7 @@ package com.example.bookVillage.personalSchedule.bo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.bookVillage.bookMeeting.bo.BookMeetingBO;
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
 import com.example.bookVillage.community.entity.CommunityEntity;
 import com.example.bookVillage.personalSchedule.entity.PersonalScheduleEntity;
@@ -14,6 +15,9 @@ public class PersonalScheduleBO {
 	@Autowired
 	private PersonalScheduleRepository personalScheduleRepository;
 	
+	@Autowired
+	private BookMeetingBO bookMeetingBO;
+	
 
 	public Integer addpersonalSchdule(Integer userId, Integer bookMeetingId) {
 		
@@ -23,6 +27,8 @@ public class PersonalScheduleBO {
 				.bookMeetingId(bookMeetingId)
 				.build()
 				);
+		
+		bookMeetingBO.updateCurrent(bookMeetingId); // curretn update
 		
 		return personScheduleEntity == null? null : personScheduleEntity.getId();
 	}

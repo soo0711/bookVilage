@@ -43,6 +43,8 @@ public class BookMeetingEntity {
 	
 	private int total;
 	
+	private int current;
+	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp
 	private Date createdAt;

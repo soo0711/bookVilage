@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity.BookMeetingEntityBuilder;
 import com.example.bookVillage.bookMeeting.repository.BookMeetingRepository;
-import com.example.bookVillage.user.entity.UserEntity;
 
 @Service
 public class BookMeetingBO {
@@ -62,6 +61,14 @@ public class BookMeetingBO {
 		}
 		
 		return 0;
+	}
+	
+	public void updateCurrent(int bookMeetingId) {
+		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.findById(bookMeetingId);
+		bookMeetingEntity = bookMeetingEntity.toBuilder()
+				.current(bookMeetingEntity.getCurrent() + 1)
+				.build();
+		bookMeetingRepository.save(bookMeetingEntity); // 데이터 있으면 수정
 	}
 
 }
