@@ -56,6 +56,9 @@
   }
   
   .book-card {
+    display: flex; /* 플렉스 컨테이너 활성화 */
+    flex-direction: column; /* 세로 정렬 */
+    justify-content: space-between; /* 상단 내용과 버튼 사이의 공간 확보 */
     width: 150px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -63,23 +66,34 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     flex-shrink: 0;
-  }
-  
-  .book-card img {
+    height: 350px; /* 고정 높이 추가 */
+}
+
+.book-card img {
     width: 100%;
     height: auto;
     border-radius: 5px;
-  }
-  
-  .book-card button {
-    margin-top: 10px;
-    background-color: #6c63ff;
+}
+
+.book-card h3 {
+    margin: 10px 0;
+    font-size: 1rem; /* 제목 폰트 크기 조정 */
+}
+
+.book-card p {
+    font-size: 0.875rem; /* 저자 정보 폰트 크기 조정 */
+    margin: 5px 0;
+}
+
+.book-card button {
+    margin-top: auto; /* 버튼이 항상 하단에 배치되도록 설정 */
+    background-color: #2ccb73;
     color: white;
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
     cursor: pointer;
-  }
+}
   
   .slide-button {
     position: absolute;

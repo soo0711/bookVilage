@@ -38,13 +38,15 @@ public class bookMeetingRestController {
 		
 		String userLoginId = (String) session.getAttribute("userLoginId");
 		
-		String schedule = requestBody.get("schedule");
-		String place = requestBody.get("place");
-		Integer total = Integer.parseInt(requestBody.get("total"));
+		String subject = requestBody.get("subject"); //제목 
+		String content = requestBody.get("content"); //내용
+		String schedule = requestBody.get("schedule");//일정
+		String place = requestBody.get("place");//장소
+		Integer total = Integer.parseInt(requestBody.get("total"));//모집인원
 		
 
 		// bookmeeting db insert
-		Integer bookMeetingId = bookMeetingBO.addBookMeeting(userLoginId, schedule, place, total);
+		Integer bookMeetingId = bookMeetingBO.addBookMeeting(subject, content, userLoginId, schedule, place, total);
 		
 		Map<String, Object> result = new HashMap<>();
 		if(bookMeetingId != null) {
@@ -64,6 +66,8 @@ public class bookMeetingRestController {
 			@RequestBody Map<String, String> requestBody,
 			HttpSession session){
 		
+		String subject = requestBody.get("subject"); //제목 
+		String content = requestBody.get("content"); //내용
 		String schedule = requestBody.get("schedule");
 		String place = requestBody.get("place");
 		Integer total = Integer.parseInt(requestBody.get("total"));
@@ -77,7 +81,7 @@ public class bookMeetingRestController {
 	
 		int count = 0;
 		if(bookMeetingEntity.getHostLoginid().equals(userLoginId)) {
-			count = bookMeetingBO.updateBookMeeting(bookMeetingId, userLoginId, schedule, place, total);
+			count = bookMeetingBO.updateBookMeeting(bookMeetingId, subject, content, userLoginId, schedule, place, total);
 		}
 		
 		
@@ -95,7 +99,7 @@ public class bookMeetingRestController {
 		return result;
 	}
 	
-	@DeleteMapping("/delete")
+	@PostMapping("/delete")
 	public Map<String, Object> delete(
 			@RequestBody Map<String, String> requestBody,
 			HttpSession session) {

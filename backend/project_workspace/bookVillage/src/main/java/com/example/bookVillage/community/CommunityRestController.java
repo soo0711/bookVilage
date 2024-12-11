@@ -90,7 +90,7 @@ public class CommunityRestController {
 	}
 	
 	
-	@DeleteMapping("/delete")
+	@PostMapping("/delete")
 	public Map<String, Object> delete(
 			@RequestBody Map<String, String> requestBody,
 			HttpSession session) {
