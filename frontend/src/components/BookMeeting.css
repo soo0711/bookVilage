@@ -1,71 +1,186 @@
-.book-meeting-page {
-    background-color: #fffbe6;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    margin: auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin-top:30px;
-    margin-bottom: 50px;
-  }
-  
-  .book-meeting-page h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-    
-  }
-  
-  form input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-  
-  form button {
-    padding: 10px;
-    background-color: #6c63ff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+.book-meeting-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 페이지 헤더 */
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.board-header h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.write-button {
+  padding: 8px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.write-button:hover {
+  background-color: #555;
+}
+
+/* 모임 목록 */
+.meeting-list {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.meeting-item {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.meeting-item:last-child {
+  border-bottom: none;
+}
+
+.meeting-item:hover {
+  background-color: #f9f9f9;
+}
+
+/* 모임 정보 */
+.meeting-info {
+  flex: 1;
+}
+
+.meeting-info h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.meeting-info p {
+  color: #666;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.meeting-info .created-at {
+  font-size: 12px;
+  color: #999;
+  margin-top: 10px;
+}
+
+/* 참가하기 버튼 */
+.join-button {
+  min-width: 100px;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: white; /* 배경색 흰색 */
+  color: black; /* 글씨색 검정 */
+  border: 2px solid #ffc0cb; /* 테두리 연핑크 */
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.join-button:hover:not(:disabled) {
+  background-color: #5749d4;
+  transform: translateY(-1px);
+}
+
+.join-button.full,
+.join-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* 모임 만들기 폼 */
+.meeting-form {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.meeting-form h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.meeting-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.meeting-form input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.meeting-form input:focus {
+  outline: none;
+  border-color: #6c63ff;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.form-buttons button[type="submit"] {
+  background-color: white; /* 배경색 흰색 */
+    color: black; /* 글씨색 검정 */
+    border: 2px solid #ffc0cb; /* 테두리 연핑크 */
+    border-radius: 4px;
     cursor: pointer;
-  }
-  
-  form button:hover {
-    background-color: #5749d4;
-  }
-  
-  .book-meeting-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .book-meeting-item {
-    background-color: #f9f9f9;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .book-meeting-item button {
-    margin-right: 10px;
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .book-meeting-item button:hover {
-    background-color: #0056b3;
-  }
+    font-size: 1em;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background-color: #edc7e1;
+}
+
+.form-buttons button[type="button"] {
+  background-color: white; /* 배경색 흰색 */
+  color: black; /* 글씨색 검정 */
+  border: 2px solid #e51034; /* 테두리 연핑크 */
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.form-buttons button[type="button"]:hover {
+  background-color: #d32f2f;
+}
   

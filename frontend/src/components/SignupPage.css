@@ -25,72 +25,81 @@
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   width: 100%;
 }
 
 .input-wrapper {
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .input-field {
   width: 100%;
-  padding: 12px;
+  height: 48px;
+  padding: 0 12px;
   border: 1px solid #dadada;
   border-radius: 6px;
   font-size: 15px;
   outline: none;
+  box-sizing: border-box;
 }
 
 .input-field:focus {
   border-color: #a5e6c2;
 }
 
+/* 아이디 입력 그룹 스타일 */
 .id-input-wrapper {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  width: 100%;
+display: flex;
+align-items: center; /* 이 부분이 핵심! 세로 중앙 정렬 */
+gap: 10px;
+width: 100%;
 }
 
+/* 아이디 입력 필드 */
 .id-input-wrapper .input-field {
-  flex: 1;
+flex: 1;
+height: 48px;
+margin: 0;
 }
 
+/* 중복확인 버튼 */
 .check-id-button {
-  padding: 12px 15px;
-  background-color: #fff7d6;
-  color: black;
-  border: 1px solid #ffe066;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.3s;
+height: 48px;
+padding: 0 15px;
+background-color: #fff7d6;
+color: black;
+border: 1px solid #ffe066;
+border-radius: 6px;
+font-size: 14px;
+cursor: pointer;
+white-space: nowrap;
+min-width: 100px;
+margin: 0; /* 마진 제거 */
 }
-
 .check-id-button:hover {
   background-color: #fff0b3;
 }
 
 .submit-button {
-  width: calc(100% - 14px); /* padding을 고려한 너비 조정 */
-  padding: 20px;
+  width: 100%;
+  height: 48px;
   background-color: white !important;
   color: black !important;
-  border: 2px solid #ffc0cb !important;
+  border: 2px solid #fff0b3 !important;
   border-radius: 6px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 20px;
+  padding: 0;
 }
 
 
 .submit-button:hover {
-  background-color: #ffe6e6 !important;
+  background-color: #fff0b3 !important;
 }
 
 /* 반응형 디자인 */
@@ -101,5 +110,10 @@
   
   .input-field {
     font-size: 14px;
+  }
+  
+  .check-id-button {
+    min-width: 80px;
+    font-size: 13px;
   }
 }

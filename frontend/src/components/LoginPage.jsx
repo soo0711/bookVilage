@@ -18,6 +18,10 @@ const LoginPage = ({ onLogin }) => {
     }));
   };
 
+  const handleClick = () => {
+    window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
+  };
+
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   // 로그인 처리 로직 (API 호출)
@@ -77,10 +81,11 @@ const LoginPage = ({ onLogin }) => {
   return (
     <div className="login-page">
       <div className="login-form-container">
+        <div onClick={handleClick}>
         {/* 로고와 타이틀 */}
-        <img src="/assets/logo.png" alt="로고" className="logo" />
-        <img src="/assets/title.png" alt="타이틀" className="title" />
-        
+          <img src="/assets/logo.png" alt="로고" className="logo" />
+          <img src="/assets/title.png" alt="타이틀" className="title" />
+        </div>
         <form onSubmit={handleSubmit}>
           <input
             type="text"

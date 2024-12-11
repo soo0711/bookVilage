@@ -24,12 +24,36 @@ background-color: transparent;
 border: none;
 cursor: pointer;
 z-index: 10;
+outline: none;
+-webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .prev-btn img,
 .next-btn img {
 width: 25px; 
 height: 25px; 
+pointer-events: none;
+}
+
+
+.prev-btn:hover,
+.next-btn:hover,
+.prev-btn:active,
+.next-btn:active,
+.prev-btn:focus,
+.next-btn:focus,
+.prev-btn:focus-visible,
+.next-btn:focus-visible,
+.prev-btn:visited,
+.next-btn:visited {
+  background-color: transparent !important;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  box-shadow: none !important;
 }
 
 

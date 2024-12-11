@@ -51,7 +51,10 @@ const SignupPage = () => {
 };
 
   
-  
+const handleClick = () => {
+  window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
+};
+
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   try {
@@ -121,9 +124,10 @@ const SignupPage = () => {
 
   return (
     <div className="signup-container">
-      <img src="/assets/logo.png" alt="로고" className="logo" />
-      <img src="/assets/title.png" alt="타이틀" className="title" />
-      
+      <div onClick={handleClick}>
+        <img src="/assets/logo.png" alt="로고" className="logo" />
+        <img src="/assets/title.png" alt="타이틀" className="title" />
+      </div>
       <form onSubmit={handleSubmit} className="signup-form">
         <div className="input-group">
           <div className="id-input-wrapper">
