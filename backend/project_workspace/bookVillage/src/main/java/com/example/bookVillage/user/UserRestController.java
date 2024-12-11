@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -199,5 +198,26 @@ public class UserRestController {
 	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
 	}
 	
-	
+	@PostMapping("/myPage")
+	public Map<String, Object> myPage(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session){
+		
+		int userId = (Integer)session.getAttribute("userId");
+		
+		// db select
+		UserEntity user = userBO.getUserEntityById(userId);
+		
+		Map<String, Object> result = new HashMap<>();
+		if (user != null) {
+			result.put("userEntity",user);
+			result.put("code", 200);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "사용자 정보를 찾을 수 없습니다.");
+		}
+		
+		return result;
+	}
 }

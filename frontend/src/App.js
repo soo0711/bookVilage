@@ -25,13 +25,19 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [client, setClient] = useState(null); // WebSocket 클라이언트
-  const [userId, setUserId] = useState(null); // userId 상태 추가
+  const [userId, setUserId] = useState(() => {
+    return localStorage.getItem('userId') || null;  
+  });
 
-  const handleLogin = (loginId, userId) => {
+  const handleLogin = (loginId, userId) => {  // userId도 받아오도록 수정
     setIsLoggedIn(true);
     setUsername(loginId);
-    setUserId(userId);
+    setUserId(userId);  // userId 설정
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('username', loginId);
+    localStorage.setItem('userId', userId);  
   };
+
 
   const handleLogout = async () => {
     try {
@@ -109,7 +115,7 @@ function App() {
         <Route path="/profile/:userId" element={<Profile />} />
         <Route path="/chatlist" element={<ChatList username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>}  />
         <Route path="/book/:isbn"  element={<BookDetail isLoggedIn={isLoggedIn} username={username} handleLogout={handleLogout}/>} />
-        <Route path="/myPage" element={<MyPage username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/myPage" element={<MyPage  userId={userId} username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/search" element={<SearchResults username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/profile/:userId" element={<Profile  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route

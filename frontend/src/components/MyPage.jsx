@@ -6,12 +6,15 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import axios from "axios"; // Axios 추가
 
-const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout }) => {
+const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(propIsLoggedIn);
   const [isLoading, setIsLoading] = useState(true);
   const [activeMenu, setActiveMenu] = useState('manage-books');
   const [userLoginId, setUserLoginId] = useState(null);
+  const [userId, setUserId] = useState(null);
+
+  console.log(userId);
 
   useEffect(() => {
     // Header와 동일한 API를 호출하여 로그인 상태 확인
@@ -22,6 +25,7 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout }) => {
       if (response.data.userId && response.data.userLoginId) {
         setIsLoggedIn(true);
         setUserLoginId(response.data.userLoginId);
+        setUserId(response.data.userId);
       } else {
         navigate('/user/sign-in-view');
       }
@@ -411,70 +415,125 @@ const ManageBooks = () => {
 
 // EditProfile 컴포넌트 수정
 const EditProfile = () => {
-    const navigate = useNavigate(); // useNavigate 훅 추가
-  
-    const handleWithdrawal = (e) => {
-      e.preventDefault();
-      if (window.confirm("정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
-        try {
-          // TODO: API 연    시 실제 회원탈퇴 요청 추가
+  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState({
+    loginId: "",
+    email: "",
+    name: "",
+    phoneNumber: "",
+  });
+
+  useEffect(() => {
+    // 사용자 정보 불러오기
+    axios.post("http://localhost:80/user/myPage", {}, { withCredentials: true })
+      .then(response => {
+        if (response.data.code === 200 && response.data.userEntity) {
+          const user = response.data.userEntity;
+          setUserInfo({
+            loginId: user.loginId,
+            email: user.email,
+            name: user.name,
+            phoneNumber: user.phoneNumber,
+          });
+        } else {
+          console.error("사용자 인증 실패:", response.data.error_message);
+          navigate('/user/sign-in-view'); // 로그인 페이지로 이동
+        }
+      })
+      .catch(error => {
+        console.error("사용자 정보 불러오기 실패:", error);
+        navigate('/user/sign-in-view');
+      });
+  }, [navigate]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserInfo(prevState => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    // 사용자 정보 수정 API 호출
+    axios.put("http://localhost:80/user/update", userInfo, { withCredentials: true })
+      .then(response => {
+        if (response.data.code === 200) {
+          alert("정보 수정이 완료되었습니다.");
+        } else {
+          alert("정보 수정에 실패하였습니다.");
+        }
+      })
+      .catch(error => {
+        console.error("정보 수정 중 오류 발생:", error);
+        alert("정보 수정 중 오류가 발생했습니다.");
+      });
+  };
+
+  const handleWithdrawal = (e) => {
+    e.preventDefault();
+    if (window.confirm("정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+      axios.delete("http://localhost:80/user/delete", { withCredentials: true })
+        .then(() => {
           alert("회원탈퇴가 완료되었습니다.");
           navigate('/'); // 홈페이지로 이동
-        } catch (error) {
+        })
+        .catch(error => {
           console.error("회원탈퇴 중 오류 발생:", error);
           alert("회원탈퇴 중 오류가 발생했습니다.");
-        }
-      }
-    };
-  
-    return (
-      <div className="edit-profile">
-        <h3>개인 정보 수정</h3>
-        <form className="profile-form">
-          <div className="form-group">
-            <label>아이디</label>
-            <input type="text" value="user123" disabled />
-          </div>
-          <div className="form-group">
-            <label>이메일</label>
-            <input type="email" value="user@example.com" disabled />
-          </div>
-          <div className="form-group">
-            <label>이름</label>
-            <input type="text" placeholder="이름을 입력하세요" />
-          </div>
-          <div className="form-group">
-            <label>전화번호</label>
-            <input 
-              type="tel" 
-              placeholder="전화번호를 입력하세요 (예: 010-1234-5678)"
-              pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
-            />
-          </div>
-          <div className="form-group">
-            <label>현재 비밀번호</label>
-            <input type="password" placeholder="현재 비밀번호" />
-          </div>
-          <div className="form-group">
-            <label>새 비밀번호</label>
-            <input type="password" placeholder="새 비밀번호" />
-          </div>
-          <div className="form-group">
-            <label>새 비밀번호 확인</label>
-            <input type="password" placeholder="새 비밀번호 확인" />
-          </div>
-          <button type="submit" className="submit-btn">정보 수정</button>
-          <button 
-            type="button" 
-            className="withdrawal-link" 
-            onClick={handleWithdrawal}
-          >
-            회원 탈퇴
-          </button>
-        </form>
-      </div>
-    );
+        });
+    }
   };
-// EditProfile 컴포넌트 수정
+
+  return (
+    <div className="edit-profile">
+      <h3>개인 정보 수정</h3>
+      <form className="profile-form" onSubmit={handleFormSubmit}>
+        <div className="form-group">
+          <label>아이디</label>
+          <input type="text" value={userInfo.loginId} disabled />
+        </div>
+        <div className="form-group">
+          <label>이메일</label>
+          <input
+            type="email"
+            name="email"
+            value={userInfo.email}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>이름</label>
+          <input
+            type="text"
+            name="name"
+            value={userInfo.name}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>전화번호</label>
+          <input
+            type="tel"
+            name="phoneNumber"
+            value={userInfo.phoneNumber}
+            onChange={handleInputChange}
+            pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+          />
+        </div>
+        <button type="submit" className="submit-btn">정보 수정</button>
+        <button
+          type="button"
+          className="withdrawal-link"
+          onClick={handleWithdrawal}
+        >
+          회원 탈퇴
+        </button>
+      </form>
+    </div>
+  );
+};
+
 
 export default MyPage;
