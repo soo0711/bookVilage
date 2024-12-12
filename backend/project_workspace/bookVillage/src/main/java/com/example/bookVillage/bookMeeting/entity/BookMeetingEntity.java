@@ -53,10 +53,6 @@ public class BookMeetingEntity {
 	@UpdateTimestamp
 	private Date updatedAt;
 
-	public static Object builder() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
 
 

@@ -1,11 +1,14 @@
 package com.example.bookVillage.bookMeeting.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity.BookMeetingEntityBuilder;
 import com.example.bookVillage.bookMeeting.repository.BookMeetingRepository;
+import com.example.bookVillage.wishList.entity.WishListEntity;
 
 @Service
 public class BookMeetingBO {
@@ -16,7 +19,7 @@ public class BookMeetingBO {
 			String place, int total) {
 		
 		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.save(
-				((BookMeetingEntityBuilder) BookMeetingEntity.builder())
+				(BookMeetingEntity.builder())
 				.hostLoginid(hostLoginid)
 				.subject(subject)
 				.content(content)
@@ -69,6 +72,16 @@ public class BookMeetingBO {
 				.current(bookMeetingEntity.getCurrent() + 1)
 				.build();
 		bookMeetingRepository.save(bookMeetingEntity); // 데이터 있으면 수정
+	}
+
+
+	public List<BookMeetingEntity> findAll() {
+		return bookMeetingRepository.findAll();
+	}
+
+
+	public List<BookMeetingEntity> findByPlace(String place) {
+		return bookMeetingRepository.findByPlaceContaining(place);
 	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bookVillage.personalSchedule.bo.PersonalScheduleBO;
+import com.example.bookVillage.personalSchedule.entity.PersonalScheduleEntity;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -30,16 +31,25 @@ public class PersonalScheduleRestController {
 		Integer userId = (Integer) session.getAttribute("userId");
 		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
 		
+		Map<String, Object> result = new HashMap<>();
+		
+		//독서모임 일정에 이미 참여 되어있는지 확인
+		PersonalScheduleEntity personalSchedule = personalScheduleBO.getPersonalScheduleByUserIdAndBookMeetingId(userId, bookMeetingId);
+		if(personalSchedule != null) {
+			result.put("code", 204);
+			result.put("result", "이미 참여한 독서모임 입니다.");
+			return result;
+		}
+		
 		// personal db insert
 		Integer personalSchduleId = personalScheduleBO.addpersonalSchdule(userId, bookMeetingId);
 		
-		Map<String, Object> result = new HashMap<>();
 		if(personalSchduleId != null) {
 			result.put("code", 200);
 			result.put("result", "성공");
 		} else {
 			result.put("code", 500);
-			result.put("result", "개인 독서 모임일정 생성 실패");
+			result.put("result", "독서모임 참가 실패");
 		}
 		return result;
 	}

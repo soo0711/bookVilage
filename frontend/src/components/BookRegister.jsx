@@ -339,24 +339,23 @@ const handleEmdongChange = (e) => {
                <div className="search-box public-srch02">
               <div className="sch-in sch-in-ty1">
               <div className="region-select">
-              <label htmlFor="sidoCd">시/도</label>
-              <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd}>
+              <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd} className="region">
                 <option value="">시/도 전체</option>
                 {sidoList.map((sido, index) => (
                   <option key={index} value={sido}>{sido}</option>
                 ))}
               </select>
 
-              <label htmlFor="siggCd">시/군/구</label>
-              <select name="siggCd" id="siggCd" onChange={handleSigunguChange} value={formData.siggCd}>
+
+              <select name="siggCd" id="siggCd" onChange={handleSigunguChange} value={formData.siggCd} className="region">
                 <option value="">시/군/구 전체</option>
                 {sigunguList.map((sigungu, index) => (
                   <option key={index} value={sigungu}>{sigungu}</option>
                 ))}
               </select>
 
-              <label htmlFor="emdongCd">읍/면/동</label>
-              <select name="emdongCd" id="emdongCd" onChange={handleEmdongChange} value={formData.emdongCd}>
+
+              <select name="emdongCd" id="emdongCd" onChange={handleEmdongChange} value={formData.emdongCd} className="region">
                 <option value="">읍/면/동 전체</option>
                 {emdongList.map((emdong, index) => (
                   <option key={index} value={emdong}>{emdong}</option>

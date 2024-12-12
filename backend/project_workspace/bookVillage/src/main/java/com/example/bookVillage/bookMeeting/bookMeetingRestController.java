@@ -1,11 +1,11 @@
 package com.example.bookVillage.bookMeeting;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +37,7 @@ public class bookMeetingRestController {
 			HttpSession session){
 		
 		String userLoginId = (String) session.getAttribute("userLoginId");
+		
 		
 		String subject = requestBody.get("subject"); //제목 
 		String content = requestBody.get("content"); //내용
@@ -120,4 +121,47 @@ public class bookMeetingRestController {
 		return result;
 	}
 
+	
+	@PostMapping("/list")
+	public Map<String, Object> list(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session) {
+		
+		List<BookMeetingEntity> bookMeetingList = bookMeetingBO.findAll();
+		Map<String, Object> result = new HashMap<>();
+		if (bookMeetingList != null && !bookMeetingList.isEmpty()) {
+	        // 채팅방이 존재하는 경우
+	        result.put("code", 200);
+	        result.put("result", "성공");
+	        result.put("bookMeetingList", bookMeetingList);  // 채팅방 목록을 전달
+	    } else {
+	        // 채팅방이 없는 경우
+	        result.put("code", 204); // No Content
+	        result.put("result", "등록된 독서모임 일정이 없습니다.");
+	    }
+
+		return result;
+	}
+	
+	@PostMapping("/listByRegion")
+	public Map<String, Object> listByRegion(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session) {
+		String place = requestBody.get("place");
+		
+		List<BookMeetingEntity> bookMeetingList = bookMeetingBO.findByPlace(place);
+		Map<String, Object> result = new HashMap<>();
+		if (bookMeetingList != null && !bookMeetingList.isEmpty()) {
+	        // 채팅방이 존재하는 경우
+	        result.put("code", 200);
+	        result.put("result", "성공");
+	        result.put("bookMeetingListByplace", bookMeetingList);  // 채팅방 목록을 전달
+	    } else {
+	        // 채팅방이 없는 경우
+	        result.put("code", 204); // No Content
+	        result.put("result", "해당 지역에 독서모임 일정이 없습니다.");
+	    }
+
+		return result;
+	}
 }

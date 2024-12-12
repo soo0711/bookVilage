@@ -101,6 +101,14 @@
   transform: translateY(-1px);
 }
 
+
+.region-search-button{
+  background-color: #ffc0cb;
+  height: 40px;
+  align-items: center;
+  margin-left: 30px;
+}
+
 .join-button.full,
 .join-button:disabled {
   background-color: #cccccc;
@@ -183,4 +191,121 @@
 .form-buttons button[type="button"]:hover {
   background-color: #d32f2f;
 }
-  
+  /* ... 기존 스타일 유지 ... */
+
+/* 모임 제목 스타일 */
+.meeting-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.meeting-title:hover {
+  color: #ffc0cb;
+}
+
+/* 모임 상세 보기 스타일 */
+.meeting-detail {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.meeting-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.meeting-detail-header h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.back-button {
+  padding: 8px 16px;
+  background-color: white;
+  color: black;
+  border: 2px solid #ffc0cb;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #ffe6e6;
+}
+
+.meeting-detail-content {
+  line-height: 1.6;
+}
+
+.meeting-detail-content p {
+  margin: 12px 0;
+  font-size: 16px;
+}
+
+.detail-description {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  line-height: 1.8;
+}
+
+.detail-created-at {
+  color: #999;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+/* 클릭 가능한 영역 표시 */
+.meeting-info {
+  cursor: pointer;
+  padding: 15px;
+  transition: background-color 0.3s;
+}
+
+.meeting-info:hover {
+  background-color: #f9f9f9;
+}
+
+.region-select select {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 8px 10px;
+  outline: none;
+}
+
+.region-select select:focus {
+  border-color: #6c63ff;
+}
+
+.region-select select:hover {
+  border-color: #999;
+  cursor: pointer;
+}
+
+
+.region{
+  margin-right: 40px;
+}
+
+.meeting-search-bar{
+  background-color: #fff; /* 검색 바 배경 흰색 */
+  padding: 15px;
+  margin-bottom: 20px;
+}

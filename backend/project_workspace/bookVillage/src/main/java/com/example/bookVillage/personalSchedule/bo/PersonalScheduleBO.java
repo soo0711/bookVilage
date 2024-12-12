@@ -58,4 +58,8 @@ public class PersonalScheduleBO {
 
 	}
 
+	public PersonalScheduleEntity getPersonalScheduleByUserIdAndBookMeetingId(int userId, int bookMeetingId) {
+		return personalScheduleRepository.findByUserIdAndBookMeetingId(userId, bookMeetingId);
+	}
+
 }
