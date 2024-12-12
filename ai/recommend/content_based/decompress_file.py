@@ -3,9 +3,7 @@ import os
 import shutil
 
 # 압축할 디렉터리 경로
-directory = (
-    "C:/p_project/bookVillage/ai/recommend/content_based/embeddings/klue_bert-base"
-)
+directory = "C:/Users/mcvv0/Desktop/project/ai/recommend/content_based/embeddings/klue_bert-base"
 
 for file_name in os.listdir(directory):
     if file_name.endswith(".npy.gz"):
