@@ -20,6 +20,8 @@ import ChatList from './components/ChatList';
 import BookDetail from "./components/BookDetail";
 import MyPage from "./components/MyPage";
 import SearchResults from './components/SearchResults';
+import BookUpdate from './components/BookUpdate';
+import TasteDetails from './components/TasteDetails';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -116,7 +118,9 @@ function App() {
         <Route path="/chatlist" element={<ChatList username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>}  />
         <Route path="/book/:isbn"  element={<BookDetail isLoggedIn={isLoggedIn} username={username} handleLogout={handleLogout}/>} />
         <Route path="/myPage" element={<MyPage  userId={userId} username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/book/update" element={<BookUpdate  userId={userId} username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/search" element={<SearchResults username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/taste" element={<TasteDetails username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/profile/:userId" element={<Profile  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route
           path="/chat/:chatRoomId"

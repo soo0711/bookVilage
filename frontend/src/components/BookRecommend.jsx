@@ -9,9 +9,9 @@ const BookRecommend = ({ handleLogout }) => {
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [userId, setUserId] = useState(null);
   const [recommendedBooks, setRecommendedBooks] = useState([]); // 추천 도서 상태 추가
   const navigate = useNavigate();
-
 
   useEffect(() => {
     axios
@@ -20,6 +20,7 @@ const BookRecommend = ({ handleLogout }) => {
         if (response.data.userId && response.data.userLoginId) {
           setIsLoggedIn(true);
           setUsername(response.data.userLoginId);
+          setUserId(response.data.userId)
         }
       })
       .catch((error) => {
@@ -72,6 +73,30 @@ const BookRecommend = ({ handleLogout }) => {
     }
   };
 
+  const handleTasteClick = async (userId) => {
+    try {
+      // 선택한 책의 ISBN13을 사용하여 추천 도서 API 호출
+      const response = await axios.get(
+        `http://127.0.0.1:8000/recommend_user/${userId}`,
+        { withCredentials: true }
+      );
+
+      // 추천 도서 목록을 업데이트
+      setRecommendedBooks(response.data.recommendations || []);
+
+      // 추천 도서를 BookRecommendation으로 전달
+      navigate("/taste", {
+        state: {
+          selectedBook: userId,
+          username,
+          recommendedBooks: response.data.recommendations || [],
+        },
+      });
+    } catch (error) {
+      console.error("추천 도서 요청 중 에러 발생:", error);
+    }
+  };
+
   if (loading) {
     return <p>로딩 중...</p>;
   }
@@ -111,6 +136,7 @@ const BookRecommend = ({ handleLogout }) => {
         {/* 항상 책 등록 버튼을 표시 */}
         <div className="register-button-container">
           <button onClick={() => navigate("/book-register")}>책 등록하기</button>
+          <button  onClick={() => handleTasteClick(userId)}>취향 분석</button>
         </div>
       </div>
     </>

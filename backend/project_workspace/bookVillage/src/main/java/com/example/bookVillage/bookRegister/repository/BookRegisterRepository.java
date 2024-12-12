@@ -23,4 +23,6 @@ public interface BookRegisterRepository extends JpaRepository<BookRegisterEntity
 	
 	@Query(value="select round(avg(point),1) as avg , isbn13 from book_register group by isbn13 order by avg desc limit 5", nativeQuery=true)
 	public List<Object[]> findBookAvgPoint();
+	
+	public BookRegisterEntity findByIdAndUserId(int bookRegisterId, int userId);
 }

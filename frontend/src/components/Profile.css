@@ -213,3 +213,29 @@
 .book-card-pro {
   animation: fadeIn 0.5s ease-out;
 }
+
+/* 위시리스트 섹션 스타일 */
+.wishlist-section {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.wishlist-section h3 {
+  color: #303f9f;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e3f2fd;
+}
+
+.wishlist-card {
+  background: linear-gradient(135deg, #fff, #f8f0ff);
+  border: 1px solid #f0e6ff;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(149, 117, 205, 0.2);
+}

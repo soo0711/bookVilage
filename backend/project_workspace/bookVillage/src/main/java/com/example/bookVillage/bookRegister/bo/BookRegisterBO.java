@@ -55,7 +55,7 @@ public class BookRegisterBO {
 				.description(description)
 				.exchange_YN(exchange_YN)
 				.place(place)
-				.stauts(status)
+				.status(status)
 				.build()
 				);
 		
@@ -88,7 +88,7 @@ public class BookRegisterBO {
 	                .b_condition(b_condition)
 	                .description(description)
 	                .place(place)
-	                .stauts(status)
+	                .status(status)
 	                .exchange_YN(exchange_YN)
 	                .build();
 			bookRegisterRepository.save(bookRegisterEntity); // 데이터 있으면 수정
@@ -193,5 +193,13 @@ public class BookRegisterBO {
 		}
 		return book;
 	}
+	
+	public BookRegisterEntity getBookRegisterBookEntity(int bookRegisterId, int userId) {
+		return bookRegisterRepository.findByIdAndUserId(bookRegisterId, userId);
+	}
 
+	public List<BookRegisterEntity> getBookRegisterList(int userId) {
+		return bookRegisterRepository.findByUserId(userId);
+	}
+	
 }

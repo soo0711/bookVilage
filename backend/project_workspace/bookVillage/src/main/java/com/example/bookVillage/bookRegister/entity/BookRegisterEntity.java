@@ -52,7 +52,7 @@ public class BookRegisterEntity {
 	
 	private String place;
 	
-	private String stauts;
+	private String status;
 	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp
