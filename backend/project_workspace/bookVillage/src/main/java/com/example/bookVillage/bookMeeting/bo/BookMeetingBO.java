@@ -84,4 +84,13 @@ public class BookMeetingBO {
 		return bookMeetingRepository.findByPlaceContaining(place);
 	}
 
+
+	public void updateBookMeetingCurrent(int bookMeetingId) {
+		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.findById(bookMeetingId);
+		bookMeetingEntity = bookMeetingEntity.toBuilder()
+				.current(bookMeetingEntity.getCurrent() - 1)
+				.build();
+		bookMeetingRepository.save(bookMeetingEntity); // 데이터 있으면 수정
+	}
+
 }

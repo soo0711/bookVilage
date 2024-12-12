@@ -1,5 +1,7 @@
 package com.example.bookVillage.personalSchedule.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +62,15 @@ public class PersonalScheduleBO {
 
 	public PersonalScheduleEntity getPersonalScheduleByUserIdAndBookMeetingId(int userId, int bookMeetingId) {
 		return personalScheduleRepository.findByUserIdAndBookMeetingId(userId, bookMeetingId);
+	}
+	
+	public PersonalScheduleEntity getPersonalScheduleEntityListById(int personalScheduleId) {
+		return personalScheduleRepository.findById(personalScheduleId).orElse(null);
+	}
+
+	public List<PersonalScheduleEntity> getPersonalScheduleEntityListByUSerId(int userId) {
+		
+		return personalScheduleRepository.findByUserId(userId);
 	}
 
 }

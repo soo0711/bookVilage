@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "./BookMeeting.css";
 import axios from "axios"; //
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; // 스타일 추가
+import { format } from "date-fns";
 
 const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) => {
   const navigate = useNavigate();
@@ -16,7 +19,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
     hostLoginid: username,
     subject: "",
     content: "",
-    schedule: "",
+    schedule: new Date(),
     place: "",
     total: "",
     closeYN: "N",
@@ -26,10 +29,10 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
     detailedPlace: "" // 상세주소 추가
   });
   const [searchQuery, setSearchQuery] = useState('');
-  
   const [sidoList, setSidoList] = useState([]);
   const [sigunguList, setSigunguList] = useState([]);
   const [emdongList, setEmdongList] = useState([]);
+
   useEffect(() => {
     // 시/도 리스트 가져오기
     const fetchSidoList = async () => {
@@ -152,7 +155,8 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
 
   const handleCreate = async (e) => {
     e.preventDefault();
-  
+    const formattedSchedule = format(formData.schedule, "yyyy.MM.dd : HH");
+
     const fullAddress = [
       formData.sidoCd,
       formData.siggCd,
@@ -167,7 +171,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ ...formData, place: fullAddress }), // place에 주소 조합 값 사용
+        body: JSON.stringify({ ...formData, place: fullAddress , schedule: formattedSchedule}), // place에 주소 조합 값 사용
       });
   
       const data = await response.json();
@@ -184,7 +188,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
           hostLoginid: username,
           subject: "",
           content: "",
-          schedule: "",
+          schedule: new Date(), // 초기화
           place: "",
           total: "",
           closeYN: "N",
@@ -304,15 +308,22 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
                 onChange={(e) => setFormData({...formData, subject: e.target.value})}
                 required
               />
-              <input
-                type="text"
-                placeholder="모임 일정 (YYYY.MM.DD : HH시)"
-                value={formData.schedule}
-                onChange={(e) => setFormData({...formData, schedule: e.target.value})}
-                required
-              />
+              <div>
+                <p>모임일정</p>
+                <DatePicker
+                selected={formData.schedule}
+                onChange={(date) => setFormData({ ...formData, schedule: date })}
+                showTimeSelect
+                dateFormat="yyyy.MM.dd : HH" // 포맷 지정
+                timeFormat="HH" // 시간 포맷 지정
+                timeIntervals={60} // 시간 간격
+                placeholderText="날짜와 시간을 선택하세요"
+            />
+              </div>
+
               <div className="search-box public-srch02">
               <div className="sch-in sch-in-ty1">
+              <p>모임장소</p>
               <div className="region-select">
               <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd} className="region">
                 <option value="">시/도 전체</option>
@@ -423,18 +434,27 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
                   <p>참여 가능 인원: {meeting.total - meeting.current}명</p>
                   <p className="created-at">개설일: {new Date(meeting.createdAt).toLocaleDateString()}</p>
                 </div>
-                {isLoggedIn && meeting.hostLoginid !== username && (
-                  <button 
-                    className={`join-button ${meeting.current === meeting.total ? 'full' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleJoin(meeting.id);
-                    }}
-                    disabled={meeting.current === meeting.total}
-                  >
-                    {meeting.current === meeting.total ? '마감' : '참가하기'}
-                  </button>
-                )}
+                {isLoggedIn && meeting.hostLoginid !== userLoginId && (
+                <button 
+                  className={`join-button ${meeting.current === meeting.total ? 'full' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleJoin(meeting.id);
+                  }}
+                  disabled={meeting.current === meeting.total}
+                >
+                  {meeting.current === meeting.total ? '마감' : '참가하기'}
+                </button>
+              )}
+
+              {isLoggedIn && meeting.hostLoginid === userLoginId && (
+                <button 
+                  className="join-button"
+                  onClick={() => navigate(`/modify-meeting/${meeting.id}`)} // 수정 페이지로 이동
+                >
+                  모임 수정
+                </button>
+              )}
               </div>
             ))}
           </div>

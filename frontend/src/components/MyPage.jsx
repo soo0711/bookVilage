@@ -66,70 +66,83 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
   
   const Schedule = () => {
     const [date, setDate] = useState(new Date());
-    const [events, setEvents] = useState([
-      {
-        id: 1,
-        title: "Clean Code 교환 약속",
-        date: "2024-12-10",
-        type: "exchange",
-        location: "강남역 카페",
-        time: "14:00"
-      },
-      {
-        id: 2,
-        title: "독서모임 - 객체지향의 사실과 오해",
-        date: "2024-12-11",
-        type: "bookclub",
-        location: "역삼동 스터디카페",
-        time: "19:00"
+    const [events, setEvents] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      const fetchPersonalSchedule = async () => {
+        try {
+          const response = await axios.post(
+            "http://localhost:80/personal-schdule/list",
+            {},
+            { withCredentials: true }
+          );
+  
+          if (response.data.code === 200) {
+            // 데이터 매핑
+            setEvents(
+              response.data.data.map(({ personalSchedule, bookMeeting }) => ({
+                id: personalSchedule.id, // 일정 ID
+                title: bookMeeting.subject || "제목 없음", // 제목
+                content: bookMeeting.content || "내용 없음", // 내용
+                date: bookMeeting.schedule.split(":")[0].trim().replace(/\./g, "-"), // 날짜: "2024.12.16" → "2024-12-16"
+                time: bookMeeting.schedule.split(":")[1]?.trim() || "시간 미정", // 시간: "13" 또는 "23"
+                location: bookMeeting.place || "위치 없음", // 장소
+                type: "book-meeting", // 일정 유형
+              }))
+            );
+          } else {
+            alert("일정 데이터를 가져오는 데 실패했습니다.");
+          }
+        } catch (error) {
+          console.error("일정 데이터 로드 중 오류:", error);
+          alert("일정 데이터를 가져오는 중 문제가 발생했습니다.");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+  
+      fetchPersonalSchedule();
+    }, []);
+  
+  
+    const handleDeleteEvent = async (eventId) => {
+      if (window.confirm("정말로 이 일정을 삭제하시겠습니까?")) {
+        try {
+          // POST 요청으로 eventId 전달
+          const response = await axios.post(
+            `http://localhost:80/personal-schdule/delete`,
+            { eventId }, // 요청 본문에 eventId 포함
+            { withCredentials: true }
+          );
+    
+          if (response.data.code === 200) {
+            setEvents(events.filter(event => event.id !== eventId));
+            alert("일정이 삭제되었습니다.");
+          } else {
+            alert("일정 삭제에 실패했습니다. " + (response.data.error_message || ""));
+          }
+        } catch (error) {
+          console.error("일정 삭제 중 오류:", error);
+          alert("일정 삭제 중 문제가 발생했습니다.");
+        }
       }
-    ]);
-
+    };
+    
+  
     const getEventsForDate = (date) => {
-      const dateStr = date.toISOString().split('T')[0];
+      const dateStr = date.toISOString().split("T")[0];
       return events.filter(event => event.date === dateStr);
     };
-
-    const handleAddEvent = () => {
-      const newEvent = {
-        id: events.length + 1,
-        title: prompt("이벤트 제목을 입력하세요:"),
-        date: date.toISOString().split('T')[0],
-        type: prompt("이벤트 유형을 입력하세요 (exchange/bookclub):"),
-        location: prompt("이벤트 장소를 입력하세요:"),
-        time: prompt("이벤트 시간을 입력하세요 (예: 14:00):")
-      };
-      setEvents([...events, newEvent]);
-    };
-
-    const handleEditEvent = (eventId) => {
-      const eventToEdit = events.find(event => event.id === eventId);
-      if (eventToEdit) {
-        const updatedEvent = {
-          ...eventToEdit,
-          title: prompt("일정 제목을 수정하세요:", eventToEdit.title),
-          type: prompt("일정 유형을 수정하세요 (exchange/bookclub):", eventToEdit.type),
-          location: prompt("일정 장소를 수정하세요:", eventToEdit.location),
-          time: prompt("일정 시간을 수정하세요 (예: 14:00):", eventToEdit.time)
-        };
-        setEvents(events.map(event => event.id === eventId ? updatedEvent : event));
-      }
-    };
-
-    const handleDeleteEvent = (eventId) => {
-      if (window.confirm("정말로 이 일정을 삭제하시겠습니까?")) {
-        setEvents(events.filter(event => event.id !== eventId));
-      }
-    };
-
+  
     const tileContent = ({ date, view }) => {
-      if (view === 'month') {
+      if (view === "month") {
         const dayEvents = getEventsForDate(date);
         return dayEvents.length > 0 ? (
           <div className="event-dot-container">
             {dayEvents.map(event => (
-              <div 
-                key={event.id} 
+              <div
+                key={event.id}
                 className={`event-dot ${event.type}`}
                 title={event.title}
               />
@@ -138,7 +151,7 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
         ) : null;
       }
     };
-
+  
     const tileClassName = ({ date, view }) => {
       if (view === 'month') {
         const dayEvents = getEventsForDate(date);
@@ -165,16 +178,13 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
               {getEventsForDate(date).map(event => (
                 <div key={event.id} className={`event-item ${event.type}`}>
                   <h5>{event.title}</h5>
-                  <p>시간: {event.time}</p>
+                  <p>내용: {event.content}</p>
+                  <p>시간: {event.time} 시</p>
                   <p>장소: {event.location}</p>
-                  <button onClick={() => handleEditEvent(event.id)}>수정</button>
                   <button onClick={() => handleDeleteEvent(event.id)}>삭제</button>
                 </div>
               ))}
             </div>
-            <button onClick={handleAddEvent} className="add-event-btn">
-              일정 추가
-            </button>
           </div>
         </div>
       </div>

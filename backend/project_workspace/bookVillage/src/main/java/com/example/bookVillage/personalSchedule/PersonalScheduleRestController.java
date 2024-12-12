@@ -1,10 +1,10 @@
 package com.example.bookVillage.personalSchedule;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bookVillage.bookMeeting.bo.BookMeetingBO;
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
+import com.example.bookVillage.card.bo.PersonalBookMeetingBO;
+import com.example.bookVillage.card.entity.PersonalBookMeetingEntity;
 import com.example.bookVillage.personalSchedule.bo.PersonalScheduleBO;
 import com.example.bookVillage.personalSchedule.entity.PersonalScheduleEntity;
 
@@ -26,6 +28,9 @@ public class PersonalScheduleRestController {
 	
 	@Autowired
 	private BookMeetingBO bookMeetingBO;
+	
+	@Autowired
+	private PersonalBookMeetingBO personalBookMeetingBO;
 
 	// 개인일정 create
 	@PostMapping("/create")
@@ -69,17 +74,19 @@ public class PersonalScheduleRestController {
 	}
 	
 	// 개인 일정 삭제
-	@DeleteMapping("/delete")
+	@PostMapping("/delete")
 	public  Map<String, Object> personalSchduleDelete(
 			@RequestBody Map<String, String> requestBody,
 			HttpSession session){
 		
 		Integer userId = (Integer) session.getAttribute("userId");
-		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
+		int personalSchduleId = Integer.parseInt(requestBody.get("eventId"));
 		
+		PersonalScheduleEntity personalScheduleEntity = personalScheduleBO.getPersonalScheduleEntityListById(personalSchduleId);
+		int bookMeetingId = personalScheduleEntity.getBookMeetingId();
 		// 삭제 bo
 		int count = personalScheduleBO.deletePersonalSchdeuleByUserIdAndBookMeetingId(userId, bookMeetingId);
-		
+		bookMeetingBO.updateBookMeetingCurrent(bookMeetingId);
 		// 응답값
 		Map<String, Object> result = new HashMap<>();
 		if(count > 0) {
@@ -90,6 +97,28 @@ public class PersonalScheduleRestController {
 			result.put("error_message", "개인 독서 모임 일정 삭제에 실패했습니다.");
 		}
 		
+		return result;
+	}
+	
+	@PostMapping("/list")
+	public  Map<String, Object> personalSchduleList(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session){
+		
+		Integer userId = (Integer) session.getAttribute("userId");
+		List<PersonalBookMeetingEntity> personalBookMeetingList = personalBookMeetingBO.getPersonalBookMeetingList(userId);
+
+		Map<String, Object> result = new HashMap<>();
+		if (personalBookMeetingList != null && !personalBookMeetingList.isEmpty()) {
+	        // 채팅방이 존재하는 경우
+	        result.put("code", 200);
+	        result.put("result", "성공");
+	        result.put("data", personalBookMeetingList);  // 채팅방 목록을 전달
+	    } else {
+	        // 채팅방이 없는 경우
+	        result.put("code", 204); // No Content
+	        result.put("result", "참여한 독서 모임이 없습니다.");
+	    }
 		return result;
 	}
 }
