@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Date
+from sqlalchemy import Column, Integer, String, Text, Date, Float, TIMESTAMP
 from database import Base
 
 
@@ -30,3 +30,28 @@ class BookRegister(Base):
     place = Column(Text)
     createdAt = Column(Date)
     updatedAt = Column(Date)
+
+
+class Reviews(Base):
+    __tablename__ = "reviews"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    isbn13 = Column(String(255), index=True)
+    review_content = Column(Text, nullable=False)
+
+
+class Keywords(Base):
+    __tablename__ = "keywords"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    isbn13 = Column(String(255), nullable=False, index=True)
+    keyword = Column(String(255), nullable=False)
+    frequency = Column(Float, nullable=False)
+    created_at = Column(TIMESTAMP, nullable=False)
+
+
+class KeywordReviews(Base):
+    __tablename__ = "keyword_reviews"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    isbn13 = Column(String(255), nullable=False, index=True)
+    keyword = Column(String(255), nullable=False)
+    review_id = Column(Integer, nullable=False)
+    created_at = Column(TIMESTAMP, nullable=False)

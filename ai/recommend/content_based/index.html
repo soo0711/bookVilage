@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword WordCloud</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        #wordcloud {
+            width: 800px;
+            height: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #review-list {
+            margin-top: 20px;
+            padding: 0;
+            list-style: none;
+        }
+
+        #review-list li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Keyword WordCloud</h1>
+    <div id="wordcloud"></div>
+    <h2>Reviews for <span id="selected-keyword">None</span></h2>
+    <ul id="review-list"></ul>
+
+    <script>
+        const API_BASE_URL = "http://127.0.0.1:8000"; // FastAPI 서버 주소
+
+        // API 호출 함수
+        async function fetchKeywordData(isbn13) {
+            const response = await fetch(`${API_BASE_URL}/keyword/${isbn13}`);
+            if (!response.ok) {
+                console.error("Failed to fetch keyword data.");
+                return null;
+            }
+            return await response.json();
+        }
+
+        // 워드클라우드 렌더링
+        function renderWordCloud(data) {
+            const keywords = data.keywords;
+            const keywordReviews = data.keyword_reviews;
+
+            const svg = d3.select("#wordcloud")
+                .append("svg")
+                .attr("width", 800)
+                .attr("height", 400);
+
+            const fontSizeScale = d3.scaleLinear()
+                .domain([0, d3.max(keywords, d => d.count)])
+                .range([15, 50]);
+
+            svg.selectAll("text")
+                .data(keywords)
+                .enter()
+                .append("text")
+                .text(d => d.keyword)
+                .attr("x", () => Math.random() * 800)
+                .attr("y", () => Math.random() * 400)
+                .attr("font-size", d => fontSizeScale(d.count))
+                .attr("fill", "black")
+                .style("cursor", "pointer")
+                .on("click", (event, d) => showReviews(d.keyword, keywordReviews[d.keyword]));
+        }
+
+        // 리뷰 표시
+        function showReviews(keyword, reviews) {
+            document.getElementById("selected-keyword").innerText = keyword;
+            const reviewList = document.getElementById("review-list");
+            reviewList.innerHTML = reviews.map(review => `<li>${review}</li>`).join("");
+        }
+
+        // 데이터 가져와 워드클라우드 렌더링
+        (async function () {
+            const isbn13 = "9788936434120"; // 테스트용 ISBN13
+            const data = await fetchKeywordData(isbn13);
+
+            if (data) {
+                renderWordCloud(data);
+            } else {
+                console.error("No data available for the given ISBN13.");
+            }
+        })();
+    </script>
+</body>
+</html>

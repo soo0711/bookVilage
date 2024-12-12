@@ -26,12 +26,13 @@ class PrecomputedRecommender:
         self.model_name = model_name or DEFAULT_MODEL_NAME
         self.embeddings = None
         self.similarities = None
+        self.title_similarities = None
         self.metadata = None
         self.load_model_files()
 
     def load_model_files(self):
         """
-        지정된 모델의 임베딩, 유사도, 메타데이터 파일 로드
+        지정된 모델의 임베딩, 유사도, 제목 유사도, 메타데이터 파일 로드
         """
         try:
             # 모델 이름을 안전한 경로로 변환
@@ -41,6 +42,9 @@ class PrecomputedRecommender:
             embeddings_dir = os.path.join("embeddings", safe_model_name)
             self.embeddings_file = os.path.join(embeddings_dir, "embeddings.npy")
             self.similarities_file = os.path.join(embeddings_dir, "similarities.npy")
+            self.title_similarities_file = os.path.join(
+                embeddings_dir, "title_similarities.npy"
+            )
             self.metadata_file = os.path.join(embeddings_dir, "book_metadata.npy")
 
             # 데이터 로드
@@ -56,9 +60,14 @@ class PrecomputedRecommender:
                 raise FileNotFoundError(
                     f"메타데이터 파일이 존재하지 않습니다: {self.metadata_file}"
                 )
+            if not os.path.exists(self.title_similarities_file):
+                raise FileNotFoundError(
+                    f"제목 유사도 파일이 존재하지 않습니다: {self.title_similarities_file}"
+                )
 
             self.embeddings = np.load(self.embeddings_file)
             self.similarities = np.load(self.similarities_file)
+            self.title_similarities = np.load(self.title_similarities_file)
             self.metadata = np.load(self.metadata_file, allow_pickle=True)
 
         except Exception as e:
@@ -74,7 +83,7 @@ class PrecomputedRecommender:
 
     def recommend(self, user_isbns, top_n=5):
         """
-        사용자 읽은 책 기반 추천
+        사용자 읽은 책 기반 추천, 동일 시리즈 제외
         """
         # 모든 ISBN을 문자열로 변환
         user_isbns = [str(isbn) for isbn in user_isbns]
@@ -99,8 +108,26 @@ class PrecomputedRecommender:
         for idx in user_indices:
             user_similarity[idx] = -np.inf
 
-        # 상위 N개의 책 추천
-        top_indices = np.argsort(user_similarity)[::-1][:top_n]
-        recommendations = [self.metadata[idx] for idx in top_indices]
+        # 상위 N개의 추천 후보 생성
+        top_indices = np.argsort(user_similarity)[::-1]
+        recommendations = []
+        seen_series = set()
+
+        for idx in top_indices:
+            if len(recommendations) >= top_n:
+                break
+
+            book = self.metadata[idx]
+
+            # 제목 간 유사도를 기반으로 동일 시리즈 책 제외
+            is_similar_series = any(
+                self.title_similarities[idx][other_idx] > 0.8
+                for other_idx in seen_series
+            )
+            if is_similar_series:
+                continue
+
+            recommendations.append(book)
+            seen_series.add(idx)
 
         return recommendations
