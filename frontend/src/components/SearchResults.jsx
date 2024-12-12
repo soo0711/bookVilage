@@ -3,12 +3,27 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import './SearchResults.css';
 import axios from "axios";
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+
 
 const SearchResults = () => {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [books, setLocalBooks] = useState([]);  // 로컬 상태에서만 책 데이터 관리
   const navigate = useNavigate();
+  const [wishlist, setWishlist] = useState(new Set());
+
+  const toggleWishlist = (isbn) => {
+    setWishlist(prev => {
+      const newWishlist = new Set(prev);
+      if (newWishlist.has(isbn)) {
+        newWishlist.delete(isbn);
+      } else {
+        newWishlist.add(isbn);
+      }
+      return newWishlist;
+    });
+  };
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -82,6 +97,15 @@ const handleImageClick = (selectedBook) => {
                 <p className="book-author">{book.author}</p>
                 <p className="book-publisher">{book.publisher}</p>
               </div>
+              <button 
+              className="wishlist-button"
+              onClick={() => toggleWishlist(book.isbn)}
+            >
+              {wishlist.has(book.isbn) ? 
+                <FaHeart className="heart-filled" /> : 
+                <FaRegHeart />
+              }
+            </button>
             </div>
           ))}
         </div>

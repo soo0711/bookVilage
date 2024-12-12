@@ -1,13 +1,11 @@
 package com.example.bookVillage.bookRegister;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bookVillage.bookRegister.bo.BookRegisterBO;
+import com.example.bookVillage.bookRegister.entity.BookRegisterEntity;
 import com.example.bookVillage.card.bo.BookCardBO;
 import com.example.bookVillage.card.bo.UserBookRegisterBO;
 import com.example.bookVillage.card.entity.BookCardEntity;
@@ -82,7 +81,7 @@ public class BookRegisterRestCotroller {
 			result.put("result", "성공");
 		} else {
 			result.put("code", 500);
-			result.put("result", "책 등록 실패"); // 이미 책이 등록되어 있는 경우
+			result.put("error_message", "책 등록 실패"); // 이미 책이 등록되어 있는 경우
 		}
 		
 		return result;
@@ -115,7 +114,7 @@ public class BookRegisterRestCotroller {
 			result.put("result", "성공");
 		} else {
 			result.put("code", 500);
-			result.put("result", "책 수정 실패");
+			result.put("error_message", "책 수정 실패");
 		}
 		
 		return result;
@@ -138,11 +137,59 @@ public class BookRegisterRestCotroller {
 			result.put("result", "성공");
 		} else {
 			result.put("code", 500);
-			result.put("result", "책 삭제 실패");
+			result.put("error_message", "책 삭제 실패");
 		}
 	
 		return result;
 	}
+	
+	// 책 상세
+	@PostMapping("/book/update")
+	public Map<String, Object> BookRegisterBookUpdate(
+			@RequestBody Map<String, String> requestBody, 
+			HttpSession session){
+		
+		Integer userId = (Integer)session.getAttribute("userId");
+		Integer bookRegisterId = Integer.parseInt(requestBody.get("bookRegisterId"));
+
+		BookRegisterEntity bookRegisterEntity = bookregisterBO.getBookRegisterBookEntity(bookRegisterId, userId);
+		
+		Map<String, Object> result = new HashMap<>();
+		if (bookRegisterEntity != null) {
+			result.put("code", 200);
+			result.put("result", "성공");
+			result.put("bookRegister", bookRegisterEntity);
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "책 정보 불러오기 실패");
+		}
+	
+		return result;
+	}
+	
+	// 책 상세
+	@PostMapping("/detail-list")
+	public Map<String, Object> BookRegisterList(
+			HttpSession session){
+		
+		Integer userId = (Integer)session.getAttribute("userId");
+
+		List<BookRegisterEntity> bookRegisterList = bookregisterBO.getBookRegisterList(userId);
+		
+		Map<String, Object> result = new HashMap<>();
+		if (!bookRegisterList.isEmpty()) {
+			result.put("code", 200);
+			result.put("result", "성공");
+			result.put("bookRegisterList", bookRegisterList);
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "책 정보 불러오기 실패");
+		}
+	
+		return result;
+	}
+
+	
 	
 	//isbn13 값으로 해당 책 등록 올린 사람 뜨게
 	@GetMapping("/list")

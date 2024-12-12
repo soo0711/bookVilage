@@ -52,6 +52,8 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
         return <EditProfile />;
         case 'schedule':
           return <Schedule />;
+      case 'wishlist':
+        return <WishList />;
       default:
         return <ManageBooks />;
     }
@@ -210,6 +212,11 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
             >
               개인 일정
             </button>
+            <button
+            className={activeMenu === 'wishlist' ? 'active' : ''}
+            onClick={() => setActiveMenu('wishlist')} >
+            위시리스트
+          </button>
           </nav>
         </div>
         <div className="mypage-content">
@@ -222,195 +229,129 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
 
 
 // ... MyPage 컴포넌트 위에 ManageBooks 컴포넌트 추가
-
 const ManageBooks = () => {
-    const [books, setBooks] = useState([
-      {
-        id: 1,
-        userId: 123,
-        title: "Clean Code",
-        review: "좋은 책이에요",
-        point: "5",
-        condition: "A",
-        description: "책 상태 매우 좋음",
-        exchange_YN: "Y",
-        place: "서울시 강남구",
-        status: "available",
-        createdAt: "2024-03-21 12:00:00",
-        updatedAt: "2024-03-21 12:00:00",
-        isEditing: false
-      },
-      // 더미 데이터...
-    ]);
-  
-    const handleEditClick = (bookId) => {
-      setBooks(books.map(book => 
-        book.id === bookId 
-          ? { ...book, isEditing: !book.isEditing }
-          : book
-      ));
-    };
-  
-    const handleSaveClick = async (bookId) => {
+  const navigate = useNavigate();
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
       try {
-        // TODO: API 연동 시 실제 서버 요청 추가
-        setBooks(books.map(book => 
-          book.id === bookId 
-            ? { ...book, isEditing: false }
-            : book
-        ));
-        alert("수정이 완료되었습니다.");
+        // 실제 API 경로로 수정
+        const response = await axios.post("http://localhost:80/book-register/detail-list", {}, {
+          withCredentials: true, // 세션을 가져오기 위한 옵션
+        });
+  
+        if (response.data.result === "성공") {
+          setBooks(response.data.bookRegisterList);
+        } else {
+          alert("책 목록을 가져오는 데 오류가 발생했습니다.");
+        }
       } catch (error) {
-        console.error("수정 중 오류 발생:", error);
-        alert("수정 중 오류가 발생했습니다.");
+        console.error("책 목록을 가져오는 중 오류 발생:", error);
+        alert("책 목록을 가져오는 데 오류가 발생했습니다.");
       }
     };
   
-    const handleChange = (bookId, field, value) => {
-      setBooks(books.map(book => 
-        book.id === bookId 
-          ? { ...book, [field]: value }
-          : book
-      ));
-    };
-  
-    const handleDelete = async (bookId) => {
-      if (window.confirm("정말로 이 책을 삭제하시겠습니까?")) {
-        try {
-          // TODO: API 연동 시 실제 서버 요청 추가
+    fetchBooks(); // 컴포넌트가 마운트되면 API 호출
+  }, []); // 의존성 배열이 빈 배열이므로 한 번만 호출됨
+
+  const handleSaveClick = async (bookId) => {
+    try {
+      // TODO: API 연동 시 실제 서버 요청 추가
+      alert("수정이 완료되었습니다.");
+    } catch (error) {
+      console.error("수정 중 오류 발생:", error);
+      alert("수정 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleChange = (bookId, field, value) => {
+    setBooks(books.map(book => 
+      book.id === bookId 
+        ? { ...book, [field]: value }
+        : book
+    ));
+  };
+
+  const handleDelete = async (bookId) => {
+    if (window.confirm("정말로 이 책을 삭제하시겠습니까?")) {
+      try {
+        const response = await axios.delete(
+          "http://localhost:80/book-register/delete",
+          {
+            data: { bookRegisterId: bookId },  // 'data' 키를 사용해야 합니다.
+            withCredentials: true
+          }
+        );
+        if (response.data.code === 200) {
           setBooks(books.filter(book => book.id !== bookId));
           alert("삭제가 완료되었습니다.");
-        } catch (error) {
-          console.error("삭제 중 오류 발생:", error);
-          alert("삭제 중 오류가 발생했습니다.");
         }
+      } catch (error) {
+        console.error("삭제 중 오류 발생:", error);
+        alert("삭제 중 오류가 발생했습니다.");
       }
-    };
-  
-    return (
-      <div className="manage-books">
-        <h3>등록한 책 관리</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>책 제목</th>
-              <th>평점</th>
-              <th>책 상태</th>
-              <th>교환 여부</th>
-              <th>교환 장소</th>
-              <th>교환 상태</th>
-              <th>등록일</th>
-              <th>관리</th>
-            </tr>
-          </thead>
-          <tbody>
-            {books.map(book => (
-              <tr key={book.id}>
-                <td>
-                  {book.isEditing ? (
-                    <input
-                      type="text"
-                      value={book.title}
-                      onChange={(e) => handleChange(book.id, 'title', e.target.value)}
-                    />
-                  ) : (
-                    book.title
-                  )}
-                </td>
-                <td>
-                  {book.isEditing ? (
-                    <select
-                      value={book.point}
-                      onChange={(e) => handleChange(book.id, 'point', e.target.value)}
-                    >
-                      {[5,4,3,2,1].map(num => (
-                        <option key={num} value={num}>{num}점</option>
-                      ))}
-                    </select>
-                  ) : (
-                    `${book.point}점`
-                  )}
-                </td>
-                <td>
-                  {book.isEditing ? (
-                    <select
-                      value={book.condition}
-                      onChange={(e) => handleChange(book.id, 'condition', e.target.value)}
-                    >
-                      <option value="A">상태 좋음</option>
-                      <option value="B">상태 보통</option>
-                      <option value="C">상태 좋지 않음</option>
-                    </select>
-                  ) : (
-                    book.condition === 'A' ? '상태 좋음' : 
-                    book.condition === 'B' ? '상태 보통' : 
-                    '상태 좋지 않음'
-                  )}
-                </td>
-               
-<td>
-  {book.isEditing ? (
-    <select
-      value={book.exchange_YN}
-      onChange={(e) => handleChange(book.id, 'exchange_YN', e.target.value)}
-    >
-      <option value="Y">교환 가능</option>
-      <option value="P">교환 예정</option>
-      <option value="N">교환 불가</option>
-    </select>
-  ) : (
-    book.exchange_YN === 'Y' ? '교환 가능' : 
-    book.exchange_YN === 'P' ? '교환 예정' : 
-    '교환 불가'
-  )}
-</td>
-                <td>
-                  {book.isEditing ? (
-                    <input
-                      type="text"
-                      value={book.place}
-                      onChange={(e) => handleChange(book.id, 'place', e.target.value)}
-                    />
-                  ) : (
-                    book.place
-                  )}
-                </td>
-                <td>
-                  {book.status === 'available' ? '교환 가능' : 
-                   book.status === 'exchanging' ? '교환 중' : '교환 완료'}
-                </td>
-                <td>{new Date(book.createdAt).toLocaleDateString()}</td>
-                <td>
-                  {book.isEditing ? (
-                    <button 
-                      className="save-btn"
-                      onClick={() => handleSaveClick(book.id)}
-                    >
-                      저장
-                    </button>
-                  ) : (
-                    <button 
-                      className="edit-btn"
-                      onClick={() => handleEditClick(book.id)}
-                    >
-                      수정
-                    </button>
-                  )}
-                  <button 
-                    className="delete-btn"
-                    onClick={() => handleDelete(book.id)}
-                  >
-                    삭제
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
+    }
   };
-  
+
+  return (
+    <div className="manage-books">
+      <h3>등록한 책 관리</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>책 제목</th>
+            <th>평점</th>
+            <th>책 상태</th>
+            <th>교환 여부</th>
+            <th>교환 장소</th>
+            <th>교환 상태</th>
+            <th>등록일</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody>
+          {books.map(book => (
+            <tr key={book.id}>
+              <td>{book.title}</td>
+              <td>{`${book.point}점`}</td>
+              <td>{
+                book.b_condition === 'A' ? '상태 좋음' : 
+                book.b_condition === 'B' ? '상태 보통' : 
+                '상태 좋지 않음'
+              }</td>
+              <td>{
+                book.exchange_YN === 'Y' ? '교환 가능' :  '교환 불가'
+              }</td>
+              <td>{book.place}</td>
+              <td>{
+                book.status === '교환 가능' ? '교환 가능' : 
+                book.status === '교환 완료' ? '교환 완료' : 
+                book.status === '교환 불가' ? '교환 불가' : '교환 중'
+              }</td>
+              <td>{new Date(book.createdAt).toLocaleDateString()}</td>
+              <td>
+                <button 
+                  className="edit-btn"
+                  onClick={() => navigate('/book/update', { state: { bookId: book.id } })}
+                >
+                  수정
+                </button>
+                <button 
+                  className="delete-btn"
+                  onClick={() => handleDelete(book.id)}
+                >
+                  삭제
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
   // ... MyPage 컴포넌트는 그대로 유지 ...
 
 // EditProfile 컴포넌트 수정
@@ -534,6 +475,99 @@ const EditProfile = () => {
     </div>
   );
 };
+
+// EditProfile 컴포넌트 수정
+
+const WishList = () => {
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 나중에 실제 API 연동 시 사용할 코드
+  /*
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const response = await fetch(`/api/wishlist/${userId}`);
+        const data = await response.json();
+        setWishlistItems(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('위시리스트 로드 실패:', error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchWishlist();
+  }, [userId]);
+  */
+
+  // 임시 데이터로 테스트
+  useEffect(() => {
+    // 임시 데이터
+    setWishlistItems([
+      {
+        id: 1,
+        user_id: 123,
+        isbn: "8983920726",
+        createdAt: "2024-03-21",
+        bookTitle: "해리포터와 마법사의 돌",
+        author: "J.K. 롤링",
+        publisher: "문학수첩",
+        cover: "https://example.com/cover1.jpg"
+      }
+    ]);
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
+  if (wishlistItems.length === 0) {
+    return (
+      <div className="wishlist-empty">
+        <h3>위시리스트</h3>
+        <p>아직 찜한 책이 없습니다.</p>
+        <p>마음에 드는 책을 찜해보세요!</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="wishlist-container">
+      <h3>위시리스트</h3>
+      <div className="books-grid">
+        {wishlistItems.map(item => (
+          <div key={item.id} className="book-card">
+            <div className="book-cover">
+              <img src={item.cover} alt={item.bookTitle} />
+            </div>
+            <div className="book-info">
+              <h4>{item.bookTitle}</h4>
+              <p>{item.author}</p>
+              <p>{item.publisher}</p>
+              <p className="added-date">
+                찜한 날짜: {new Date(item.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+            <button 
+              className="remove-wishlist"
+              onClick={() => {
+                // 나중에 실제 API 연동 시 삭제 요청 추가
+                setWishlistItems(prev => 
+                  prev.filter(book => book.id !== item.id)
+                );
+              }}
+            >
+              찜 취소
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 
 
 export default MyPage;

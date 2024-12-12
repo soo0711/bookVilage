@@ -43,6 +43,7 @@
   padding: 15px;
   text-align: left; /* 텍스트 왼쪽 정렬 */
   height: 150px;
+  position: relative;  /* 하트 버튼의 위치 기준   */
   align-items: center; /* 텍스트와 이미지가 수직으로 중앙 정렬 */
 }
 
@@ -85,5 +86,50 @@
 .book-publisher {
   font-size: 14px;
   color: #888;
+}
+
+
+.wishlist-button {
+  position: absolute;
+  bottom: 28px;
+  right: 20px;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.wishlist-button:hover,
+.wishlist-button:focus,
+.wishlist-button:active {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+
+
+/* 하트 아이콘 기본 스타일 (빈 하트) */
+.wishlist-button svg {
+  font-size: 24px;
+  color: #ff4b4b;
+  stroke: #ff4b4b;
+  stroke-width: 1;
+}
+
+/* 꽉 찬 하트 스타일 */
+.heart-filled {
+  color: #ff4b4b;
 }
 

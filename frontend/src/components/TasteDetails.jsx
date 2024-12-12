@@ -1,9 +1,9 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./BookRecommendation.css";
+import "./TasteDetails.css";
 import Header from "./Header";
 
-const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
+const TasteDeatils = ({ handleLogout, username, isLoggedIn }) => {
   const location = useLocation();
   const { selectedBook, recommendedBooks = [], username: locationUsername } = location.state || {}; // recommendedBooks에 기본값 설정
 
@@ -40,25 +40,8 @@ const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
       />
       <div className="book-recommendation">
         <div className="book-containerr">
-          {selectedBook ? (
-            <>
-              <div className="user-bookr">
-                <img src={selectedBook.book.cover} alt={selectedBook.book.title} onClick={handleImageClick} />
-                <div className="user-book-title">
-                  <h3>{displayUsername}님이 선택한 책</h3>
-                </div>
-                <p>제목: {selectedBook.book.title}</p>
-                <p>저자: {selectedBook.book.author}</p>
-                <p>평점: {selectedBook.bookRegister.point} / 5</p>
-                <p>리뷰: {selectedBook.bookRegister.review}</p>
-              </div>
-            </>
-          ) : (
-            <p>선택한 책 정보가 없습니다.</p>
-          )}
 
           <div className="recommended-section">
-            <h2>{selectedBook?.book.title}와(과) 비슷한 추천 도서</h2>
             <div className="recommended-containerr">
               <div className="recommended-bookr">
                 {recommendedBooks.length > 0 ? (
@@ -85,4 +68,4 @@ const BookRecommendation = ({ handleLogout, username, isLoggedIn }) => {
   );
 };
 
-export default BookRecommendation;
+export default TasteDeatils;

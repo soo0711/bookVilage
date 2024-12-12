@@ -15,6 +15,7 @@ const Profile = ({ handleLogout }) => {
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null); // 에러 상태
   const [myId, setMyId] = useState(null); // myId 상태 추가
+  const [wishlist, setWishlist] = useState([]); // 위시리스트 상태 추가
 
   useEffect(() => {
 
@@ -171,6 +172,25 @@ const Profile = ({ handleLogout }) => {
               </div>
             ) : (
               <p>교환 완료된 책이 없습니다.</p>
+                       )}
+          </div>
+          <div className="wishlist-section">
+          <h3>위시리스트</h3>
+            {wishlist.length > 0 ? (
+              <div className="book-grid">
+                {wishlist.map((item) => (
+                  <div key={item.id} className="book-card wishlist-card">
+                    <img src={item.cover} alt={item.bookTitle} />
+                    <div className="book-info">
+                      <h4>{item.bookTitle}</h4>
+                      <p>{item.author}</p>
+                      <p className="publisher">{item.publisher}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>위시리스트에 추가된 책이 없습니다.</p>
             )}
           </div>
         </div>
@@ -178,5 +198,6 @@ const Profile = ({ handleLogout }) => {
     </>
   );
 };
+
 
 export default Profile;

@@ -96,7 +96,11 @@ const sendMessage = () => {
 
   return (
     <>
-      <Header />
+      <Header
+        isLoggedIn={isLoggedIn}
+        username={username}
+        onLogout={handleLogout}
+        />
       <div className="chat-container">
         <div className="chat-header">
           <h2>채팅방 - {otherUserLoginId}</h2>
