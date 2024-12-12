@@ -6,7 +6,7 @@ import Header from "./Header";
 const TasteDeatils = ({ handleLogout, username, isLoggedIn }) => {
   const location = useLocation();
   const { selectedBook, recommendedBooks = [], username: locationUsername } = location.state || {}; // recommendedBooks에 기본값 설정
-
+  console.log(recommendedBooks);
   // `username`을 사용하려면, `locationUsername`이 없을 때는 `props`에서 받은 `username`을 사용하도록 처리
   const displayUsername = locationUsername || username;
 
@@ -40,7 +40,7 @@ const TasteDeatils = ({ handleLogout, username, isLoggedIn }) => {
       />
       <div className="book-recommendation">
         <div className="book-containerr">
-
+            <h2 className="section-titles">나의 취향에 맞는 책 추천</h2>
           <div className="recommended-section">
             <div className="recommended-containerr">
               <div className="recommended-bookr">

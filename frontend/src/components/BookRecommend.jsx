@@ -75,21 +75,21 @@ const BookRecommend = ({ handleLogout }) => {
 
   const handleTasteClick = async (userId) => {
     try {
-      // 선택한 책의 ISBN13을 사용하여 추천 도서 API 호출
+      // 선택한 사용자Id을 사용하여 추천 도서 API 호출
       const response = await axios.get(
         `http://127.0.0.1:8000/recommend_user/${userId}`,
         { withCredentials: true }
       );
 
       // 추천 도서 목록을 업데이트
-      setRecommendedBooks(response.data.recommendations || []);
+      setRecommendedBooks(response.data || []);
 
       // 추천 도서를 BookRecommendation으로 전달
       navigate("/taste", {
         state: {
           selectedBook: userId,
           username,
-          recommendedBooks: response.data.recommendations || [],
+          recommendedBooks: response.data || [],
         },
       });
     } catch (error) {
