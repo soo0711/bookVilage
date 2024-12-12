@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.bookVillage.bookMeeting.bo.BookMeetingBO;
+import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
 import com.example.bookVillage.personalSchedule.bo.PersonalScheduleBO;
 import com.example.bookVillage.personalSchedule.entity.PersonalScheduleEntity;
 
@@ -21,6 +23,9 @@ public class PersonalScheduleRestController {
 	
 	@Autowired
 	private PersonalScheduleBO personalScheduleBO;
+	
+	@Autowired
+	private BookMeetingBO bookMeetingBO;
 
 	// 개인일정 create
 	@PostMapping("/create")
@@ -29,6 +34,7 @@ public class PersonalScheduleRestController {
 			HttpSession session){
 		
 		Integer userId = (Integer) session.getAttribute("userId");
+		String userLoginId = (String) session.getAttribute("userLoginId");
 		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
 		
 		Map<String, Object> result = new HashMap<>();
@@ -40,6 +46,14 @@ public class PersonalScheduleRestController {
 			result.put("result", "이미 참여한 독서모임 입니다.");
 			return result;
 		}
+		
+		BookMeetingEntity bookMeeting = bookMeetingBO.getBookMeetingEntityByBookMeetingId(bookMeetingId);
+		if(bookMeeting.getHostLoginid().equals(userLoginId)) {
+			result.put("code", 204);
+			result.put("result", "해당 모임의 주최자로 참가하기 누를 수 없습니다. ");
+			return result;
+		}
+		
 		
 		// personal db insert
 		Integer personalSchduleId = personalScheduleBO.addpersonalSchdule(userId, bookMeetingId);
