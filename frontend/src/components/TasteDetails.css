@@ -129,3 +129,10 @@
     right: 25px;
   }
   
+  .section-titles{
+    font-weight: 500;
+    display: flex; /* 유연한 배치 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-left: 80px;
+  }
