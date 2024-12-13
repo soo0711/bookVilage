@@ -76,9 +76,41 @@ public class BookRegisterBO {
 	}
 	
 	
-	public Integer updateBookRegister(int userId, int bookRegisterId, String review, String point, String b_condition, String description, String place, String status, String exchange_YN) {
+	public Integer updateBookRegister(int userId, String userLoginId, int bookRegisterId, String review, String point, String b_condition, String description, 
+			String place, String status, String exchange_YN, List<MultipartFile> files) {
 		
-		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);
+		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);		
+		
+		if (exchange_YN.equals("N") ) {
+			status = "교환 불가";
+		}
+	
+	
+		if (files != null) {
+			// 원래 사진 삭제
+			List<BookRegisterImageEntity> bookImage = bookRegisterImageBO.getBookRegisterImageByBookRegisterId(bookRegisterId);
+						
+			if (bookImage.size() != 0) {
+				// 이미지 select - List<String>에 imgPath 넣기
+				List<String> imagePath = new ArrayList<>();
+				
+				for (int i = 0 ; i < bookImage.size(); i++) {
+					imagePath.add(bookImage.get(i).getImagePath());
+				}
+				
+				// 이미지 삭제
+				fileManagerService.deleteFile(imagePath);
+				
+				bookRegisterImageBO.deleteBookRegisterImageByBookRegisterId(bookRegisterId);
+					
+			}
+			
+			// 이미지 저장
+			List<String> imagePath = fileManagerService.saveFile(userLoginId, files);
+			
+			// 이미지 insert
+			bookRegisterImageBO.addBookRegisterImage(bookRegisterEntity.getId(), imagePath);	
+		}
 		
 		
 		if (bookRegisterEntity != null) {
@@ -95,6 +127,7 @@ public class BookRegisterBO {
 			
 			return bookRegisterEntity.getId();
 		}
+		
 		return null;
 	}
 	
@@ -200,6 +233,10 @@ public class BookRegisterBO {
 
 	public List<BookRegisterEntity> getBookRegisterList(int userId) {
 		return bookRegisterRepository.findByUserId(userId);
+	}
+	
+	public List<BookRegisterImageEntity> getBookRegisterImageEntity(int bookRegisterId, int userId){
+		return bookRegisterImageBO.getBookRegisterImageByBookRegisterId(bookRegisterId);
 	}
 	
 }

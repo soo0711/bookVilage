@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bookVillage.bookRegister.bo.BookRegisterBO;
 import com.example.bookVillage.bookRegister.entity.BookRegisterEntity;
+import com.example.bookVillage.bookRegister.entity.BookRegisterImageEntity;
 import com.example.bookVillage.card.bo.BookCardBO;
 import com.example.bookVillage.card.bo.UserBookRegisterBO;
 import com.example.bookVillage.card.entity.BookCardEntity;
@@ -90,22 +90,23 @@ public class BookRegisterRestCotroller {
 	// 책 수정
 	@PostMapping("/update")
 	public Map<String, Object> BookRegisterUpdate(
-			@RequestBody Map<String, String> requestBody, 
-			// 이미지 수정 가능하게 할 지 고민
+			@RequestPart("metadata") Map<String, String> metadata, // 이미지랑 받기 위해서 requestPart로 JSON 따로 file 따로 받기
+	        @RequestPart(value = "images", required = false) List<MultipartFile> files,
 			HttpSession session){
 		
 		Integer userId = (Integer)session.getAttribute("userId");
-		Integer bookRegisterId = Integer.parseInt(requestBody.get("bookRegisterId"));
-		String review = requestBody.get("review");
-		String point = requestBody.get("point");
-		String b_condition = requestBody.get("b_condition");
-		String description = requestBody.get("description");
-		String place = requestBody.get("place");
-		String stauts = requestBody.get("status");
-		String exchange_YN = requestBody.get("exchange_YN");
+		String userLoginId = (String)session.getAttribute("userLoginId");
+		Integer bookRegisterId = Integer.parseInt(metadata.get("bookRegisterId")); 
+		String review = metadata.get("review");
+		String point = metadata.get("point");
+		String b_condition = metadata.get("b_condition");
+		String b_description = metadata.get("b_description");
+		String exchange_YN = metadata.get("exchange_YN");
+		String place = metadata.get("place");
+		String status = metadata.get("status");
 
-		Integer BookRegisterId = bookregisterBO.updateBookRegister(userId, bookRegisterId, review, point,
-				b_condition, description, place, stauts, exchange_YN);
+		Integer BookRegisterId = bookregisterBO.updateBookRegister(userId, userLoginId, bookRegisterId, review, point,
+				b_condition, b_description, place, status, exchange_YN, files);
 		
 		Map<String, Object> result = new HashMap<>();
 
@@ -153,12 +154,14 @@ public class BookRegisterRestCotroller {
 		Integer bookRegisterId = Integer.parseInt(requestBody.get("bookRegisterId"));
 
 		BookRegisterEntity bookRegisterEntity = bookregisterBO.getBookRegisterBookEntity(bookRegisterId, userId);
+		List<BookRegisterImageEntity> bookRegisterImageEntity = bookregisterBO.getBookRegisterImageEntity(bookRegisterId, userId);
 		
 		Map<String, Object> result = new HashMap<>();
 		if (bookRegisterEntity != null) {
 			result.put("code", 200);
 			result.put("result", "성공");
 			result.put("bookRegister", bookRegisterEntity);
+			result.put("bookImage", bookRegisterImageEntity);
 		} else {
 			result.put("code", 500);
 			result.put("error_message", "책 정보 불러오기 실패");
@@ -181,6 +184,7 @@ public class BookRegisterRestCotroller {
 			result.put("code", 200);
 			result.put("result", "성공");
 			result.put("bookRegisterList", bookRegisterList);
+
 		} else {
 			result.put("code", 500);
 			result.put("error_message", "책 정보 불러오기 실패");
@@ -210,25 +214,31 @@ public class BookRegisterRestCotroller {
 	}
 	
 	@PostMapping("/exchange-list")
-	public Map<String, Object> BookRegisterListByIsbn13( 
-			@RequestBody Map<String, String> requestBody, 
-			HttpSession session){
-		
-		int userId = (Integer)session.getAttribute("userId");
-		String isbn13 = requestBody.get("isbn13");
-		
-		//내가 선택한 책의 isbn13값과 나의 userId를 넘겨 내가 올린 책 뺴고 다른 사람들이 올린 책 정보 가져오기
-		List<UserBookRegisterEntity> userBookRegisterList = userBookRegisterBO.getUserBookRegisterByIsbn13(isbn13, userId);
-		
-		Map<String, Object> result = new HashMap<>();
-		result.put("code", 200);
-		result.put("result", "성공");
-		result.put("data", userBookRegisterList);
-		result.put("myId", userId);
-	
-		return result;
-		
-	}
+	   public Map<String, Object> BookRegisterListByIsbn13( 
+	         @RequestBody Map<String, String> requestBody, 
+	         HttpSession session){
+	      
+	      int userId = (Integer)session.getAttribute("userId");
+	      String isbn13 = requestBody.get("isbn13");
+	      
+	      //내가 선택한 책의 isbn13값과 나의 userId를 넘겨 내가 올린 책 뺴고 다른 사람들이 올린 책 정보 가져오기
+	      List<UserBookRegisterEntity> userBookRegisterList = userBookRegisterBO.getUserBookRegisterByIsbn13(isbn13, userId);
+
+	            
+	      //내가 등록한 책 
+	      List<BookRegisterEntity> bookRegisterList = bookregisterBO.getBookRegisterList(userId);
+	      
+	      Map<String, Object> result = new HashMap<>();
+	      result.put("code", 200);
+	      result.put("result", "성공");
+	      result.put("data", userBookRegisterList);
+	      result.put("mydata", bookRegisterList); // 내가 등록한책 
+	      result.put("myId", userId);
+	      //result.put("otherUserWishList", otherUserWishList);
+	   
+	      return result;
+	      
+	   }
 	
 	
 	

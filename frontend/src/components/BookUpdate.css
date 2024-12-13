@@ -228,36 +228,38 @@
   }
   
   .book-register-form .image-preview-item {
-    position: relative;
-    width: 100%;
+    position: relative !important;
+    width: 100% !important;
   }
   
   .book-register-form .image-preview-item img {
-    width: 100%;
+    width: 100% !important;
     height: 200px;
     object-fit: cover;
     border-radius: 8px;
   }
   
-  .book-register-form .delete-image-button {
+  .book-register-form .delete-image-buttons {
     position: absolute;
     top: 5px;
     right: 5px;
-    background-color: rgba(255, 0, 0, 0.7);
+    background-color: rgba(255, 0, 0, 0.7) !important;
     color: white;
     border: none;
-    border-radius: 50%;
-    width: 25px;
+    border-radius: 50% !important;
+    width: 25px !important;
     height: 25px;
     cursor: pointer;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
   }
   
-  .book-register-form .delete-image-button:hover {
-    background-color: rgba(255, 0, 0, 0.9);
+  .book-register-form .delete-image-buttons:hover {
+    background-color: rgba(255, 0, 0, 0.9) !important;
   } 
+
+  
   .radio-group {
     margin-bottom: 15px;
   }
@@ -322,4 +324,18 @@
   
   .region{
     margin-right: 40px;
+  }
+
+  .file-status {
+    margin-bottom: 8px;
+    color: green;
+    font-size: 14px;
+  }
+  
+  /* 선택적: input 자체를 커스텀 스타일로 감추고 별도 버튼으로 대체 */
+  .file-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    width: auto;
+    margin-top: 10px;
   }

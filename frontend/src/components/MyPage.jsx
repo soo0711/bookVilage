@@ -511,8 +511,8 @@ const WishList = () => {
   }, [userId]);
   */
 
-  // 임시 데이터로 테스트
-  useEffect(() => {
+   // 임시 데이터로 테스트
+   useEffect(() => {
     // 임시 데이터
     setWishlistItems([
       {
@@ -544,12 +544,12 @@ const WishList = () => {
   }
 
   return (
-    <div className="wishlist-container">
+    <div className="wishlist2-container">
       <h3>위시리스트</h3>
       <div className="books-grid">
         {wishlistItems.map(item => (
           <div key={item.id} className="book-card">
-            <div className="book-cover">
+            <div className="book-wishlist-cover">
               <img src={item.cover} alt={item.bookTitle} />
             </div>
             <div className="book-info">
@@ -577,7 +577,4 @@ const WishList = () => {
     </div>
   );
 };
-
-
-
 export default MyPage;

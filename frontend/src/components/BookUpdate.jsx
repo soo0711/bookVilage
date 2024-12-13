@@ -11,7 +11,7 @@ const BookUpdate = ({ onRegister, handleLogout }) => {
   // location.state에서 username 가져오기
   const { username } = location.state || {}; // state로부터 username 가져오기
   const isLoggedIn = !!username; // username이 존재하면 로그인 상태로 간주
-
+  const [bookImages, setBookImages] = useState([]); // 이미지 데이터 상태 추가
   const { bookId } = location.state || {}; // state로부터 bookId 가져오기
   
   const [formData, setFormData] = useState({
@@ -25,7 +25,8 @@ const BookUpdate = ({ onRegister, handleLogout }) => {
     place: "",
     sidoCd: "",
     siggCd: "",
-    emdongCd: ""
+    emdongCd: "",
+    status: ""
   });
 
 const [sidoList, setSidoList] = useState([]);
@@ -45,6 +46,7 @@ useEffect(() => {
   
           if (response.data.code === 200) {
             const bookData = response.data.bookRegister;
+            const bookImages = response.data.bookImage || []; // 이미지 데이터 가져오기
             // 서버에서 받은 책 데이터를 formData에 채워넣기
             const placeParts = bookData.place.split(" ");
             const sido = placeParts[0] || "ALL";
@@ -53,12 +55,10 @@ useEffect(() => {
   
             setFormData({
               title: bookData.title,
-              author: bookData.author,
-              isbn13: bookData.isbn13,
               review: bookData.review,
               point: bookData.point,
               b_condition: bookData.b_condition,
-              b_description: bookData.b_description,
+              b_description: bookData.description,
               exchange_YN: bookData.exchange_YN,
               place: bookData.place,
               cover: bookData.cover,
@@ -68,8 +68,11 @@ useEffect(() => {
               category: bookData.category,
               sidoCd: sido,
               siggCd: sigg,
-              emdongCd: emdong
+              emdongCd: emdong,
+              status: bookData.status
             });
+
+            setBookImages(bookImages); // 이미지 데이터 설정
   
             if (sido !== "ALL") {
               const sigunguResponse = await axios.post("http://localhost:80/region/sigungu", { sido });
@@ -189,33 +192,47 @@ const handleEmdongChange = (e) => {
   };
 
   const handleImageChange = (e) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      setImages(prevImages => [...prevImages, ...files]);
+    const fileInput = e.target;
+    if (fileInput.files && fileInput.files.length > 0) {
+      const files = Array.from(fileInput.files);
+  
+      // 파일이 선택된 경우 기존 이미지들 처리
+      setImages(prevImages => {
+        const newImages = [...prevImages, ...files]; // 스프레드 연산자 사용 권장
+        return newImages;
+      });
+  
+      // 새로 선택된 이미지 미리보기 처리
+      const newBookImages = files.map(file => ({
+        imagePath: URL.createObjectURL(file)
+      }));
+  
+      // 기존 미리보기와 새 미리보기 병합
+      setBookImages(prevImages => [...prevImages, ...newBookImages]);
+      
+      // 파일 input 초기화 (동일 파일 재선택 가능하도록)
+      fileInput.value = '';
     }
   };
+  
 
   const handleDeleteImage = (index) => {
-    setImages(prevImages => prevImages.filter((_, i) => i !== index));
-  };
+    // 미리보기 이미지 URL 메모리 해제
+    bookImages[index].imagePath && URL.revokeObjectURL(bookImages[index].imagePath);
 
+    // bookImages와 images에서 동시에 삭제
+    setBookImages((prevImages) => prevImages.filter((_, i) => i !== index));  
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));  
+};
  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.title || !formData.author) {
-      alert("책 제목과 저자를 입력해주세요.");
-      return;
-    }
 
     try {
       const data = new FormData();
       
       // Spring 컨트롤러의 매개변수와 일치하도록 메타데이터 구성
       const metadata = {
-        title: formData.title,
-        author: formData.author,
-        isbn13: formData.isbn13,
         review: formData.review,
         point: formData.point,
         b_condition: formData.b_condition,
@@ -227,6 +244,8 @@ const handleEmdongChange = (e) => {
         publisher: formData.publisher,  
         pubdate: formData.pubdate,  
         category: formData.category, 
+        bookRegisterId : bookId,
+        status: formData.status
       };
 
       data.append(
@@ -326,6 +345,17 @@ const handleEmdongChange = (e) => {
           </div>
           {formData.exchange_YN === 'Y' && (
             <>
+              <label htmlFor="status">교환 상태</label>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="교환 가능">교환 가능</option>
+                  <option value="교환 완료">교환 완료</option>
+                  <option value="교환 중">교환 중</option>
+                </select>
               <label htmlFor="b_condition">책 상태</label>
               <select
                 name="b_condition"
@@ -371,29 +401,47 @@ const handleEmdongChange = (e) => {
             </div>
               </div>
             </div>
-              <div className="image-preview-container">
-                {images.map((image, index) => (
-                  <div key={index} className="image-preview-item">
-                    <img 
-                      src={URL.createObjectURL(image)} 
-                      alt={`Preview ${index}`} 
+            <div className="image-preview-container">
+              {bookImages.map((image, index) => (
+                    <div key={index} className="image-preview-item" style={{ position: "relative" }}>
+                    <img
+                      src={image.imagePath.startsWith('blob:') ? image.imagePath : `http://localhost:80${image.imagePath}`}
+                      alt={`Book Image ${index}`}
+                      style={{ width: "150px", height: "150px", objectFit: "cover" }}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/path/to/placeholder-image.png";
+                      }}
                     />
-                    <button 
-                      type="button"
-                      className="delete-image-button"
-                      onClick={() => handleDeleteImage(index)}
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
+                  <button
+                    type="button"
+                    className="delete-image-buttons"
+                    onClick={() => handleDeleteImage(index)}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div>
+            <div className="file-status">
+              {/* 새로 선택된 이미지가 없을 때만 기존 이미지 개수 표시 */}
+              {bookImages.length > 0 && images.length === 0 ? (
+                <span>기존 이미지: {bookImages.length}개</span>
+              ) : (
+                images.length > 0 && (
+                  <span>선택된 이미지: {images.length}개</span>
+                )
+              )}
               </div>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageChange}
-              />
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageChange}
+              className="file-input"
+            />
+          </div>
             </>
           )}
         </form>
@@ -403,7 +451,7 @@ const handleEmdongChange = (e) => {
           이전 목록
         </button>
         <button type="button" onClick={handleSubmit}>
-          책 등록
+          책 수정
         </button>
       </div>
     </div>
