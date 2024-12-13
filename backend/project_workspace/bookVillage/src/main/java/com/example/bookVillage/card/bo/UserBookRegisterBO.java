@@ -11,6 +11,8 @@ import com.example.bookVillage.bookRegister.entity.BookRegisterEntity;
 import com.example.bookVillage.card.entity.UserBookRegisterEntity;
 import com.example.bookVillage.user.bo.UserBO;
 import com.example.bookVillage.user.entity.UserEntity;
+import com.example.bookVillage.wishList.bo.WishListBO;
+import com.example.bookVillage.wishList.entity.WishListEntity;
 
 @Service
 public class UserBookRegisterBO {
@@ -21,6 +23,9 @@ public class UserBookRegisterBO {
 	@Autowired
 	private BookRegisterBO bookRegisterBO;
 	
+	@Autowired
+	private WishListBO wishListBO;
+	
 	public List<UserBookRegisterEntity> getUserBookRegisterByIsbn13(String isbn13, int userId){
 		List<UserBookRegisterEntity> userBookRegisterList = new ArrayList<>();
 		
@@ -29,10 +34,12 @@ public class UserBookRegisterBO {
 			int oterUserId = bookRegisterList.get(i).getUserId();
 			
 			UserEntity user = userBO.getUserEntityById(oterUserId);
+			List<WishListEntity> wishList = wishListBO.getWishListEntityListByUserId(oterUserId);
 			
 			UserBookRegisterEntity userBookRegisetEntity = new UserBookRegisterEntity();
 			userBookRegisetEntity.setUser(user);
 			userBookRegisetEntity.setBookRegister(bookRegisterList.get(i));
+			userBookRegisetEntity.setWishList(wishList);
 			
 			userBookRegisterList.add(userBookRegisetEntity);
 		}

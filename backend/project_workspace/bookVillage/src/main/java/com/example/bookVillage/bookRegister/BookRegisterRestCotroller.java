@@ -1,11 +1,11 @@
 package com.example.bookVillage.bookRegister;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.AfterDomainEventPublication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +22,8 @@ import com.example.bookVillage.card.bo.BookCardBO;
 import com.example.bookVillage.card.bo.UserBookRegisterBO;
 import com.example.bookVillage.card.entity.BookCardEntity;
 import com.example.bookVillage.card.entity.UserBookRegisterEntity;
+import com.example.bookVillage.user.entity.UserEntity;
+import com.example.bookVillage.wishList.bo.WishListBO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -219,12 +221,25 @@ public class BookRegisterRestCotroller {
 		
 		//내가 선택한 책의 isbn13값과 나의 userId를 넘겨 내가 올린 책 뺴고 다른 사람들이 올린 책 정보 가져오기
 		List<UserBookRegisterEntity> userBookRegisterList = userBookRegisterBO.getUserBookRegisterByIsbn13(isbn13, userId);
+//		List<UserEntity> otherUserList = new ArrayList<>();
+//		for(int i =0; i < otherUserList.size(); i++) {
+//			otherUserList.add(userBookRegisterList.get(i).getUser());
+//		}
+		
+		
+		//내가 등록한 책 
+		List<BookRegisterEntity> bookRegisterList = bookregisterBO.getBookRegisterList(userId);
+		
+		
+		
 		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 200);
 		result.put("result", "성공");
 		result.put("data", userBookRegisterList);
+		result.put("mydata", bookRegisterList); // 내가 등록한책 
 		result.put("myId", userId);
+		//result.put("otherUserWishList", otherUserWishList);
 	
 		return result;
 		

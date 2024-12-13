@@ -39,10 +39,10 @@ const Profile = ({ handleLogout }) => {
           setMyId(myId); // myId 상태 업데이트
           // 데이터 필터링
           const exchangeable = userData.bookCardList.filter(
-            (book) => book.bookRegister.stauts === "교환 가능"
+            (book) => book.bookRegister.status === "교환 가능"
           );
           const completed = userData.bookCardList.filter(
-            (book) => book.bookRegister.stauts === "교환 완료"
+            (book) => book.bookRegister.status === "교환 완료"
           );
 
           setExchangeableBooks(exchangeable);

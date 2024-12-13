@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.bookVillage.community.entity.CommunityEntity;
+import com.example.bookVillage.user.entity.UserEntity;
 import com.example.bookVillage.wishList.entity.WishListEntity;
 import com.example.bookVillage.wishList.repository.WishListRepository;
 
@@ -32,9 +33,10 @@ public class WishListBO {
 	}
 	
 	
-	public int deleteWishList(int wishListId) {
+	public int deleteWishList(int userId, String isbn13) {
 		
-		WishListEntity wishListEntity = wishListRepository.findById(wishListId).orElse(null);
+		WishListEntity wishListEntity = wishListRepository.findByUserIdAndIsbn13(userId, isbn13);
+		
 		if (wishListEntity != null) {
 			wishListRepository.delete(wishListEntity);
 			
@@ -50,6 +52,8 @@ public class WishListBO {
 		return wishListRepository.findById(wishListId).orElse(null);
 
 	}
+
+	
 	
 
 }

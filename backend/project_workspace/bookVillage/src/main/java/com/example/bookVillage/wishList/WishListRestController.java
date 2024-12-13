@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.bookVillage.user.bo.UserBO;
+import com.example.bookVillage.user.entity.UserEntity;
 import com.example.bookVillage.wishList.bo.WishListBO;
 import com.example.bookVillage.wishList.entity.WishListEntity;
 
@@ -22,6 +24,8 @@ public class WishListRestController {
 	@Autowired
 	private WishListBO wishListBO;
 	
+	@Autowired
+	private UserBO userBO;
 	
 	@PostMapping("/create")
 	public Map<String, Object> wishListCreate(
@@ -29,12 +33,12 @@ public class WishListRestController {
 			HttpSession session){
 		
 		int userId = (int) session.getAttribute("userId");
-		String isbn13 = requestBody.get("communityId");
+		String isbn13 = requestBody.get("isbn13");
 		
 
 		// wishList db insert
 		Integer wishListId = wishListBO.addWishList(userId, isbn13);
-		
+			
 		Map<String, Object> result = new HashMap<>();
 		if(wishListId != null) {
 			result.put("code", 200);
@@ -54,23 +58,18 @@ public class WishListRestController {
 			@RequestBody Map<String, String> requestBody,
 			HttpSession session) {
 		
-		int wishListId = Integer.parseInt(requestBody.get("wishListId"));
+		String isbn13 = requestBody.get("isbn13");
 		
 		int userId = (int) session.getAttribute("userId");
-		WishListEntity wishListEntity = wishListBO.getWishListEntityByWishListId(wishListId);
+		
 		
 		Map<String, Object> result = new HashMap<>();
 		
 		int count = 0;
 		
-		if(wishListEntity.getUserId() != userId) {
-			result.put("code", 500);
-			result.put("error_message", "본인이 작성한 글만 삭제할 수 있습니다.");
-			
-			return result;
-		}
 		
-		count = wishListBO.deleteWishList(wishListId);
+		
+		count = wishListBO.deleteWishList(userId, isbn13);
 		
 		if(count > 0 ) {
 			result.put("code", 200);
@@ -84,21 +83,24 @@ public class WishListRestController {
 	}
 	
 	
-	@PostMapping("list")
+	@PostMapping("/list")
 	public Map<String, Object> wishList(
 			@RequestBody Map<String, String> requestBody,
 			HttpSession session){
 		
 		int userId = (int) session.getAttribute("userId");
-		
+		//UserEntity user = userBO.getUserEntityById(userId);
 
 		// wishList db insert
 		List<WishListEntity> wishList = wishListBO.getWishListEntityListByUserId(userId);
 		
 		Map<String, Object> result = new HashMap<>();
+		
+		
 		if(wishList != null) {
 			result.put("code", 200);
 			result.put("result", "성공");
+			result.put("date", wishList);
 		} else {
 			result.put("code", 204); // No Content
 	        result.put("result", "위시리스트가 없습니다.");
