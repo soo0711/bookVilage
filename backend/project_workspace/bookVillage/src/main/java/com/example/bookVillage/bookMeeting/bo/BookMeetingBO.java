@@ -93,4 +93,9 @@ public class BookMeetingBO {
 		bookMeetingRepository.save(bookMeetingEntity); // 데이터 있으면 수정
 	}
 
+
+	public List<BookMeetingEntity> getBookMeetingEntityByHostLoginId(String userLoginId) {
+		return bookMeetingRepository.findByHostLoginid(userLoginId);
+	}
+
 }

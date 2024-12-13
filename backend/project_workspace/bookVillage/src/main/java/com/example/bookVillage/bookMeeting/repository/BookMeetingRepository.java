@@ -12,4 +12,6 @@ public interface BookMeetingRepository extends JpaRepository<BookMeetingEntity, 
 	public BookMeetingEntity findById(int bookMeetingId);
 
 	public List<BookMeetingEntity> findByPlaceContaining(String place);
+
+	public List<BookMeetingEntity> findByHostLoginid(String userLoginid);
 }

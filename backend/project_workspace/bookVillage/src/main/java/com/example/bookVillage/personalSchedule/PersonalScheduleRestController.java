@@ -105,15 +105,17 @@ public class PersonalScheduleRestController {
 			@RequestBody Map<String, String> requestBody,
 			HttpSession session){
 		
+		String userLoginId = (String) session.getAttribute("userLoginId");
 		Integer userId = (Integer) session.getAttribute("userId");
 		List<PersonalBookMeetingEntity> personalBookMeetingList = personalBookMeetingBO.getPersonalBookMeetingList(userId);
-
+		List<BookMeetingEntity> bookMeetingEntity = bookMeetingBO.getBookMeetingEntityByHostLoginId(userLoginId);
 		Map<String, Object> result = new HashMap<>();
 		if (personalBookMeetingList != null && !personalBookMeetingList.isEmpty()) {
 	        // 채팅방이 존재하는 경우
 	        result.put("code", 200);
 	        result.put("result", "성공");
 	        result.put("data", personalBookMeetingList);  // 채팅방 목록을 전달
+	        result.put("host", bookMeetingEntity);  // 채팅방 목록을 전달
 	    } else {
 	        // 채팅방이 없는 경우
 	        result.put("code", 204); // No Content

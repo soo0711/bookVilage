@@ -18,7 +18,6 @@ const Profile = ({ handleLogout }) => {
   const [wishlist, setWishlist] = useState([]); // 위시리스트 상태 추가
 
   useEffect(() => {
-
     const fetchUserInfo = async () => {
       try {
         const response = await axios.post(
@@ -47,6 +46,10 @@ const Profile = ({ handleLogout }) => {
 
           setExchangeableBooks(exchangeable);
           setCompletedExchanges(completed);
+
+          // 위시리스트 데이터 추가
+          const wishList = response.data.wishList || [];
+          setWishlist(wishList);
         } else {
           setError("사용자 정보를 불러오는 데 문제가 발생했습니다.");
         }
@@ -77,15 +80,14 @@ const Profile = ({ handleLogout }) => {
       if (response.data.code === 200) {
         const chatRoomId = response.data.chatRoomId;
 
-        
-          // 채팅방으로 이동하고, 채팅 기록을 state로 전달
-          navigate(`/chat/${chatRoomId}`, {
-            state: {
-              targetUser: userId, // 상대방 userId
-              chatroomId: chatRoomId, // 채팅방 IDm
-              myId: myId,  // myId를 state에 추가로 전달
-            },
-          });
+        // 채팅방으로 이동하고, 채팅 기록을 state로 전달
+        navigate(`/chat/${chatRoomId}`, {
+          state: {
+            targetUser: userId, // 상대방 userId
+            chatroomId: chatRoomId, // 채팅방 ID
+            myId: myId,  // myId를 state에 추가로 전달
+          },
+        });
       } else {
         alert("채팅방 생성에 실패했습니다.");
       }
@@ -116,14 +118,6 @@ const Profile = ({ handleLogout }) => {
           <div className="profile-info">
             <h2>{userInfo?.user?.loginId}님의 프로필</h2>
             {/* loginId 표시 */}
-            {/* <div className="preferred-locations">
-              <h3>선호하는 교환 장소</h3>
-              <ul>
-                {userInfo?.preferredLocations?.map((location, index) => (
-                  <li key={index}>{location}</li>
-                ))}
-              </ul>
-            </div> */}
           </div>
           <button className="chat-button" onClick={handleChatClick}>
             채팅하기
@@ -172,19 +166,21 @@ const Profile = ({ handleLogout }) => {
               </div>
             ) : (
               <p>교환 완료된 책이 없습니다.</p>
-                       )}
+            )}
           </div>
+
+          {/* 위시리스트 섹션 */}
           <div className="wishlist-section">
-          <h3>위시리스트</h3>
+            <h3>위시리스트</h3>
             {wishlist.length > 0 ? (
               <div className="book-grid">
-                {wishlist.map((item) => (
-                  <div key={item.id} className="book-card wishlist-card">
-                    <img src={item.cover} alt={item.bookTitle} />
+                {wishlist.map(({ book }) => (
+                  <div key={book.isbn13} className="book-card wishlist-card">
+                    <img src={book.cover} alt={book.title} />
                     <div className="book-info">
-                      <h4>{item.bookTitle}</h4>
-                      <p>{item.author}</p>
-                      <p className="publisher">{item.publisher}</p>
+                      <h4>{book.title}</h4>
+                      <p>{book.author}</p>
+                      <p className="publisher">{book.publisher}</p>
                     </div>
                   </div>
                 ))}
@@ -198,6 +194,5 @@ const Profile = ({ handleLogout }) => {
     </>
   );
 };
-
 
 export default Profile;

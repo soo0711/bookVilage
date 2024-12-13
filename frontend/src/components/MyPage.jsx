@@ -68,6 +68,7 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
     const [date, setDate] = useState(new Date());
     const [events, setEvents] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [message, setMessage] = useState(""); // 추가: 메시지 상태
   
     useEffect(() => {
       const fetchPersonalSchedule = async () => {
@@ -79,18 +80,30 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
           );
   
           if (response.data.code === 200) {
-            // 데이터 매핑
-            setEvents(
-              response.data.data.map(({ personalSchedule, bookMeeting }) => ({
-                id: personalSchedule.id, // 일정 ID
-                title: bookMeeting.subject || "제목 없음", // 제목
-                content: bookMeeting.content || "내용 없음", // 내용
-                date: bookMeeting.schedule.split(":")[0].trim().replace(/\./g, "-"), // 날짜: "2024.12.16" → "2024-12-16"
-                time: bookMeeting.schedule.split(":")[1]?.trim() || "시간 미정", // 시간: "13" 또는 "23"
-                location: bookMeeting.place || "위치 없음", // 장소
-                type: "book-meeting", // 일정 유형
-              }))
-            );
+            // Combine personal events and hosted events
+            const allEvents = [
+              ...response.data.data.map(({ personalSchedule, bookMeeting }) => ({
+                id: personalSchedule.id,
+                title: bookMeeting.subject || "제목 없음",
+                content: bookMeeting.content || "내용 없음",
+                date: bookMeeting.schedule.split(":")[0].trim().replace(/\./g, "-"),
+                time: bookMeeting.schedule.split(":")[1]?.trim() || "시간 미정",
+                location: bookMeeting.place || "위치 없음",
+                type: "book-meeting",
+              })),
+              ...response.data.host.map((bookMeeting) => ({
+                id: bookMeeting.id,
+                title: bookMeeting.subject || "제목 없음",
+                content: bookMeeting.content || "내용 없음",
+                date: bookMeeting.schedule.split(":")[0].trim().replace(/\./g, "-"),
+                time: bookMeeting.schedule.split(":")[1]?.trim() || "시간 미정",
+                location: bookMeeting.place || "위치 없음",
+                type: "hosted-book-meeting",
+              })),
+            ];
+            setEvents(allEvents);
+          } else if (response.data.code === 204) {
+            setMessage("참여한 독서 모임이 없습니다.");
           } else {
             alert("일정 데이터를 가져오는 데 실패했습니다.");
           }
@@ -104,6 +117,7 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
   
       fetchPersonalSchedule();
     }, []);
+
   
   
     const handleDeleteEvent = async (eventId) => {
@@ -175,7 +189,7 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
           <div className="events-section">
             <h4>{date.toLocaleDateString()} 일정</h4>
             <div className="events-list">
-              {getEventsForDate(date).map(event => (
+              {getEventsForDate(date).map((event) => (
                 <div key={event.id} className={`event-item ${event.type}`}>
                   <h5>{event.title}</h5>
                   <p>내용: {event.content}</p>

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.bookVillage.card.bo.BookWishListBO;
 import com.example.bookVillage.card.bo.UserBookBO;
 import com.example.bookVillage.card.entity.BookCardEntity;
+import com.example.bookVillage.card.entity.BookWishListEntity;
 import com.example.bookVillage.card.entity.UserBookEntity;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,6 +28,9 @@ public class userBookRestController {
 	@Autowired
 	private UserBookBO userBookBO; // userBook에센 userBookBO만!
 	
+	@Autowired
+	private BookWishListBO bookWishListBO; // userBook에센 userBookBO만!
+	
 	@PostMapping("/user-profile")
 	public Map<String , Object> userBookProfie(
 			@RequestBody Map<String, String> requestBody, 
@@ -34,6 +39,7 @@ public class userBookRestController {
 		int myId = (Integer) session.getAttribute("userId");
 		
 		UserBookEntity userBook = userBookBO.getUserBookByUserId(userId);
+		List<BookWishListEntity> wishList = bookWishListBO.getWishList(userId);
 		
 		Map<String, Object> result = new HashMap<>();
 	    if (userBook != null) {
@@ -41,6 +47,7 @@ public class userBookRestController {
 	        result.put("result", "성공");
 	        result.put("data", userBook);
 	        result.put("myId", myId);
+	        result.put("wishList", wishList);
 	    } else {
 	        result.put("code", 404);
 	        result.put("result", "사용자 정보를 찾을 수 없습니다.");
