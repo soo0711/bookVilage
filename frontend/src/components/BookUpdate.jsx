@@ -434,6 +434,8 @@ const handleEmdongChange = (e) => {
                 )
               )}
               </div>
+            <label>
+            교환 책 이미지<br/><br/>
             <input
               type="file"
               multiple
@@ -441,6 +443,7 @@ const handleEmdongChange = (e) => {
               onChange={handleImageChange}
               className="file-input"
             />
+            </label>
           </div>
             </>
           )}

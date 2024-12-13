@@ -31,6 +31,7 @@ const BookRegister = ({ onRegister, handleLogout }) => {
     siggCd: "ALL",
     emdongCd: "ALL"
   });
+  
 
   const [sidoList, setSidoList] = useState([]);
 const [sigunguList, setSigunguList] = useState([]);
@@ -179,6 +180,11 @@ const handleEmdongChange = (e) => {
       return;
     }
 
+    if (formData.sidoCd == "ALL" || formData.siggCd == "ALL" || formData.emdongCd == "ALL") {
+      alert("장소를 입력해주세요.");
+      return;
+    }
+
     try {
       const data = new FormData();
       
@@ -274,6 +280,7 @@ const handleEmdongChange = (e) => {
             value={formData.author}
             onChange={handleChange}
             required
+            disabled
           />
           <label htmlFor="point">평점</label>
           <select
@@ -339,7 +346,7 @@ const handleEmdongChange = (e) => {
                <div className="search-box public-srch02">
               <div className="sch-in sch-in-ty1">
               <div className="region-select">
-              <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd} className="region">
+              <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd} className="region" required>
                 <option value="">시/도 전체</option>
                 {sidoList.map((sido, index) => (
                   <option key={index} value={sido}>{sido}</option>
@@ -347,7 +354,7 @@ const handleEmdongChange = (e) => {
               </select>
 
 
-              <select name="siggCd" id="siggCd" onChange={handleSigunguChange} value={formData.siggCd} className="region">
+              <select name="siggCd" id="siggCd" onChange={handleSigunguChange} value={formData.siggCd} className="region" required>
                 <option value="">시/군/구 전체</option>
                 {sigunguList.map((sigungu, index) => (
                   <option key={index} value={sigungu}>{sigungu}</option>
@@ -355,7 +362,7 @@ const handleEmdongChange = (e) => {
               </select>
 
 
-              <select name="emdongCd" id="emdongCd" onChange={handleEmdongChange} value={formData.emdongCd} className="region">
+              <select name="emdongCd" id="emdongCd" onChange={handleEmdongChange} value={formData.emdongCd} className="region" required>
                 <option value="">읍/면/동 전체</option>
                 {emdongList.map((emdong, index) => (
                   <option key={index} value={emdong}>{emdong}</option>
@@ -381,12 +388,15 @@ const handleEmdongChange = (e) => {
                   </div>
                 ))}
               </div>
+              <label>
+              교환 책 이미지<br/><br/>
               <input
                 type="file"
                 multiple
                 accept="image/*"
                 onChange={handleImageChange}
               />
+              </label>
             </>
           )}
         </form>

@@ -69,9 +69,7 @@ public class bookMeetingRestController {
 		
 		String subject = requestBody.get("subject"); //제목 
 		String content = requestBody.get("content"); //내용
-		String schedule = requestBody.get("schedule");
 		String place = requestBody.get("place");
-		Integer total = Integer.parseInt(requestBody.get("total"));
 		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
 		
 		//로그인한 사용
@@ -82,7 +80,7 @@ public class bookMeetingRestController {
 	
 		int count = 0;
 		if(bookMeetingEntity.getHostLoginid().equals(userLoginId)) {
-			count = bookMeetingBO.updateBookMeeting(bookMeetingId, subject, content, userLoginId, schedule, place, total);
+			count = bookMeetingBO.updateBookMeeting(bookMeetingId, subject, content, place);
 		}
 		
 		
@@ -160,6 +158,27 @@ public class bookMeetingRestController {
 	        // 채팅방이 없는 경우
 	        result.put("code", 204); // No Content
 	        result.put("result", "해당 지역에 독서모임 일정이 없습니다.");
+	    }
+
+		return result;
+	}
+	
+	@PostMapping("/detail")
+	public Map<String, Object> BookMeetingDeatil(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session) {
+		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
+		 
+		BookMeetingEntity bookMeetingEntity = bookMeetingBO.getBookMeetingEntityById(bookMeetingId);
+		Map<String, Object> result = new HashMap<>();
+		if (bookMeetingEntity != null) {
+	        // 채팅방이 존재하는 경우
+	        result.put("code", 200);
+	        result.put("result", "성공");
+	        result.put("bookMeetingEntity", bookMeetingEntity);  // 채팅방 목록을 전달
+	    } else {
+	        result.put("code", 500); 
+	        result.put("result", "해당하는 독서모임이 없습니다.");
 	    }
 
 		return result;

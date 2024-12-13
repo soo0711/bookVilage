@@ -94,10 +94,11 @@
   border: 2px solid #ffc0cb; /* 테두리 연핑크 */
   font-size: 14px;
   transition: all 0.3s ease;
+  margin-left: 10px;
 }
 
 .join-button:hover:not(:disabled) {
-  background-color: #5749d4;
+  background-color: #ffc0cb;
   transform: translateY(-1px);
 }
 
@@ -175,7 +176,7 @@
 }
 
 .form-buttons button[type="submit"]:hover {
-  background-color: #edc7e1;
+  background-color: #edc7e1 !important;
 }
 
 .form-buttons button[type="button"] {

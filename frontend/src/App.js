@@ -22,6 +22,7 @@ import MyPage from "./components/MyPage";
 import SearchResults from './components/SearchResults';
 import BookUpdate from './components/BookUpdate';
 import TasteDetails from './components/TasteDetails';
+import ModifyMeeting from './components/ModifyMeeting';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -121,6 +122,7 @@ function App() {
         <Route path="/book/update" element={<BookUpdate  userId={userId} username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/search" element={<SearchResults username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/taste" element={<TasteDetails username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/modify-meeting/:meetingId" element={<ModifyMeeting username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/profile/:userId" element={<Profile  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route
           path="/chat/:chatRoomId"

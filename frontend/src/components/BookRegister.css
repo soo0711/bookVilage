@@ -243,20 +243,20 @@
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: rgba(255, 0, 0, 0.7);
+  background-color: rgba(255, 0, 0, 0.7) !important;
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 25px;
+  border-radius: 50% !important;
+  width: 25px !important;
   height: 25px;
   cursor: pointer;
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
 }
 
 .book-register-form .delete-image-button:hover {
-  background-color: rgba(255, 0, 0, 0.9);
+  background-color: rgba(255, 0, 0, 0.9) !important;
 } 
 .radio-group {
   margin-bottom: 15px;

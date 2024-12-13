@@ -155,6 +155,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
 
   const handleCreate = async (e) => {
     e.preventDefault();
+
     const formattedSchedule = format(formData.schedule, "yyyy.MM.dd : HH");
 
     const fullAddress = [
@@ -204,6 +205,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
       alert(`생성 중 오류가 발생했습니다: ${error.message}`);
     }
   };
+
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       alert("검색어를 입력하세요.");
@@ -229,6 +231,32 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
     }
   };
   
+
+  const handleDeleteMeeting = async (bookMeetingId) => {
+    try {
+      const response = await fetch("http://localhost:80/bookMeeting/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ bookMeetingId }), // bookMeetingId를 요청 본문에 포함
+        withcredentials: true, // 세션 인증 유지
+      });
+      
+      const data = await response.json();
+      
+      if (data.code === 200) {
+        alert("독서모임이 삭제되었습니다.");
+        window.location.reload();
+      } else {
+        alert("삭제에 실패했습니다: " + data.error_message);
+      }
+    } catch (error) {
+      console.error("삭제 요청 실패:", error);
+      alert("삭제 중 오류가 발생했습니다.");
+    }
+  };
+
   const handleShowAllMeetings = async () => {
     try {
       const response = await fetch("http://localhost:80/bookMeeting/list", {
@@ -325,7 +353,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
               <div className="sch-in sch-in-ty1">
               <p>모임장소</p>
               <div className="region-select">
-              <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd} className="region">
+              <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd} className="region" required>
                 <option value="">시/도 전체</option>
                 {sidoList.map((sido, index) => (
                   <option key={index} value={sido}>{sido}</option>
@@ -333,7 +361,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
               </select>
 
 
-              <select name="siggCd" id="siggCd" onChange={handleSigunguChange} value={formData.siggCd} className="region">
+              <select name="siggCd" id="siggCd" onChange={handleSigunguChange} value={formData.siggCd} className="region" required>
                 <option value="">시/군/구 전체</option>
                 {sigunguList.map((sigungu, index) => (
                   <option key={index} value={sigungu}>{sigungu}</option>
@@ -341,7 +369,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
               </select>
 
 
-              <select name="emdongCd" id="emdongCd" onChange={handleEmdongChange} value={formData.emdongCd} className="region">
+              <select name="emdongCd" id="emdongCd" onChange={handleEmdongChange} value={formData.emdongCd} className="region" required>
                 <option value="">읍/면/동 전체</option>
                 {emdongList.map((emdong, index) => (
                   <option key={index} value={emdong}>{emdong}</option>
@@ -453,6 +481,14 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
                   onClick={() => navigate(`/modify-meeting/${meeting.id}`)} // 수정 페이지로 이동
                 >
                   모임 수정
+                </button>
+              )}
+                            {isLoggedIn && meeting.hostLoginid === userLoginId && (
+                <button 
+                  className="join-button"
+                  onClick={() => handleDeleteMeeting(meeting.id)} // 수정 페이지로 이동
+                >
+                  모임 삭제
                 </button>
               )}
               </div>

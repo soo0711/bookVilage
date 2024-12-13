@@ -39,15 +39,13 @@ public class BookMeetingBO {
 		return bookMeetingRepository.findById(bookMeetingId);
 	}
 	
-	public int updateBookMeeting(int bookMeetingId, String userLoginId, String subject, String content, String schedule, String place, int total) {
+	public int updateBookMeeting(int bookMeetingId, String subject, String content, String place) {
 		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.findById(bookMeetingId);
 		if(bookMeetingEntity != null) {
 			bookMeetingEntity = bookMeetingEntity.toBuilder() // 기존 내용은 그대로
 					.subject(subject)
 					.content(content)
-	                .schedule(schedule)
 	                .place(place)
-	                .total(total)
 	                .build();
 			bookMeetingRepository.save(bookMeetingEntity); // 데이터 있으면 수정
 			return 1;
@@ -57,9 +55,9 @@ public class BookMeetingBO {
 	
 	public int deleteBookMeeting(int bookMeetingId) {
 		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.findById(bookMeetingId);
-		if (bookMeetingEntity != null) {
+		// 삭제하기 전 참여인원이 총인원보다 작으면 삭제 가능
+		if (bookMeetingEntity != null && (bookMeetingEntity.getTotal() > bookMeetingEntity.getCurrent())) {
 			bookMeetingRepository.delete(bookMeetingEntity);
-			
 			return 1;
 		}
 		
@@ -96,6 +94,10 @@ public class BookMeetingBO {
 
 	public List<BookMeetingEntity> getBookMeetingEntityByHostLoginId(String userLoginId) {
 		return bookMeetingRepository.findByHostLoginid(userLoginId);
+	}
+	
+	public BookMeetingEntity getBookMeetingEntityById(Integer bookMeetingId) {
+		return bookMeetingRepository.findById(bookMeetingId).orElse(null);
 	}
 
 }
