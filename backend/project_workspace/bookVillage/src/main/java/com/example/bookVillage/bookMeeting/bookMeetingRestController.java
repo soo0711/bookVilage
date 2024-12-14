@@ -41,7 +41,7 @@ public class bookMeetingRestController {
 			HttpSession session){
 		
 		String userLoginId = (String) session.getAttribute("userLoginId");
-		
+		Integer userId = (Integer) session.getAttribute("userId");
 		
 		String subject = requestBody.get("subject"); //제목 
 		String content = requestBody.get("content"); //내용

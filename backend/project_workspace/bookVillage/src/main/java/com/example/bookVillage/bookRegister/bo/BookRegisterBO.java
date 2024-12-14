@@ -237,7 +237,7 @@ public class BookRegisterBO {
 
 
 	public List<BookRegisterEntity> getBookRegisterByPlace(String place, int userId) {
-		return bookRegisterRepository.findByPlaceAndUserIdNot(place, userId);
+		return bookRegisterRepository.findByPlaceContainingAndUserIdNot(place, userId);
 	}
 	
 }

@@ -21,7 +21,7 @@
   font-size: 16px;
 }
 
-.books-grid {
+.books-grids {
   display: flex; /* 플렉스 박스 사용 */
   flex-wrap: wrap; /* 여러 줄로 나열 가능 */
   gap: 20px; /* 카드 간격 */
@@ -29,7 +29,7 @@
   padding: 20px 0;
 }
 
-.book-card {
+.book-card-search {
   display: flex; /* 가로 배치 */
   flex-direction: row; /* 이미지와 텍스트를 가로로 정렬 */
   align-items: flex-start; /* 텍스트가 이미지의 상단에 정렬되도록 */
@@ -47,7 +47,7 @@
   align-items: center; /* 텍스트와 이미지가 수직으로 중앙 정렬 */
 }
 
-.book-card:hover {
+.book-card-search:hover {
   transform: translateY(-5px); /* 호버 시 카드가 살짝 올라오게 */
 }
 

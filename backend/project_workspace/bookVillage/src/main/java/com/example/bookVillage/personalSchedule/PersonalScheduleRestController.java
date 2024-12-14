@@ -100,6 +100,7 @@ public class PersonalScheduleRestController {
 		return result;
 	}
 	
+	@SuppressWarnings("null")
 	@PostMapping("/list")
 	public  Map<String, Object> personalSchduleList(
 			@RequestBody Map<String, String> requestBody,
@@ -110,7 +111,7 @@ public class PersonalScheduleRestController {
 		List<PersonalBookMeetingEntity> personalBookMeetingList = personalBookMeetingBO.getPersonalBookMeetingList(userId);
 		List<BookMeetingEntity> bookMeetingEntity = bookMeetingBO.getBookMeetingEntityByHostLoginId(userLoginId);
 		Map<String, Object> result = new HashMap<>();
-		if (personalBookMeetingList != null && !personalBookMeetingList.isEmpty()) {
+		if (personalBookMeetingList != null || !personalBookMeetingList.isEmpty()) {
 	        // 채팅방이 존재하는 경우
 	        result.put("code", 200);
 	        result.put("result", "성공");
