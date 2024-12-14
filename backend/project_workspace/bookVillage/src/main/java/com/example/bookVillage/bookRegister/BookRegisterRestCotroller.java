@@ -250,18 +250,47 @@ public class BookRegisterRestCotroller {
       String title = requestBody.get("title");
       
       List<UserBookRegisterEntity> userBookRegisterList = new ArrayList<>();
+      Map<String, Object> result = new HashMap<>();
       
-      // 책 검색 조건 추가할 경우
-      if(title != null) {
+      // 책 검색O 장소 검색O
+      if(title != null && place != null) {
     	  userBookRegisterList = userBookRegisterBO.getUserBookRegisterByPlaceAndTitle(place, title, userId);
       }
       
-      // 책 검색 없이 장소로만 교환 리스트 
-      if(title == null) {
+      // 책 검색X 장소 검색O
+      if(title == null && place != null) {
     	  userBookRegisterList = userBookRegisterBO.getUserBookRegisterByPlace(place, userId);
       }
       
+      // 책 검색O 장소 검색X
+      if(title != null && place == null) {
+    	  userBookRegisterList = userBookRegisterBO.getUserBookRegisterByTitle(title, userId);
+      }
       
+      //내가 등록한 책 
+      List<BookRegisterEntity> bookRegisterList = bookregisterBO.getBookRegisterList(userId);
+      
+      result.put("code", 200);
+      result.put("result", "성공");
+      result.put("data", userBookRegisterList);
+      result.put("mydata", bookRegisterList); // 내가 등록한책 
+      result.put("myId", userId);
+   
+      return result;
+      
+   }
+   
+   @PostMapping("/regional-exchange-list-all")
+   public Map<String, Object> regionalExchangeListAll( 
+         @RequestBody Map<String, String> requestBody, 
+         HttpSession session){
+      
+      int userId = (Integer)session.getAttribute("userId");
+      
+      List<UserBookRegisterEntity> userBookRegisterList = new ArrayList<>();
+    
+      userBookRegisterList = userBookRegisterBO.getUserBookRegister(userId);
+    
       //내가 등록한 책 
       List<BookRegisterEntity> bookRegisterList = bookregisterBO.getBookRegisterList(userId);
       

@@ -17,8 +17,8 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
   const [exchangeUsers, setExchangeUsers] = useState([]); // 교환 가능한 사용자 리스트
   const [formData, setFormData] = useState({
     title: '',
-    sidoCd: 'ALL',
-    siggCd: 'ALL',
+    sidoCd: null, // Set to null instead of 'ALL'
+    siggCd: null, // Set to null instead of 'ALL'
   });
   const [myId, setMyId] = useState(null); // 내 userId
 
@@ -56,10 +56,35 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
     fetchSidoList();
   }, []);
 
+  useEffect(() => {
+    const fetchAllExchangeList = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.post('http://localhost:80/book-register/regional-exchange-list-all', {}, {
+          withCredentials: true,
+        });
+        const data = response.data;
+        if (data.code === 200) {
+          setExchangeUsers(data.data);
+          setMyData(data.mydata);
+          setMyId(data.myId);
+        } else {
+          alert(data.result || '전체 교환 리스트를 불러오는 중 문제가 발생했습니다.');
+        }
+      } catch (error) {
+        console.error('Error fetching all exchange list:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllExchangeList();
+  }, []);
+
   const handleSidoChange = async (e) => {
     const selectedSido = e.target.value;
-    setFormData((prev) => ({ ...prev, sidoCd: selectedSido, siggCd: "ALL" }));
-
+    setFormData((prev) => ({ ...prev, sidoCd: selectedSido, siggCd: "" })); // siggCd를 빈 문자열로 설정
+  
     if (selectedSido !== "ALL") {
       try {
         const response = await axios.post("http://localhost:80/region/sigungu", { sido: selectedSido });
@@ -76,18 +101,19 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
       setEmdongList([]);
     }
   };
+  
 
   const handleSigunguChange = async (e) => {
     const selectedSigungu = e.target.value;
     setFormData((prev) => ({ ...prev, siggCd: selectedSigungu }));
-
-    if (selectedSigungu !== "ALL") {
+  
+    if (selectedSigungu !== "ALL" && selectedSigungu !== "") { // 빈 문자열 체크 추가
       try {
         const response = await axios.post("http://localhost:80/region/emdonge", {
           sido: formData.sidoCd,
           sigungu: selectedSigungu
         });
-
+  
         if (response.data.code === 200) {
           setEmdongList(response.data.emdong);
         } else {
@@ -100,12 +126,13 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
       setEmdongList([]);
     }
   };
+  
 
   const searchBooks = async () => {
     setIsLoading(true);
     try {
       const response = await axios.post('http://localhost:80/book-register/regional-exchange-list', {
-        place: `${formData.sidoCd} ${formData.siggCd}`.trim(),
+        place: `${formData.sidoCd} ${formData.siggCd || ""}`.trim(), // siggCd가 빈 문자열이면 그냥 시/도만 보내도록
         title: searchTerm || null,
       }, {
         withCredentials: true,
@@ -124,6 +151,7 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
       setIsLoading(false);
     }
   };
+  
 
   const handleUserClick = (userId) => {
     navigate(`/profile/${userId}`);
