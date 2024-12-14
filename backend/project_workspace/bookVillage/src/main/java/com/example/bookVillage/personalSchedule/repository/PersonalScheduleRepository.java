@@ -11,4 +11,6 @@ public interface PersonalScheduleRepository extends JpaRepository<PersonalSchedu
 	public PersonalScheduleEntity findByUserIdAndBookMeetingId(Integer userId, Integer bookMeetingId);
 
 	public List<PersonalScheduleEntity> findByUserId(int userId);
+	
+	public PersonalScheduleEntity findByBookMeetingId(int bookMeetingId);
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.bookVillage.bookMeeting.bo.BookMeetingBO;
+import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
 import com.example.bookVillage.card.entity.PersonalBookMeetingEntity;
 import com.example.bookVillage.personalSchedule.bo.PersonalScheduleBO;
 import com.example.bookVillage.personalSchedule.entity.PersonalScheduleEntity;
@@ -37,4 +38,5 @@ public class PersonalBookMeetingBO {
 		
 		return personalBookMeetingList;
 	}
+	
 }

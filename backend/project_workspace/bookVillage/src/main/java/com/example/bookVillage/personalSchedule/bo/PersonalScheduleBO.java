@@ -72,5 +72,12 @@ public class PersonalScheduleBO {
 		
 		return personalScheduleRepository.findByUserId(userId);
 	}
+	
+	public void deletePersonalBookMeeting (int bookMeetingId) {
+		PersonalScheduleEntity personal = personalScheduleRepository.findByBookMeetingId(bookMeetingId);
+		if (personal != null) {
+			personalScheduleRepository.delete(personal);
+		}
+	}
 
 }
