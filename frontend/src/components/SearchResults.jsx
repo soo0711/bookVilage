@@ -228,9 +228,9 @@ const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
           <p>"{searchQuery}"에 대한 검색 결과입니다.</p>
         </div>
 
-        <div className="books-grid">
+        <div className="books-grids">
           {books.map((book) => (
-            <div key={book.isbn13} className="book-card">
+            <div key={book.isbn13} className="book-card-search">
               <div className="book-covers" onClick={() => handleImageClick(book)}>
                 <img src={book.cover} alt={book.title} />
               </div>
