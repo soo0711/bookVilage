@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import "./ChatPage.css";
 import Header from "./Header";
 import axios from "axios";
+import {useNavigate } from "react-router-dom";
 
 function ChatPage({ client, username, isLoggedIn, handleLogout }) {
   const location = useLocation();
@@ -10,7 +11,9 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
   const [message, setMessage] = useState("");
   const [chatMessages, setChatMessages] = useState(chatHistory || []);
   const [otherUserLoginId, setOtherUserLoginId] = useState("");
+  const [otherUserId, setOtherUserId] = useState("");
   const messagesEndRef = useRef(null); // 스크롤 제어를 위한 ref 추가
+  const navigate = useNavigate();
 
   // 채팅 기록 및 사용자 정보 불러오기
   useEffect(() => {
@@ -32,7 +35,7 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
 
             const otherUser = users.find((user) => user.id !== myId);
             setOtherUserLoginId(otherUser ? otherUser.loginId : "알 수 없음");
-
+            setOtherUserId(otherUser ? otherUser.id : "알 수 없음");
             setChatMessages(messages);
           } else {
             alert("채팅 기록을 불러오는 데 실패했습니다.");
@@ -52,6 +55,10 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleUserClick = (userId) => {
+    navigate(`/profile/${userId}`); // userId를 URL 파라미터로 전달
   };
 
   // 메시지가 추가될 때마다 스크롤 업데이트
@@ -99,7 +106,7 @@ const sendMessage = () => {
       <Header isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout}/>
       <div className="chat-container">
         <div className="chat-header">
-          <h2>채팅방 - {otherUserLoginId}</h2>
+          <h2 onClick={() => handleUserClick(otherUserId)}  className="username-link">채팅방 - {otherUserLoginId}</h2>
           <div className="chat-info">
             <span className="user-status">● 온라인</span>
           </div>

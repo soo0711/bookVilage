@@ -27,15 +27,16 @@ public interface BookRegisterRepository extends JpaRepository<BookRegisterEntity
 	public BookRegisterEntity findByIdAndUserId(int bookRegisterId, int userId);
 
 
-	public List<BookRegisterEntity> findByPlaceContainingAndUserIdNot(String place, int userId);
+	public List<BookRegisterEntity> findByPlaceContainingAndUserIdNotAndStatus(String place, int userId, String status);
 
 
-	public List<BookRegisterEntity> findByPlaceContainingAndTitleContainingAndUserIdNot(String place, String title, int userId);
+	public List<BookRegisterEntity> findByPlaceContainingAndTitleContainingAndUserIdNotAndStatus(String place, String title, int userId, String status);
 
 
-	public List<BookRegisterEntity> findByUserIdNot(int userId);
+	public List<BookRegisterEntity> findByUserIdNotAndStatus(int userId, String status);
 
 
-	public List<BookRegisterEntity> findByTitleContainingAndUserIdNot(String title, int userId);
+	public List<BookRegisterEntity> findByTitleContainingAndUserIdNotAndStatus(String title, int userId, String status);
+
 
 }
