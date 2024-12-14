@@ -342,7 +342,8 @@ const ManageBooks = () => {
               <td>{
                 book.b_condition === 'A' ? '상태 좋음' : 
                 book.b_condition === 'B' ? '상태 보통' : 
-                '상태 좋지 않음'
+                book.b_condition === 'C' ? '상태 좋지 않음' : 
+                ''
               }</td>
               <td>{
                 book.exchange_YN === 'Y' ? '교환 가능' :  '교환 불가'
@@ -542,7 +543,7 @@ const WishList = () => {
 
       if (response.data.code === 200) {
         // 삭제 성공 시 메시지 표시 및 새로고침
-        alert('삭제가 완료되었습니다.');
+        alert('찜 취소가가 완료되었습니다.');
         window.location.reload(); // 새로고침
       } else {
         alert(response.data.error_message || '삭제에 실패했습니다.');

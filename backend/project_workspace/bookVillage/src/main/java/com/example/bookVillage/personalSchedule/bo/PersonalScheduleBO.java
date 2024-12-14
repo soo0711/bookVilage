@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.bookVillage.bookMeeting.bo.BookMeetingBO;
-import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
-import com.example.bookVillage.community.entity.CommunityEntity;
 import com.example.bookVillage.personalSchedule.entity.PersonalScheduleEntity;
 import com.example.bookVillage.personalSchedule.repository.PersonalScheduleRepository;
 

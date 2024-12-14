@@ -180,7 +180,7 @@ const handleEmdongChange = (e) => {
       return;
     }
 
-    if (formData.sidoCd == "ALL" || formData.siggCd == "ALL" || formData.emdongCd == "ALL") {
+    if (formData.exchange_YN == "Y" && (formData.sidoCd == "ALL" || formData.siggCd == "ALL" || formData.emdongCd == "ALL")) {
       alert("장소를 입력해주세요.");
       return;
     }

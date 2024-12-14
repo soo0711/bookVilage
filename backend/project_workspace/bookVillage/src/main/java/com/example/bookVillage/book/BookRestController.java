@@ -16,6 +16,7 @@ import com.example.bookVillage.book.entity.BookEntity;
 import com.example.bookVillage.oauth.AladinOauth;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/book")
@@ -60,4 +61,42 @@ public class BookRestController {
 		return result;
 	}
 	
+	@PostMapping("/create")
+	   public Map<String, Object> BookCreate(
+	         @RequestBody Map<String, String> requestBody,
+	         HttpSession session){
+	      
+	      String title = requestBody.get("title");
+	      String isbn13 = requestBody.get("isbn13");
+	      String cover = requestBody.get("cover");
+	      String description = requestBody.get("description");
+	      String author = requestBody.get("author");
+	      String publisher = requestBody.get("publisher");
+	      String date = requestBody.get("pubdate");
+	      String category = requestBody.get("category");
+	      
+
+	      Map<String, Object> result = new HashMap<>();
+	      
+	      // book DB 중복 및 등록
+	      
+	      BookEntity bookEntity = bookBO.getBookByIsbn13(isbn13);
+	      if (bookEntity != null) {
+		         result.put("code", 200);
+		         result.put("result", "보유");
+		         return result;
+	      }
+	      
+	      bookEntity = bookBO.addBookEntity(isbn13, title, cover, description, author, publisher, date, category);
+	   
+	      if(bookEntity != null) {
+	         result.put("code", 200);
+	         result.put("result", "성공");
+	      } else {
+	         result.put("code", 500);
+	         result.put("error_message", "책 등록 실패"); // 이미 책이 등록되어 있는 경우
+	      }
+	      
+	      return result;
+	   }
 }

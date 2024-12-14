@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bookVillage.bookMeeting.bo.BookMeetingBO;
+import com.example.bookVillage.bookMeeting.bo.BookMeetingServiceBO;
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,6 +23,9 @@ import jakarta.servlet.http.HttpSession;
 public class bookMeetingRestController {
 	@Autowired 
 	private BookMeetingBO bookMeetingBO;
+	
+	@Autowired 
+	private BookMeetingServiceBO bookMeetingServieBO;
 	
 	/**
 	 * 
@@ -105,7 +109,7 @@ public class bookMeetingRestController {
 		
 		Integer bookMeetingId = Integer.parseInt(requestBody.get("bookMeetingId"));
 		
-		int count = bookMeetingBO.deleteBookMeeting(bookMeetingId);
+		int count = bookMeetingServieBO.deleteBookMeeting(bookMeetingId);
 		// 응답값
 		Map<String, Object> result = new HashMap<>();
 		if(count > 0 ) {

@@ -80,12 +80,16 @@ const BookDetail = ({ isLoggedIn, username, handleLogout }) => {
             <div className="book-meta">
               <p><strong>저자:</strong> {bookData.author}</p>
               <p><strong>출판사:</strong> {bookData.publisher}</p>
-              <p><strong>출판일:</strong> {new Date(bookData.pubDate).toLocaleDateString()}</p>
+              <p><strong>출판일:</strong> {bookData.pubdate}</p>
               <p><strong>카테고리:</strong> {bookData.category}</p>
             </div>
             <div className="book-description">
               <h2>책 소개</h2>
-              <p>{bookData.description ? bookData.description : '책 소개가 없습니다.'}</p>
+              {bookData.description ? (
+              <div dangerouslySetInnerHTML={{ __html: bookData.description }} />
+            ) : (
+              <p>책 소개가 없습니다.</p>
+            )}
             </div>
           </div>
         </div>

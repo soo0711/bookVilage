@@ -6,19 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
-import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity.BookMeetingEntityBuilder;
 import com.example.bookVillage.bookMeeting.repository.BookMeetingRepository;
-import com.example.bookVillage.card.bo.PersonalBookMeetingBO;
-import com.example.bookVillage.personalSchedule.bo.PersonalScheduleBO;
-import com.example.bookVillage.wishList.entity.WishListEntity;
 
 @Service
 public class BookMeetingBO {
 	@Autowired
 	private BookMeetingRepository bookMeetingRepository;
-	
-	//@Autowired
-	//private PersonalScheduleBO personalScheduleBO;
 	
 	public Integer addBookMeeting(String subject, String content,String hostLoginid, String schedule,
 			String place, int total) {
@@ -62,9 +55,6 @@ public class BookMeetingBO {
 		BookMeetingEntity bookMeetingEntity = bookMeetingRepository.findById(bookMeetingId);
 		// 삭제하기 전 참여인원이 총인원보다 작으면 삭제 가능
 		if (bookMeetingEntity != null && (bookMeetingEntity.getTotal() > bookMeetingEntity.getCurrent())) {
-			
-			// 개인일정에 이 독서모임이 있으면 삭제
-			//personalScheduleBO.deletePersonalBookMeeting(bookMeetingId);
 			
 			bookMeetingRepository.delete(bookMeetingEntity);
 			return 1;

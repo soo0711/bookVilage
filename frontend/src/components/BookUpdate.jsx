@@ -48,11 +48,16 @@ useEffect(() => {
             const bookData = response.data.bookRegister;
             const bookImages = response.data.bookImage || []; // 이미지 데이터 가져오기
             // 서버에서 받은 책 데이터를 formData에 채워넣기
+            let sido = "ALL";
+            let sigg =  "ALL";
+            let emdong = "ALL"; // emdong 값을 우선 저장
+            if (bookData.place != null && bookData.place.trim() !== ""){
             const placeParts = bookData.place.split(" ");
-            const sido = placeParts[0] || "ALL";
-            const sigg = placeParts[1] || "ALL";
-            const emdong = placeParts[2] || "ALL"; // emdong 값을 우선 저장
-  
+            sido = placeParts[0] || "ALL";
+            sigg = placeParts[1] || "ALL";
+            emdong = placeParts[2] || "ALL"; // emdong 값을 우선 저장
+            }
+
             setFormData({
               title: bookData.title,
               review: bookData.review,
@@ -228,9 +233,19 @@ const handleEmdongChange = (e) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (formData.exchange_YN == "Y" && (formData.sidoCd == "ALL" || formData.siggCd == "ALL" || formData.emdongCd == "ALL")) {
+      alert("장소를 입력해주세요.");
+      return;
+    }
+
     try {
       const data = new FormData();
-      
+      if (formData.exchange_YN === "Y" && formData.b_condition == null){
+        formData.b_condition = "A";
+      }
+      if (formData.exchange_YN === "Y" && formData.status === "교환 불가"){
+        formData.status = "교환 가능";
+      }
       // Spring 컨트롤러의 매개변수와 일치하도록 메타데이터 구성
       const metadata = {
         review: formData.review,
@@ -376,7 +391,7 @@ const handleEmdongChange = (e) => {
                <div className="search-box public-srch02">
               <div className="sch-in sch-in-ty1">
               <div className="region-select">
-              <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd} className="region">
+              <select name="sidoCd" id="sidoCd" onChange={handleSidoChange} value={formData.sidoCd} className="region" required>
                 <option value="">시/도 전체</option>
                 {sidoList.map((sido, index) => (
                   <option key={index} value={sido}>{sido}</option>
@@ -384,7 +399,7 @@ const handleEmdongChange = (e) => {
               </select>
 
 
-              <select name="siggCd" id="siggCd" onChange={handleSigunguChange} value={formData.siggCd} className="region">
+              <select name="siggCd" id="siggCd" onChange={handleSigunguChange} value={formData.siggCd} className="region" required>
                 <option value="">시/군/구 전체</option>
                 {sigunguList.map((sigungu, index) => (
                   <option key={index} value={sigungu}>{sigungu}</option>
@@ -392,7 +407,7 @@ const handleEmdongChange = (e) => {
               </select>
 
 
-              <select name="emdongCd" id="emdongCd" onChange={handleEmdongChange} value={formData.emdongCd} className="region">
+              <select name="emdongCd" id="emdongCd" onChange={handleEmdongChange} value={formData.emdongCd} className="region" required>
                 <option value="">읍/면/동 전체</option>
                 {emdongList.map((emdong, index) => (
                   <option key={index} value={emdong}>{emdong}</option>

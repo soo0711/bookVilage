@@ -42,6 +42,9 @@ public class BookRegisterBO {
 			String status = "교환 가능";
 			if (exchange_YN.equals("N") ) {
 				status = "교환 불가";
+				place = null;
+				b_condition = null;
+				description = null;
 			}
 			
 		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.save( // 등록
@@ -83,6 +86,9 @@ public class BookRegisterBO {
 		
 		if (exchange_YN.equals("N") ) {
 			status = "교환 불가";
+			place = null;
+			b_condition = null;
+			description = null;
 		}
 	
 	
@@ -204,25 +210,10 @@ public class BookRegisterBO {
 
 	public BookEntity addBookEntity(String isbn13, String title,String  cover, String description, String author, String publisher, String date, String category) {
 		
-		Date pubdate = null;
-		
-		try {
-			SimpleDateFormat originalFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
-		    originalFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-		    // 날짜 파싱
-		    pubdate = originalFormatter.parse(date);
-
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		java.sql.Date sqlPubDate = new java.sql.Date(pubdate.getTime());
-		
 		BookEntity book = bookBO.getBookByIsbn13(isbn13);
 		if (book == null) {
 			// 등록
-			book = bookBO.addBookEntity(isbn13, title, cover, description, author, publisher, sqlPubDate, category);
+			book = bookBO.addBookEntity(isbn13, title, cover, description, author, publisher, date, category);
 		}
 		return book;
 	}
