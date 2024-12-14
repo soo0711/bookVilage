@@ -506,42 +506,52 @@ const WishList = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 나중에 실제 API 연동 시 사용할 코드
-  /*
   useEffect(() => {
+    // 서버에서 위시리스트 데이터를 가져오는 API 호출
     const fetchWishlist = async () => {
       try {
-        const response = await fetch(`/api/wishlist/${userId}`);
-        const data = await response.json();
-        setWishlistItems(data);
-        setIsLoading(false);
+        const response = await axios.post('http://localhost:80/wishList/mypage-list', {}, {
+          withCredentials: true
+        });
+
+        const data = response.data; // axios는 JSON 데이터를 자동으로 파싱
+
+        if (data.code === 200) {
+          setWishlistItems(data.date); // 서버에서 받은 위시리스트 데이터 설정
+        } else {
+          setWishlistItems([]); // 위시리스트가 없을 경우 빈 배열 설정
+        }
       } catch (error) {
-        console.error('위시리스트 로드 실패:', error);
-        setIsLoading(false);
+        console.error('위시리스트를 가져오는 중 오류 발생:', error);
+        setWishlistItems([]); // 오류 발생 시 빈 배열 설정
+      } finally {
+        setIsLoading(false); // 로딩 상태 해제
       }
     };
 
     fetchWishlist();
-  }, [userId]);
-  */
-
-   // 임시 데이터로 테스트
-   useEffect(() => {
-    // 임시 데이터
-    setWishlistItems([
-      {
-        id: 1,
-        user_id: 123,
-        isbn: "8983920726",
-        createdAt: "2024-03-21",
-        bookTitle: "해리포터와 마법사의 돌",
-        author: "J.K. 롤링",
-        publisher: "문학수첩",
-        cover: "https://example.com/cover1.jpg"
-      }
-    ]);
-    setIsLoading(false);
   }, []);
+
+  const handleRemoveWishlist = async (isbn13) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:80/wishList/delete',
+        { isbn13 }, // 요청 데이터
+        { withCredentials: true }
+      );
+
+      if (response.data.code === 200) {
+        // 삭제 성공 시 메시지 표시 및 새로고침
+        alert('삭제가 완료되었습니다.');
+        window.location.reload(); // 새로고침
+      } else {
+        alert(response.data.error_message || '삭제에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('삭제 요청 중 오류 발생:', error);
+      alert('삭제 요청 중 오류가 발생했습니다.');
+    }
+  };
 
   if (isLoading) {
     return <div>로딩 중...</div>;
@@ -561,27 +571,26 @@ const WishList = () => {
     <div className="wishlist2-container">
       <h3>위시리스트</h3>
       <div className="books-grid">
-        {wishlistItems.map(item => (
+        {wishlistItems.map((item) => (
           <div key={item.id} className="book-card">
             <div className="book-wishlist-cover">
-              <img src={item.cover} alt={item.bookTitle} />
+              <img
+                src={item.book.cover}
+                alt={item.book.title}
+                onError={(e) => (e.target.src = '/default-cover.jpg')} // 이미지 로딩 실패 시 대체 이미지
+              />
             </div>
             <div className="book-info">
-              <h4>{item.bookTitle}</h4>
-              <p>{item.author}</p>
-              <p>{item.publisher}</p>
+              <h4>{item.book.title}</h4>
+              <p>{item.book.author}</p>
+              <p>{item.book.publisher}</p>
               <p className="added-date">
                 찜한 날짜: {new Date(item.createdAt).toLocaleDateString()}
               </p>
             </div>
-            <button 
+            <button
               className="remove-wishlist"
-              onClick={() => {
-                // 나중에 실제 API 연동 시 삭제 요청 추가
-                setWishlistItems(prev => 
-                  prev.filter(book => book.id !== item.id)
-                );
-              }}
+              onClick={() => handleRemoveWishlist(item.book.isbn13)}
             >
               찜 취소
             </button>

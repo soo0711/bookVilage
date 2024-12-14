@@ -17,8 +17,8 @@ public class BookMeetingBO {
 	@Autowired
 	private BookMeetingRepository bookMeetingRepository;
 	
-	@Autowired
-	private PersonalScheduleBO personalScheduleBO;
+	//@Autowired
+	//private PersonalScheduleBO personalScheduleBO;
 	
 	public Integer addBookMeeting(String subject, String content,String hostLoginid, String schedule,
 			String place, int total) {
@@ -64,7 +64,7 @@ public class BookMeetingBO {
 		if (bookMeetingEntity != null && (bookMeetingEntity.getTotal() > bookMeetingEntity.getCurrent())) {
 			
 			// 개인일정에 이 독서모임이 있으면 삭제
-			personalScheduleBO.deletePersonalBookMeeting(bookMeetingId);
+			//personalScheduleBO.deletePersonalBookMeeting(bookMeetingId);
 			
 			bookMeetingRepository.delete(bookMeetingEntity);
 			return 1;
