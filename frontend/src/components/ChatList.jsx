@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './ChatList.css';
 import Header from './Header';
+import {useNavigate } from "react-router-dom";
+
 
 function ChatList({ username, isLoggedIn, handleLogout }) {
   const [chatRooms, setChatRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [myId, setMyId] = useState(null); // myId 상태 추가
-
+  const navigate = useNavigate();
   // 서버에서 채팅방 목록을 가져오는 함수
   useEffect(() => {
     const fetchChatRooms = async () => {
@@ -64,6 +66,9 @@ function ChatList({ username, isLoggedIn, handleLogout }) {
     return <p>{error}</p>;
   }
 
+  const handleUserClick = (userId) => {
+    navigate(`/profile/${userId}`); // userId를 URL 파라미터로 전달
+  };
   return (
     <>
         <Header
@@ -97,7 +102,8 @@ function ChatList({ username, isLoggedIn, handleLogout }) {
                 </div>
                 <div className="chat-room-info">
                   <div className="chat-room-header">
-                    <h3>{room.otherUser.loginId}</h3> {/* 상대방의 loginId */}
+                    <h3 onClick={() => handleUserClick(room.otherUser.id)}
+                        className="username-link">{room.otherUser.loginId}</h3> {/* 상대방의 loginId */}
                     <span className="last-time">
                       {new Date(room.latestMessage.createdAt).toLocaleString()} {/* 최신 메시지의 시간 */}
                     </span>

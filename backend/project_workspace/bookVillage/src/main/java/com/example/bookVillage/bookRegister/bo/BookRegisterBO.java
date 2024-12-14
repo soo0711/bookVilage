@@ -230,28 +230,26 @@ public class BookRegisterBO {
       return bookRegisterImageBO.getBookRegisterImageByBookRegisterId(bookRegisterId);
    }
 
-
-   public List<BookRegisterEntity> getBookRegisterByPlaceAndTitle(String place, String title, int userId) {
-      return bookRegisterRepository.findByPlaceContainingAndTitleContainingAndUserIdNot(place, title, userId);
-   }
-
-
-   public List<BookRegisterEntity> getBookRegisterByPlace(String place, int userId) {
-      return bookRegisterRepository.findByPlaceContainingAndUserIdNot(place, userId);
-
-   }
+	public List<BookRegisterEntity> getBookRegisterByPlaceAndTitle(String place, String title, int userId) {
+		return bookRegisterRepository.findByPlaceContainingAndTitleContainingAndUserIdNotAndStatus(place, title, userId, "교환 가능");
+	}
 
 
-   public List<BookRegisterEntity> getBookRegister(int userId) {
-      
-      return bookRegisterRepository.findByUserIdNot(userId);
-   }
+	public List<BookRegisterEntity> getBookRegisterByPlace(String place, int userId) {
+		return bookRegisterRepository.findByPlaceContainingAndUserIdNotAndStatus(place, userId, "교환 가능");
+
+	}
 
 
-   public List<BookRegisterEntity> getBookRegisterByTitle(String title, int userId) {
-      
-      return bookRegisterRepository.findByTitleContainingAndUserIdNot(title, userId);
+	public List<BookRegisterEntity> getBookRegister(int userId) {
+		
+		return bookRegisterRepository.findByUserIdNotAndStatus(userId, "교환 가능");
+	}
 
-   }
-   
+
+	public List<BookRegisterEntity> getBookRegisterByTitle(String title, int userId) {
+		
+		return bookRegisterRepository.findByTitleContainingAndUserIdNotAndStatus(title, userId, "교환 가능");
+
+	}
 }
