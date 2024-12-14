@@ -92,4 +92,48 @@ public class UserBookRegisterBO {
 		
 		return userBookRegisterList;
 	}
+
+	public List<UserBookRegisterEntity> getUserBookRegister(int userId) {
+		List<UserBookRegisterEntity> userBookRegisterList = new ArrayList<>();
+		
+		List<BookRegisterEntity> bookRegisterList = bookRegisterBO.getBookRegister(userId);
+		
+		for(int i =0; i<bookRegisterList.size(); i++) {
+			int oterUserId = bookRegisterList.get(i).getUserId();
+			
+			UserEntity user = userBO.getUserEntityById(oterUserId);
+			List<WishListEntity> wishList = wishListBO.getWishListEntityListByUserId(oterUserId);
+			
+			UserBookRegisterEntity userBookRegisetEntity = new UserBookRegisterEntity();
+			userBookRegisetEntity.setUser(user);
+			userBookRegisetEntity.setBookRegister(bookRegisterList.get(i));
+			userBookRegisetEntity.setWishList(wishList);
+			
+			userBookRegisterList.add(userBookRegisetEntity);
+		}
+		
+		return userBookRegisterList;
+	}
+
+	public List<UserBookRegisterEntity> getUserBookRegisterByTitle(String title, int userId) {
+List<UserBookRegisterEntity> userBookRegisterList = new ArrayList<>();
+		
+		List<BookRegisterEntity> bookRegisterList = bookRegisterBO.getBookRegisterByTitle(title, userId);
+		
+		for(int i =0; i<bookRegisterList.size(); i++) {
+			int oterUserId = bookRegisterList.get(i).getUserId();
+			
+			UserEntity user = userBO.getUserEntityById(oterUserId);
+			List<WishListEntity> wishList = wishListBO.getWishListEntityListByUserId(oterUserId);
+			
+			UserBookRegisterEntity userBookRegisetEntity = new UserBookRegisterEntity();
+			userBookRegisetEntity.setUser(user);
+			userBookRegisetEntity.setBookRegister(bookRegisterList.get(i));
+			userBookRegisetEntity.setWishList(wishList);
+			
+			userBookRegisterList.add(userBookRegisetEntity);
+		}
+		
+		return userBookRegisterList;
+	}
 }

@@ -237,7 +237,19 @@ public class BookRegisterBO {
 
 
 	public List<BookRegisterEntity> getBookRegisterByPlace(String place, int userId) {
-		return bookRegisterRepository.findByPlaceAndUserIdNot(place, userId);
+		return bookRegisterRepository.findByPlaceContainingAndUserIdNot(place, userId);
+	}
+
+
+	public List<BookRegisterEntity> getBookRegister(int userId) {
+		
+		return bookRegisterRepository.findByUserIdNot(userId);
+	}
+
+
+	public List<BookRegisterEntity> getBookRegisterByTitle(String title, int userId) {
+		
+		return bookRegisterRepository.findByTitleContainingAndUserIdNot(title, userId);
 	}
 	
 }
