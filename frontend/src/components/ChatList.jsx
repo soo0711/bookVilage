@@ -4,7 +4,7 @@ import axios from 'axios';
 import './ChatList.css';
 import Header from './Header';
 
-function ChatList({ username, isLoggedIn }) {
+function ChatList({ username, isLoggedIn, handleLogout }) {
   const [chatRooms, setChatRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,7 +66,11 @@ function ChatList({ username, isLoggedIn }) {
 
   return (
     <>
-      <Header />
+        <Header
+        isLoggedIn={isLoggedIn}
+        username={username}
+        onLogout={handleLogout}
+        />
       <div className="chat-list-container">
         <div className="chat-list-header">
           <h2>채팅 목록</h2>

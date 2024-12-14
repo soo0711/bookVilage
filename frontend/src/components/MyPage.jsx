@@ -506,6 +506,7 @@ const EditProfile = () => {
 const WishList = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 서버에서 위시리스트 데이터를 가져오는 API 호출
@@ -554,6 +555,10 @@ const WishList = () => {
     }
   };
 
+  const handleImageClickExchange = (book) => {
+    navigate(`/book/${book.isbn13}`);
+  };
+
   if (isLoading) {
     return <div>로딩 중...</div>;
   }
@@ -571,31 +576,31 @@ const WishList = () => {
   return (
     <div className="wishlist2-container">
       <h3>위시리스트</h3>
-      <div className="books-grid">
-        {wishlistItems.map((item) => (
-          <div key={item.id} className="book-card">
-            <div className="book-wishlist-cover">
-              <img
-                src={item.book.cover}
-                alt={item.book.title}
-                onError={(e) => (e.target.src = '/default-cover.jpg')} // 이미지 로딩 실패 시 대체 이미지
-              />
-            </div>
-            <div className="book-info">
-              <h4>{item.book.title}</h4>
-              <p>{item.book.author}</p>
-              <p>{item.book.publisher}</p>
-              <p className="added-date">
-                찜한 날짜: {new Date(item.createdAt).toLocaleDateString()}
-              </p>
-            </div>
-            <button
-              className="remove-wishlist"
-              onClick={() => handleRemoveWishlist(item.book.isbn13)}
-            >
-              찜 취소
-            </button>
-          </div>
+      <div className="books-grid-wishlist">
+      {wishlistItems.map((item) => (
+      <div key={item.book.isbn13} className="book-card-wishlist">
+        <div className="book-wishlist-cover">
+          <img
+            src={item.book.cover}
+            alt={item.book.title}
+            onError={(e) => (e.target.src = '/default-cover.jpg')} // 이미지 로딩 실패 시 대체 이미지
+          />
+        </div>
+        <div className="book-info">
+          <h4>{item.book.title}</h4>
+          <p>{item.book.author}</p>
+          <p>{item.book.publisher}</p>
+          <p className="added-date">
+            찜한 날짜: {new Date(item.createdAt).toLocaleDateString()}
+          </p>
+        </div>
+        <button
+          className="remove-wishlist"
+          onClick={() => handleRemoveWishlist(item.book.isbn13)}
+        >
+          찜 취소
+        </button>
+      </div>
         ))}
       </div>
     </div>

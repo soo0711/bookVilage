@@ -187,7 +187,7 @@ const ExchangeList = () => {
           </div>
         </div>
         <div className="back-button-container">
-          <button className="back-button" onClick={() => navigate("/")}>이전 목록</button>
+          <button className="back-button" onClick={() => navigate(-1)}>이전 목록</button>
         </div>
       </div>
     </>
