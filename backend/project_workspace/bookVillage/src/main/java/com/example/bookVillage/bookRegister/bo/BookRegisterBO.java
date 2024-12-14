@@ -229,5 +229,15 @@ public class BookRegisterBO {
 	public List<BookRegisterImageEntity> getBookRegisterImageEntity(int bookRegisterId, int userId){
 		return bookRegisterImageBO.getBookRegisterImageByBookRegisterId(bookRegisterId);
 	}
+
+
+	public List<BookRegisterEntity> getBookRegisterByPlaceAndTitle(String place, String title, int userId) {
+		return bookRegisterRepository.findByPlaceContainingAndTitleContainingAndUserIdNot(place, title, userId);
+	}
+
+
+	public List<BookRegisterEntity> getBookRegisterByPlace(String place, int userId) {
+		return bookRegisterRepository.findByPlaceAndUserIdNot(place, userId);
+	}
 	
 }

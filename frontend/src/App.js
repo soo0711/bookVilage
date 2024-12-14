@@ -23,6 +23,7 @@ import SearchResults from './components/SearchResults';
 import BookUpdate from './components/BookUpdate';
 import TasteDetails from './components/TasteDetails';
 import ModifyMeeting from './components/ModifyMeeting';
+import RegionalExchange from "./components/RegionalExchange";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -128,6 +129,10 @@ function App() {
           path="/chat/:chatRoomId"
           element={<ChatPage client={client}  username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="*" element={<Navigate to="/home-view" />} />
+        <Route path="/exchange" element={<RegionalExchange username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>
+          } 
+        />
+
       </Routes>
     </Router>
   );

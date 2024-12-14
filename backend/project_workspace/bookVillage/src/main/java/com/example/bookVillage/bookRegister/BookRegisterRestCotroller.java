@@ -1,5 +1,6 @@
 package com.example.bookVillage.bookRegister;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -224,12 +225,8 @@ public class BookRegisterRestCotroller {
          //내가 선택한 책의 isbn13값과 나의 userId를 넘겨 내가 올린 책 뺴고 다른 사람들이 올린 책 정보 가져오기
          List<UserBookRegisterEntity> userBookRegisterList = userBookRegisterBO.getUserBookRegisterByIsbn13(isbn13, userId);
 
-               
          //내가 등록한 책 
          List<BookRegisterEntity> bookRegisterList = bookregisterBO.getBookRegisterList(userId);
-         
-         
-         
          
          Map<String, Object> result = new HashMap<>();
          result.put("code", 200);
@@ -242,6 +239,42 @@ public class BookRegisterRestCotroller {
          return result;
          
       }
+   
+   @PostMapping("/regional-exchange-list")
+   public Map<String, Object> regionalExchangeList( 
+         @RequestBody Map<String, String> requestBody, 
+         HttpSession session){
+      
+      int userId = (Integer)session.getAttribute("userId");
+      String place = requestBody.get("place");
+      String title = requestBody.get("title");
+      
+      List<UserBookRegisterEntity> userBookRegisterList = new ArrayList<>();
+      
+      // 책 검색 조건 추가할 경우
+      if(title != null) {
+    	  userBookRegisterList = userBookRegisterBO.getUserBookRegisterByPlaceAndTitle(place, title, userId);
+      }
+      
+      // 책 검색 없이 장소로만 교환 리스트 
+      if(title == null) {
+    	  userBookRegisterList = userBookRegisterBO.getUserBookRegisterByPlace(place, userId);
+      }
+      
+      
+      //내가 등록한 책 
+      List<BookRegisterEntity> bookRegisterList = bookregisterBO.getBookRegisterList(userId);
+      
+      Map<String, Object> result = new HashMap<>();
+      result.put("code", 200);
+      result.put("result", "성공");
+      result.put("data", userBookRegisterList);
+      result.put("mydata", bookRegisterList); // 내가 등록한책 
+      result.put("myId", userId);
+   
+      return result;
+      
+   }
    
    
    

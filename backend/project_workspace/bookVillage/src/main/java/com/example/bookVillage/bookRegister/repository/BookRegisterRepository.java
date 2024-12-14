@@ -25,4 +25,11 @@ public interface BookRegisterRepository extends JpaRepository<BookRegisterEntity
 	public List<Object[]> findBookAvgPoint();
 	
 	public BookRegisterEntity findByIdAndUserId(int bookRegisterId, int userId);
+
+
+	public List<BookRegisterEntity> findByPlaceAndUserIdNot(String place, int userId);
+
+
+	public List<BookRegisterEntity> findByPlaceContainingAndTitleContainingAndUserIdNot(String place, String title, int userId);
+
 }
