@@ -2,7 +2,6 @@
   max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
-  position: relative; /* 부모 요소를 기준으로 자식 요소의 위치를 설정 가능 */
 }
 
 .book-detail-content {
@@ -58,18 +57,6 @@
   line-height: 1.6;
   color: #666;
 }
-
-.back-btn{
-  position: absolute; /* 부모를 기준으로 위치를 고정 */
-  bottom: 30px; 
-  right: 30px; 
-  background-color: #2ccb73;
-}
-
-.back-btn:hover{
-  background-color: #2ccb73;
-}
-
 .review-wordcloud {
   margin-top: 20px;
   padding: 20px;
@@ -92,7 +79,6 @@
 .review-button:hover {
   background-color: #357abd;
 }
-
 .modal-overlay {
   position: fixed;
   top: 0;
