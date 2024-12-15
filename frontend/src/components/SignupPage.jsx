@@ -31,11 +31,11 @@ const SignupPage = () => {
   }
 
   try {
-    const response = await axios.post("http://localhost:80/user/check-id", {
+    const response = await axios.post("http://localhost:80/user/is-duplicated-id", {
       loginId: formData.loginId
     });
 
-    if (response.data.code === 200) {
+    if (!response.data.is_duplicated) {
       alert("사용 가능한 아이디입니다.");
       setIsIdChecked(true);
       setIsIdAvailable(true);
@@ -71,6 +71,11 @@ const handleClick = () => {
     if (!formData.loginId) {
       alert("아이디를 입력해주세요.");
       return;
+    }
+
+    if (!isIdAvailable) {
+      alert("아이디 중복을 확인하세요.");
+      return; // 회원가입 진행하지 않음
     }
 
     if (!formData.password) {
