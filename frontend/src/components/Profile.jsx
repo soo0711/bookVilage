@@ -17,6 +17,11 @@ const Profile = ({ handleLogout }) => {
   const [myId, setMyId] = useState(null); // myId 상태 추가
   const [wishlist, setWishlist] = useState([]); // 위시리스트 상태 추가
 
+  const handleImageClick = (book) => {
+    // ISBN을 이용해 해당 책의 상세 페이지로 이동
+    navigate(`/book/${book.isbn13}`);
+  };
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -107,11 +112,12 @@ const Profile = ({ handleLogout }) => {
 
   return (
     <>
-       <Header
+      <Header
         isLoggedIn={isLoggedIn}
         username={username}
         onLogout={handleLogout}
-        />
+      />
+        
       <div className="profile-container">
         <div className="profile-header">
           <div className="profile-info">
@@ -128,10 +134,10 @@ const Profile = ({ handleLogout }) => {
           <div className="exchangeable-books">
             <h3>교환 가능한 책</h3>
             {exchangeableBooks.length > 0 ? (
-              <div className="book-grid">
+              <div className="book-grid-profile">
                 {exchangeableBooks.map(({ book, bookRegister }) => (
                   <div key={bookRegister.id} className="book-card-pro">
-                    <img src={book.cover} alt={book.title} />
+                    <img src={book.cover} alt={book.title} onClick={() => handleImageClick(book)} />
                     <div className="book-info">
                       <h4>{book.title}</h4>
                       <p>{book.author}</p>
@@ -150,10 +156,10 @@ const Profile = ({ handleLogout }) => {
           <div className="completed-exchanges">
             <h3>교환 완료한 책</h3>
             {completedExchanges.length > 0 ? (
-              <div className="book-grid">
+              <div className="book-grid-profile">
                 {completedExchanges.map(({ book, bookRegister }) => (
-                  <div key={bookRegister.id} className="book-card completed">
-                    <img src={book.cover} alt={book.title} />
+                  <div key={bookRegister.id} className="book-card-pro completed">
+                    <img src={book.cover} alt={book.title} onClick={() => handleImageClick(book)}/>
                     <div className="book-info">
                       <h4>{book.title}</h4>
                       <p>{book.author}</p>
@@ -172,10 +178,10 @@ const Profile = ({ handleLogout }) => {
           <div className="wishlist-section">
             <h3>위시리스트</h3>
             {wishlist.length > 0 ? (
-              <div className="book-grid">
+              <div className="book-grid-profile">
                 {wishlist.map(({ book }) => (
-                  <div key={book.isbn13} className="book-card wishlist-card">
-                    <img src={book.cover} alt={book.title} />
+                  <div key={book.isbn13} className="book-card-pro wishlist-card-pro">
+                    <img src={book.cover} alt={book.title} onClick={() => handleImageClick(book)}/>
                     <div className="book-info">
                       <h4>{book.title}</h4>
                       <p>{book.author}</p>
