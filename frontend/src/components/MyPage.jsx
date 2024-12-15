@@ -555,8 +555,8 @@ const WishList = () => {
     }
   };
 
-  const handleImageClickExchange = (book) => {
-    navigate(`/book/${book.isbn13}`);
+  const handleImageClickExchange = (item) => {
+    navigate(`/book/${item.book.isbn13}`);
   };
 
   if (isLoading) {

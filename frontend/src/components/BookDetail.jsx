@@ -140,7 +140,7 @@ const BookDetail = ({ isLoggedIn, username, handleLogout }) => {
             </div>
           </div>
         </div>
-          <button type="button" class="back-btn" onClick={() => navigate(-1)}>
+          <button type="button" class="back-btns" onClick={() => navigate(-1)}>
           이전으로
         </button>
         <button 
