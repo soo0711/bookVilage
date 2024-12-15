@@ -116,7 +116,6 @@ function App() {
         <Route path="/exchange-list/:bookId" element={<ExchangeList username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/book-register" element={<BookRegister username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
         <Route path="/recommendation" element={<BookRecommendation username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
-        <Route path="/profile/:userId" element={<Profile />} />
         <Route path="/chatlist" element={<ChatList username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>}  />
         <Route path="/book/:isbn"  element={<BookDetail isLoggedIn={isLoggedIn} username={username} handleLogout={handleLogout}/>} />
         <Route path="/myPage" element={<MyPage  userId={userId} username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />

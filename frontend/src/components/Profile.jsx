@@ -107,12 +107,11 @@ const Profile = ({ handleLogout }) => {
 
   return (
     <>
-      <Header
+       <Header
         isLoggedIn={isLoggedIn}
         username={username}
         onLogout={handleLogout}
-      />
-        
+        />
       <div className="profile-container">
         <div className="profile-header">
           <div className="profile-info">

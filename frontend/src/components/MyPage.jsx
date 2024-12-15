@@ -583,6 +583,7 @@ const WishList = () => {
           <img
             src={item.book.cover}
             alt={item.book.title}
+            onClick={() => handleImageClickExchange(item)}
             onError={(e) => (e.target.src = '/default-cover.jpg')} // 이미지 로딩 실패 시 대체 이미지
           />
         </div>
