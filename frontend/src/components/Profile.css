@@ -96,7 +96,7 @@
   border-bottom: 2px solid #e3f2fd;
 }
 
-.book-grid {
+.book-grid-profile {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 25px;
@@ -189,7 +189,7 @@
     margin-top: 20px;
   }
 
-  .book-grid {
+  .book-grid-profile {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 }
@@ -230,12 +230,14 @@
   border-bottom: 2px solid #e3f2fd;
 }
 
-.wishlist-card {
+.wishlist-card-pro {
   background: linear-gradient(135deg, #fff, #f8f0ff);
   border: 1px solid #f0e6ff;
+  padding: 10px;
+  position: relative;
 }
 
-.wishlist-card:hover {
+.wishlist-card-pro:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(149, 117, 205, 0.2);
 }
