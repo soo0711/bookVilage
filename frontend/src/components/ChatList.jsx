@@ -19,27 +19,29 @@ function ChatList({ username, isLoggedIn, handleLogout }) {
         const response = await axios.post('http://localhost:80/chat/list', {}, {
           withCredentials: true // 쿠키를 서버에 전송
         });
-
+  
         if (response.data.code === 200) {
           const myId = response.data.myId;
           setMyId(myId);
-          console.log(myId);
-
+  
           const filteredRooms = response.data.userMessageList
-            .filter(item => item.userList.some(user => user.id !== myId)) // 내 ID가 아닌 유저가 포함된 채팅방 필터링
+            .filter(item => 
+              item.userList.some(user => user.id !== myId) && // 내 ID가 아닌 유저가 포함된 채팅방
+              item.messageList.length > 0 // 메시지가 있는 채팅방만 포함
+            )
             .map(item => {
               const latestMessage = item.messageList.reduce((latest, current) => {
                 return new Date(latest.createdAt) > new Date(current.createdAt) ? latest : current;
               }, item.messageList[0]);
-
+  
               return {
                 ...item.chatRoom,
                 latestMessage,
                 otherUser: item.userList.find(user => user.id !== myId) // myId와 다른 유저만 선택
               };
             });
-
-          setChatRooms(filteredRooms); // 최신 메시지를 포함한 채팅방 목록 설정
+  
+          setChatRooms(filteredRooms); // 메시지가 있는 채팅방 목록 설정
         } else if (response.data.code === 204) {
           // 채팅방이 없는 경우 처리
           setChatRooms([]);
@@ -52,9 +54,10 @@ function ChatList({ username, isLoggedIn, handleLogout }) {
         setLoading(false);
       }
     };
-
+  
     fetchChatRooms();
   }, [username]);
+  
 
   // 로딩 상태 처리
   if (loading) {
