@@ -195,7 +195,9 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
                   <p>내용: {event.content}</p>
                   <p>시간: {event.time} 시</p>
                   <p>장소: {event.location}</p>
+                  {event.type !== "hosted-book-meeting" && (
                   <button onClick={() => handleDeleteEvent(event.id)}>삭제</button>
+                )}
                 </div>
               ))}
             </div>
