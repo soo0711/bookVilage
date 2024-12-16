@@ -1,0 +1,80 @@
+version: '3'
+
+services:
+  mysql:
+      image: mysql:8.0
+      container_name: mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: 123456
+        MYSQL_DATABASE: myapp-sql
+        MYSQL_USER: myapp-sql
+        MYSQL_PASSWORD: 123456
+        TZ: "Asia/Seoul" # 한국 시간대 설정
+      volumes:
+        # 기존의 db파일을 가져와 생성
+        - ./db/bookvillage.sql:/docker-entrypoint-initdb.d/init.sql
+      ports:
+        - "3306:3306"  # MySQL 접근 포트
+      networks:
+        - mynet
+
+  myfastapi:
+    build:
+      context: ./ai/api.
+      dockerfile: Dockerfile
+    container_name: myfastapi
+    ports:
+      - "8000:8000"
+    environment:
+      - SQLALCHEMY_DATABASE_URL=mysql+pymysql://myapp-sql:123456@mysql/myapp-sql # DB URL
+      - TZ=Asia/Seoul # 한국 시간 설정
+    volumes:
+      - ./ai/api:/src  # 로컬 소스 코드 바인딩
+    depends_on:
+      - mysql
+    networks:
+      - mynet
+      
+  myfront:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: myfront
+    ports:
+      - "3000:3000"  # 프론트엔드 접근 포트
+    volumes:
+      - ./frontend:/app  # 로컬 소스 코드 바인딩
+      - node_modules:/src/node_modules # 컨테이너 내부 node_modules를 별도 볼륨으로 관리
+    environment:
+      - CHOKIDAR_USEPOLLING=true # React 파일 변경 감지
+      - NODE_ENV=development # 개발 모드  
+    networks:
+      - mynet
+    depends_on:
+      - myfastapi
+
+  myspring:
+    build:
+      context: ./backend/project_workspace/bookvillage
+      dockerfile: Dockerfile
+    container_name: myspring
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod # Spring 프로파일 설정
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/myapp-sql
+      - SPRING_DATASOURCE_USERNAME=myapp-sql
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - TZ=Asia/Seoul
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - mysql
+    networks:
+      - mynet
+networks:
+  mynet:
+    driver: bridge
+
+volumes:
+  node_modules:
