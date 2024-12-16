@@ -133,3 +133,231 @@
   color: #ff4b4b;
 }
 
+/* 태블릿 화면 (1024px 이하) */
+@media screen and (max-width: 1024px) {
+  .search-results-container {
+    max-width: 90%;
+    padding: 18px;
+  }
+
+  .search-info {
+    margin-bottom: 25px;
+  }
+
+  .search-info h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .search-info p {
+    font-size: 15px;
+  }
+
+  .books-grid {
+    gap: 18px;
+    padding: 18px 0;
+  }
+
+  .book-card {
+    max-width: 650px;
+    padding: 13px;
+    height: 140px;
+  }
+
+  .book-cover {
+    width: 90px;
+    margin-right: 13px;
+  }
+
+  .book-title {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .book-author {
+    font-size: 15px;
+    margin-bottom: 7px;
+  }
+
+  .book-publisher {
+    font-size: 13px;
+  }
+}
+
+/* 작은 태블릿 화면 (768px 이하) */
+@media screen and (max-width: 768px) {
+  .search-results-container {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .search-info {
+    margin-bottom: 20px;
+  }
+
+  .search-info h2 {
+    font-size: 20px;
+    margin-bottom: 7px;
+  }
+
+  .search-info p {
+    font-size: 14px;
+  }
+
+  .books-grid {
+    gap: 15px;
+    padding: 15px 0;
+  }
+
+  .book-card {
+    max-width: 600px;
+    padding: 12px;
+    height: 130px;
+  }
+
+  .book-cover {
+    width: 85px;
+    margin-right: 12px;
+  }
+
+  .book-title {
+    font-size: 16px;
+    margin-bottom: 7px;
+  }
+
+  .book-author {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .book-publisher {
+    font-size: 12px;
+  }
+
+  .wishlist-button {
+    bottom: 25px;
+    right: 15px;
+  }
+
+  .wishlist-button svg {
+    font-size: 22px;
+  }
+}
+
+/* 모바일 화면 (480px 이하) */
+@media screen and (max-width: 480px) {
+  .search-results-container {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .search-info {
+    margin-bottom: 15px;
+  }
+
+  .search-info h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .search-info p {
+    font-size: 13px;
+  }
+
+  .books-grid {
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .book-card {
+    max-width: 100%;
+    padding: 10px;
+    height: 120px;
+  }
+
+  .book-cover {
+    width: 75px;
+    margin-right: 10px;
+  }
+
+  .book-title {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .book-author {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+
+  .book-publisher {
+    font-size: 11px;
+  }
+
+  .wishlist-button {
+    bottom: 20px;
+    right: 12px;
+  }
+
+  .wishlist-button svg {
+    font-size: 20px;
+  }
+}
+
+/* 작은 모바일 화면 (320px 이하) */
+@media screen and (max-width: 320px) {
+  .search-results-container {
+    padding: 10px;
+  }
+
+  .search-info {
+    margin-bottom: 12px;
+  }
+
+  .search-info h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .search-info p {
+    font-size: 12px;
+  }
+
+  .books-grid {
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  .book-card {
+    padding: 8px;
+    height: 110px;
+  }
+
+  .book-cover {
+    width: 65px;
+    margin-right: 8px;
+  }
+
+  .book-title {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .book-author {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .book-publisher {
+    font-size: 10px;
+  }
+
+  .wishlist-button {
+    bottom: 15px;
+    right: 10px;
+  }
+
+  .wishlist-button svg {
+    font-size: 18px;
+  }
+}

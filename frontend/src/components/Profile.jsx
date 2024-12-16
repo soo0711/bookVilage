@@ -4,40 +4,6 @@ import './Profile.css';
 
 const Profile = ({ handleLogout }) => {
   const navigate = useNavigate();
-<<<<<<< HEAD
-  const { username } = useParams();
-
-  // 임시 데이터
-  const userInfo = {
-    username: username,
-    preferredLocations: ["서울 강남구 역삼동", "서울 서초구 서초동"],
-    exchangeableBooks: [
-      {
-        id: 1,
-        title: "해리포터와 마법사의 돌",
-        author: "J.K. 롤링",
-        condition: "상태 좋음",
-        imageUrl: "/book-images/harry1.jpg",
-        location: "서울 강남구 역삼동"
-      },
-      {
-        id: 2,
-        title: "해리포터와 비밀의 방",
-        author: "J.K. 롤링",
-        condition: "상태 보통",
-        imageUrl: "/book-images/harry2.jpg",
-        location: "서울 서초구 서초동"
-      }
-    ],
-    completedExchanges: [
-      {
-        id: 1,
-        title: "반지의 제왕",
-        author: "J.R.R. 톨킨",
-        exchangeDate: "2024-03-15",
-        imageUrl: "/book-images/lotr.jpg",
-        location: "서울 강남구 역삼동"
-=======
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const { userId } = useParams(); // URL에서 userId 가져오기
@@ -127,7 +93,6 @@ const Profile = ({ handleLogout }) => {
         });
       } else {
         alert("채팅방 생성에 실패했습니다.");
->>>>>>> suhyun-back
       }
     ]
   };
@@ -143,41 +108,6 @@ const Profile = ({ handleLogout }) => {
 
 
   return (
-<<<<<<< HEAD
-    <div className="profile-container">
-      <div className="profile-header">
-        <div className="profile-info">
-          <h2>{username}님의 프로필</h2>
-          <div className="preferred-locations">
-            <h3>선호하는 교환 장소</h3>
-            <ul>
-              {userInfo.preferredLocations.map((location, index) => (
-                <li key={index}>{location}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <button className="chat-button" onClick={handleChatClick}>
-          채팅하기
-        </button>
-      </div>
-
-      <div className="books-section">
-        <div className="exchangeable-books">
-          <h3>교환 가능한 책</h3>
-          <div className="book-grid">
-            {userInfo.exchangeableBooks.map(book => (
-              <div key={book.id} className="book-card-pro">
-                <img src={book.imageUrl} alt={book.title} />
-                <div className="book-info">
-                  <h4>{book.title}</h4>
-                  <p>{book.author}</p>
-                  <p className="condition">상태: {book.condition}</p>
-                  <p className="location">교환 장소: {book.location}</p>
-                </div>
-              </div>
-            ))}
-=======
     <>
       <Header
         isLoggedIn={isLoggedIn}
@@ -190,26 +120,9 @@ const Profile = ({ handleLogout }) => {
           <div className="profile-info">
             <h2>{userInfo?.user?.loginId}님의 프로필</h2>
             {/* loginId 표시 */}
->>>>>>> suhyun-back
           </div>
         </div>
 
-<<<<<<< HEAD
-        <div className="completed-exchanges">
-          <h3>교환 완료한 책</h3>
-          <div className="book-grid">
-            {userInfo.completedExchanges.map(book => (
-              <div key={book.id} className="book-card completed">
-                <img src={book.imageUrl} alt={book.title} />
-                <div className="book-info">
-                  <h4>{book.title}</h4>
-                  <p>{book.author}</p>
-                  <p className="exchange-date">교환일: {book.exchangeDate}</p>
-                  <p className="location">교환 장소: {book.location}</p>
-                </div>
-              </div>
-            ))}
-=======
         <div className="books-section">
           {/* 교환 가능한 책 섹션 */}
           <div className="exchangeable-books">
@@ -253,7 +166,6 @@ const Profile = ({ handleLogout }) => {
             ) : (
               <p>교환 완료된 책이 없습니다.</p>
             )}
->>>>>>> suhyun-back
           </div>
 
           {/* 위시리스트 섹션 */}

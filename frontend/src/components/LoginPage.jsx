@@ -18,18 +18,6 @@ const LoginPage = ({ onLogin }) => {
     }));
   };
 
-<<<<<<< HEAD
-  // 임시 로그인 처리
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.loginId && formData.password) {
-      // 임시로 무조건 로그인 성공 처리
-      alert(`환영합니다, ${formData.loginId}님!`);
-      onLogin(formData.loginId);
-      navigate("/home-view");
-    } else {
-      alert("아이디와 비밀번호를 입력해주세요.");
-=======
   const handleClick = () => {
     window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
   };
@@ -76,7 +64,6 @@ const LoginPage = ({ onLogin }) => {
     } catch (error) {
       console.error("로그인 요청 중 에러 발생:", error);
       alert("서버와의 통신에 문제가 발생했습니다.");
->>>>>>> suhyun-back
     }
   };
 

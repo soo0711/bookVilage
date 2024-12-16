@@ -81,3 +81,173 @@ input {
 .sign-in-btn:hover {
   background-color: #02b150 !important;
 }
+/* 태블릿 화면 (1024px 이하) */
+@media screen and (max-width: 1024px) {
+  .login-form-container {
+    max-width: 380px;
+    padding: 1.8rem;
+  }
+
+  .logo {
+    max-width: 140px;
+    margin: 0 auto 0.9rem;
+  }
+
+  .title {
+    max-width: 180px;
+    margin: 0 auto 1.8rem;
+  }
+
+  form {
+    gap: 0.9rem;
+  }
+
+  input {
+    padding: 0.7rem;
+    font-size: 0.95rem;
+  }
+
+  .help-links {
+    margin: 0.9rem 0;
+    gap: 0.9rem;
+  }
+}
+
+/* 작은 태블릿 화면 (768px 이하) */
+@media screen and (max-width: 768px) {
+  .login-page {
+    padding: 15px;
+  }
+
+  .login-form-container {
+    max-width: 350px;
+    padding: 1.5rem;
+  }
+
+  .logo {
+    max-width: 130px;
+    margin: 0 auto 0.8rem;
+  }
+
+  .title {
+    max-width: 160px;
+    margin: 0 auto 1.5rem;
+  }
+
+  form {
+    gap: 0.8rem;
+  }
+
+  input {
+    padding: 0.65rem;
+    font-size: 0.9rem;
+  }
+
+  .help-links {
+    margin: 0.8rem 0;
+    gap: 0.8rem;
+  }
+
+  .find-link {
+    font-size: 0.85rem;
+  }
+
+  .sign-in-btn {
+    padding: 0.7rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* 모바일 화면 (480px 이하) */
+@media screen and (max-width: 480px) {
+  .login-page {
+    padding: 12px;
+  }
+
+  .login-form-container {
+    max-width: 320px;
+    padding: 1.2rem;
+  }
+
+  .logo {
+    max-width: 120px;
+    margin: 0 auto 0.7rem;
+  }
+
+  .title {
+    max-width: 140px;
+    margin: 0 auto 1.2rem;
+  }
+
+  form {
+    gap: 0.7rem;
+  }
+
+  input {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .help-links {
+    margin: 0.7rem 0;
+    gap: 0.7rem;
+  }
+
+  .find-link {
+    font-size: 0.8rem;
+  }
+
+  .sign-in-btn {
+    padding: 0.65rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* 작은 모바일 화면 (320px 이하) */
+@media screen and (max-width: 320px) {
+  .login-page {
+    padding: 10px;
+  }
+
+  .login-form-container {
+    max-width: 290px;
+    padding: 1rem;
+  }
+
+  .logo {
+    max-width: 110px;
+    margin: 0 auto 0.6rem;
+  }
+
+  .title {
+    max-width: 130px;
+    margin: 0 auto 1rem;
+  }
+
+  form {
+    gap: 0.6rem;
+  }
+
+  input {
+    padding: 0.55rem;
+    font-size: 0.8rem;
+  }
+
+  .help-links {
+    margin: 0.6rem 0;
+    gap: 0.6rem;
+  }
+
+  .find-link {
+    font-size: 0.75rem;
+  }
+
+  .sign-in-btn {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .divider {
+    margin: 0 0.3rem;
+  }
+}

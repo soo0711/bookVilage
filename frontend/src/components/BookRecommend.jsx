@@ -3,42 +3,6 @@ import Header from "./Header";
 import BookRegisterForm from "./BookRegister";
 import BookRecommendation from "./BookRecommendation";
 
-<<<<<<< HEAD
-const BookRecommend = () => {
-  const [isBookRegistered, setIsBookRegistered] = useState(false);
-  const [userBooks, setUserBooks] = useState([]);
-  const [recommendedBooks, setRecommendedBooks] = useState([]);
-
-  // 책 등록 핸들러 수정
-  const handleBookRegister = (book) => {
-    setUserBooks([book]); // 새로운 책으로 배열 업데이트
-    setIsBookRegistered(true);
-    
-    // 임시 추천 도서 데이터 설정
-    const tempRecommendedBooks = [
-      {
-        title: "추천도서 1",
-        author: "작가1",
-        image: "https://via.placeholder.com/150x200",
-      },
-      {
-        title: "추천도서 2",
-        author: "작가2",
-        image: "https://via.placeholder.com/150x200",
-      },
-      {
-        title: "추천도서 3",
-        author: "작가3",
-        image: "https://via.placeholder.com/150x200",
-      },
-    ];
-    setRecommendedBooks(tempRecommendedBooks);
-  };
-
-  /* 실제 API 연동 시 사용할 함수
-  const fetchRecommendedBooks = async () => {
-    if (userBooks.length > 0) {
-=======
 const BookRecommend = ({ handleLogout }) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -63,7 +27,6 @@ const BookRecommend = ({ handleLogout }) => {
       });
 
     const fetchBooks = async () => {
->>>>>>> suhyun-back
       try {
         const response = await fetch(
           `https://api.aladin.co.kr/recommend?query=${userBooks[0].title}`
@@ -74,23 +37,8 @@ const BookRecommend = ({ handleLogout }) => {
         console.error("추천 책을 가져오는 중 오류 발생:", error);
       }
     }
-  };
+  });
 
-<<<<<<< HEAD
-  useEffect(() => {
-    if (isBookRegistered) {
-      fetchRecommendedBooks();
-    }
-  }, [userBooks]);
-  */
-
-  return (
-    <>
-      <Header />
-      <div className="book-recommend-page">
-        {!isBookRegistered ? (
-          <BookRegisterForm onRegister={handleBookRegister} />
-=======
   const handleTasteClick = async (userId) => {
     try {
       // 선택한 사용자Id을 사용하여 추천 도서 API 호출
@@ -144,7 +92,6 @@ const BookRecommend = ({ handleLogout }) => {
               })}
             </div>
           </div>
->>>>>>> suhyun-back
         ) : (
           <BookRecommendation
             userBooks={userBooks}
@@ -152,18 +99,12 @@ const BookRecommend = ({ handleLogout }) => {
             username="사용자" // 임시 사용자 이름
           />
         )}
-<<<<<<< HEAD
-        <footer className="footer">
-          <p>@copyright bookVillage</p>
-        </footer>
-=======
 
         {/* 항상 책 등록 버튼을 표시 */}
         <div className="register-button-container">
           <button onClick={() => navigate("/book-register")}>책 등록하기</button>
           <button  onClick={() => handleTasteClick(userId)}>취향 분석</button>
         </div>
->>>>>>> suhyun-back
       </div>
     </>
   );
