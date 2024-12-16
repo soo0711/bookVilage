@@ -1,7 +1,5 @@
 package com.example.bookVillage.user.bo;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,8 +61,8 @@ public class UserBO {
 		return 0;
 	}
 	
-	public Integer updateUser(int userId, String name, String phoneNumber, String email) {
-		UserEntity userEntity = userRepository.findById(userId);
+	public Integer updateUser(String loginId, String name, String phoneNumber, String email) {
+		UserEntity userEntity = userRepository.findByLoginId(loginId);
 		if (userEntity != null) {
 			userEntity = userEntity.toBuilder()
 					.name(name)
@@ -77,11 +75,6 @@ public class UserBO {
 		}
 		
 		return 0;
-	}
-	
-	
-	public UserEntity getUserEntityById(int userId) {
-		return userRepository.findById(userId);
 	}
 
 }

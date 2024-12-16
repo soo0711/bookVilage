@@ -1,3 +1,4 @@
+
 .banner {
   position: relative;
   width: 100%;
@@ -6,173 +7,39 @@
   margin-top: 30px;
 }
 
-.banner-image {
-  position: relative;
-  width: 100%;
-  height: auto;
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-}
 
 .banner-image img {
   width: 100%;
   height: auto;
   display: block;
-  object-fit: cover;
 }
+
 
 .prev-btn,
 .next-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.5);
-  border: none;
-  cursor: pointer;
-  z-index: 10;
-  outline: none;
-  padding: 10px;
-  border-radius: 50%;
-  transition: background-color 0.3s;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+background-color: transparent;
+border: none;
+cursor: pointer;
+z-index: 10;
 }
 
 .prev-btn img,
 .next-btn img {
-  width: 25px;
-  height: 25px;
-  pointer-events: none;
+width: 25px; 
+height: 25px; 
 }
 
-.prev-btn:hover,
-.next-btn:hover,
-.prev-btn:active,
-.next-btn:active,
-.prev-btn:focus,
-.next-btn:focus,
-.prev-btn:focus-visible,
-.next-btn:focus-visible,
-.prev-btn:visited,
-.next-btn:visited {
-  background-color: transparent !important;
-  outline: none !important;
-  -webkit-tap-highlight-color: transparent !important;
-  box-shadow: none !important;
-}
 
 .prev-btn {
-  left: 20px;
+right: 50px;
 }
+
 
 .next-btn {
-  right: 20px;
-}
-
-
-@media screen and (max-width: 1024px) {
-  .banner {
-    margin-top: 20px;
-  }
-
-  .prev-btn,
-  .next-btn {
-    padding: 8px;
-  }
-
-  .prev-btn img,
-  .next-btn img {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-/* 작은 태블릿 화면 (768px 이하) */
-@media screen and (max-width: 768px) {
-  .banner {
-    margin-top: 15px;
-  }
-
-  .prev-btn,
-  .next-btn {
-    padding: 6px;
-  }
-
-  .prev-btn img,
-  .next-btn img {
-    width: 18px;
-    height: 18px;
-  }
-
-  .prev-btn {
-    left: 10px;
-  }
-
-  .next-btn {
-    right: 10px;
-  }
-}
-
-/* 모바일 화면 (480px 이하) */
-@media screen and (max-width: 480px) {
-  .banner {
-    margin-top: 10px;
-  }
-
-  .prev-btn,
-  .next-btn {
-    padding: 5px;
-  }
-
-  .prev-btn img,
-  .next-btn img {
-    width: 15px;
-    height: 15px;
-  }
-
-  .prev-btn {
-    left: 5px;
-  }
-
-  .next-btn {
-    right: 5px;
-  }
-}
-
-/* 작은 모바일 화면 (320px 이하) */
-@media screen and (max-width: 320px) {
-  .banner {
-    margin-top: 5px;
-  }
-
-  .prev-btn,
-  .next-btn {
-    padding: 4px;
-  }
-
-  .prev-btn img,
-  .next-btn img {
-    width: 12px;
-    height: 12px;
-  }
-}
-
-/* 배너 이미지 로딩 최적화 */
-.banner-image img {
-  will-change: transform;
-  backface-visibility: hidden;
-}
-
-/* 터치 디바이스 최적화 */
-@media (hover: none) and (pointer: coarse) {
-  .prev-btn,
-  .next-btn {
-    opacity: 0.8;
-    background-color: rgba(255, 255, 255, 0.7);
-  }
+left: 50px;
 }
 
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bookVillage.admin.bo.AdminBO;
+import com.example.bookVillage.common.EncryptUtils;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -36,6 +37,7 @@ public class AdminRestController {
 			HttpSession session) throws NoSuchAlgorithmException{
 		
 		Integer userId = Integer.parseInt(requestBody.get("userId"));
+		String userLoginId = (String) session.getAttribute("userLoginId");
 		String name = requestBody.get("name");
 		String email = requestBody.get("email");
 		String phoneNumber = requestBody.get("phoneNumber");
@@ -44,7 +46,7 @@ public class AdminRestController {
 		
 		
 		int count = 0;
-		count = adminBO.adminUpdateUser(userId, name, email, phoneNumber);
+		count = adminBO.adminUpdateUser(userLoginId, name, email, phoneNumber);
 		
 		if(count > 0 ) {
 			result.put("code", 200);
@@ -70,9 +72,10 @@ public class AdminRestController {
 			@RequestBody Map<String, String> requestBody,
 			HttpSession session){
 		
+		Integer userId = (Integer)session.getAttribute("userId");
 		Integer bookRegisterId = Integer.parseInt(requestBody.get("bookRegisterId"));
 
-		Integer delete = adminBO.deleteBookRegisterById(bookRegisterId);
+		Integer delete = adminBO.deleteBookRegister(userId, bookRegisterId);
 		
 		Map<String, Object> result = new HashMap<>();
 		if (delete == 1) {

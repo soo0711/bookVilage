@@ -1,7 +1,5 @@
 package com.example.bookVillage.message.bo;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +33,6 @@ public class MessageBO {
 				);
 		
 		 return messageEntity != null ? messageEntity : null;
-	}
-	
-	public List<MessageEntity> getMessageListByChatRoomId(int chatRoomId){
-		return messageRepository.findByChatRoomId(chatRoomId);
 	}
 	
 }

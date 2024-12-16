@@ -88,34 +88,6 @@ public class BookRegisterBO {
 		return null;
 	}
 	
-	public Integer deleteBookRegisterById(int bookRegisterId) {
-		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.findById(bookRegisterId).orElse(null);
-		
-		if (bookRegisterEntity != null) {
-			
-			List<BookRegisterImageEntity> bookImage = bookRegisterImageBO.getBookRegisterImageByBookRegisterId(bookRegisterId);
-			
-			if (bookImage.size() != 0) {
-			// 이미지 select - List<String>에 imgPath 넣기
-			List<String> imagePath = new ArrayList<>();
-			
-			for (int i = 0 ; i < bookImage.size(); i++) {
-				imagePath.add(bookImage.get(i).getImagePath());
-			}
-			
-				// 이미지 삭제
-				fileManagerService.deleteFile(imagePath);
-				
-				bookRegisterImageBO.deleteBookRegisterImageByBookRegisterId(bookRegisterId);
-				
-			}
-			
-			bookRegisterRepository.delete(bookRegisterEntity);
-		}
-		
-		return 1; 
-	}
-	
 	public Integer deleteBookRegister(int userId, int bookRegisterId) {
 		BookRegisterEntity bookRegisterEntity = bookRegisterRepository.getByIdAndUserId(bookRegisterId, userId);
 		
@@ -142,16 +114,5 @@ public class BookRegisterBO {
 		}
 		
 		return 1; 
-	}
-
-
-	public List<BookRegisterEntity> getBookRegisterByUserId(int userId) {
-		
-		return bookRegisterRepository.findByUserId(userId);
-	}
-	
-	public List<BookRegisterEntity> getBookRegisterByIsbn13(String isbn13, int userId) {
-		
-		return bookRegisterRepository.findByIsbn13AndUserIdNot(isbn13, userId);
 	}
 }

@@ -1,19 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom'; 
 import "./BookRegister.css";
-<<<<<<< .merge_file_AZusMN
-=======
-import axios from "axios"; // 백엔드 연동시 주석 해제
-import Header from "./Header";
->>>>>>> .merge_file_8N501k
 
-const BookRegister = ({ onRegister, handleLogout }) => {
+const BookRegister = ({ onRegister, username }) => {
   const navigate = useNavigate();
-  const location = useLocation(); // useLocation 사용
-
-  // location.state에서 username 가져오기
-  const { username } = location.state || {}; // state로부터 username 가져오기
-  const isLoggedIn = !!username; // username이 존재하면 로그인 상태로 간주
   
   const [formData, setFormData] = useState({
     title: "",
@@ -27,7 +17,6 @@ const BookRegister = ({ onRegister, handleLogout }) => {
     place: "", // 교환 장소 추가
   });
 
-<<<<<<< .merge_file_AZusMN
   const [searchResults, setSearchResults] = useState([]); // 검색 결과
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 여부
   const [images, setImages] = useState([]); // 첨부 이미지 파일
@@ -41,27 +30,10 @@ const BookRegister = ({ onRegister, handleLogout }) => {
     //   return;
     // }
 
-=======
-  const [searchResults, setSearchResults] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [images, setImages] = useState([]);
-/*
-  // 임시 검색 함수 (백엔드 연동 전)
-  const handleSearch = (e) => {
-    e.preventDefault();
-    
-    // 로그인 체크 임시 주석처리
-    /* if (!username) {
-      alert("로그인이 필요합니다. 로그인 후 책 등록이 가능합니다.");
-      return;
-    } */
-/*
->>>>>>> .merge_file_8N501k
     if (!formData.title) {
       alert("책 제목을 입력해주세요.");
       return;
     }
-<<<<<<< .merge_file_AZusMN
 
      
 
@@ -125,10 +97,6 @@ const BookRegister = ({ onRegister, handleLogout }) => {
   */
 
     // 더미 데이터
-=======
-/*
-    // 임시 더미 데이터
->>>>>>> .merge_file_8N501k
     const dummyResults = [
       {
         title: "해리포터와 마법사의 돌",
@@ -146,52 +114,10 @@ const BookRegister = ({ onRegister, handleLogout }) => {
         isbn13: "9788983920777"
       }
     ];
-<<<<<<< .merge_file_AZusMN
 
     setSearchResults(dummyResults); // 더미 데이터로 검색 결과 설정
     setIsModalOpen(true); // 모달 열기
   };
-=======
-    
-    setSearchResults(dummyResults);
-    setIsModalOpen(true);
-  };
-  */
-
-//백엔드 연동시 사용할 실제 검색 함수
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!formData.title) {
-      alert("책 제목을 입력해주세요.");
-      return;
-    }
-
-    try {
-      const response = await axios.post("http://localhost:80/book/search/title", {
-        title: formData.title,
-      });
-
-      if (response.data.code === 200) {
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(response.data.response, "application/xml");
-        const items = xmlDoc.getElementsByTagName("item");
-        const results = Array.from(items).map((item) => ({
-          title: item.getElementsByTagName("title")[0].textContent,
-          author: item.getElementsByTagName("author")[0]?.textContent || "Unknown",
-          isbn13: item.getElementsByTagName("isbn13")[0]?.textContent || "Unknown"
-        }));
-        setSearchResults(results);
-        setIsModalOpen(true);
-      } else {
-        alert(response.data.error_message || "검색에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("검색 요청 중 에러 :", error);
-      alert("서버와의 통신에 문제가 발생했습니다.");
-    }
-  };
-
->>>>>>> .merge_file_8N501k
 
   // 입력값 변경 처리
   const handleChange = (e) => {
@@ -211,13 +137,8 @@ const BookRegister = ({ onRegister, handleLogout }) => {
   const handleDeleteImage = (index) => {
     setImages(prevImages => prevImages.filter((_, i) => i !== index));
   };
-<<<<<<< .merge_file_AZusMN
 
   // 임시 제출 함수
-=======
-/*
-  // 임시 제출 함수 수정
->>>>>>> .merge_file_8N501k
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -247,73 +168,8 @@ const BookRegister = ({ onRegister, handleLogout }) => {
     // 책 추천 페이지로 이동
     navigate('/book-recommend');
   };
-<<<<<<< .merge_file_AZusMN
 
   // 검색 결과 선택
-=======
-*/
-  /* 백엔드 연동시 사용할 실제 제출 함수
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (onRegister) {
-      await onRegister(formData);
-    }
-  };
-  */
- 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!formData.title || !formData.author) {
-      alert("책 제목과 저자를 입력해주세요.");
-      return;
-    }
-
-    try {
-      const data = new FormData();
-      
-      // Spring 컨트롤러의 매개변수와 일치하도록 메타데이터 구성
-      const metadata = {
-        title: formData.title,
-        isbn13: formData.isbn13,
-        review: formData.review,
-        point: formData.point,
-        b_condition: formData.b_condition,
-        description: formData.description,
-        exchange_YN: formData.exchange_YN,
-        place: formData.place
-      };
-
-      data.append(
-        "metadata",
-        new Blob([JSON.stringify(metadata)], { type: "application/json" })
-      );
-
-      // 이미지 파일 추가
-      if (images.length > 0) {
-        images.forEach((image) => data.append("images", image));
-      }
-
-      const response = await axios.post("http://localhost:80/book-register/create", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        withCredentials: true 
-      });
-
-      if (response.data.code === 200) {
-        alert("책 등록이 완료되었습니다!");
-        window.location.href = "http://localhost:3000/book-recommend";
-      } else {
-        alert(response.data.error_message || "책 등록에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("책 등록 요청 중 에러 발생:", error);
-      alert("서버와의 통신에 문제가 발생했습니다.");
-    }
-  };
-
->>>>>>> .merge_file_8N501k
   const handleResultSelect = (result) => {
     setFormData(prev => ({ 
       ...prev, 
@@ -325,7 +181,6 @@ const BookRegister = ({ onRegister, handleLogout }) => {
   };
 
   return (
-<<<<<<< .merge_file_AZusMN
   <div className="book-register-wrapper">
   <div className="book-register-form">
     <h2>책 등록하기</h2>
@@ -454,160 +309,6 @@ const BookRegister = ({ onRegister, handleLogout }) => {
   )}
 </div>
 
-=======
-    <>
-          {/* 헤더 컴포넌트 */}
-        <Header
-        isLoggedIn={isLoggedIn}
-        username={username}
-        onLogout={handleLogout}
-        />
-    <div className="book-register-wrapper">
-      <div className="book-register-form">
-        <h2>책 등록하기</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="title-search-container">
-            <input
-              type="text"
-              name="title"
-              placeholder="책 제목"
-              value={formData.title}
-              onChange={handleChange}
-              required
-            />
-            <button type="button" onClick={handleSearch}>검색</button>
-          </div>
-          <input
-            type="text"
-            name="author"
-            placeholder="책 저자"
-            value={formData.author}
-            onChange={handleChange}
-            required
-          />
-          <label htmlFor="point">평점</label>
-          <select
-            name="point"
-            value={formData.point}
-            onChange={handleChange}
-            required
-          >
-            <option value="5">5점</option>
-            <option value="4">4점</option>
-            <option value="3">3점</option>
-            <option value="2">2점</option>
-            <option value="1">1점</option>
-          </select>
-          <textarea
-            name="review"
-            placeholder="책 리뷰"
-            value={formData.review}
-            onChange={handleChange}
-          />
-          <div className="radio-group">
-            <label>교환여부:</label>
-            <label>
-              <input
-                type="radio"
-                name="exchange_YN"
-                value="Y"
-                checked={formData.exchange_YN === 'Y'}
-                onChange={handleChange}
-              />
-              교환 가능
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="exchange_YN"
-                value="N"
-                checked={formData.exchange_YN === 'N'}
-                onChange={handleChange}
-              />
-              교환 불가
-            </label>
-          </div>
-          {formData.exchange_YN === 'Y' && (
-            <>
-              <label htmlFor="b_condition">책 상태</label>
-              <select
-                name="b_condition"
-                value={formData.b_condition}
-                onChange={handleChange}
-                required
-              >
-                <option value="A">상태 좋음</option>
-                <option value="B">상태 보통</option>
-                <option value="C">상태 좋지 않음</option>
-              </select>
-              <textarea
-                name="description"
-                placeholder="책 상태 설명 (상태: 4페이지가 살짝 찢어졌어요)"
-                value={formData.description}
-                onChange={handleChange}
-              />
-               <input
-            type="text"
-            name="place"
-            placeholder="교환 장소 입력 (ex. 경기도 성남시)"
-            value={formData.place}
-            onChange={handleChange}
-           />
-              <div className="image-preview-container">
-                {images.map((image, index) => (
-                  <div key={index} className="image-preview-item">
-                    <img 
-                      src={URL.createObjectURL(image)} 
-                      alt={`Preview ${index}`} 
-                    />
-                    <button 
-                      type="button"
-                      className="delete-image-button"
-                      onClick={() => handleDeleteImage(index)}
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </>
-          )}
-        </form>
-      </div>
-      <div className="button-container">
-        <button type="button" onClick={() => navigate('/')}>
-          이전 목록
-        </button>
-        <button type="button" onClick={handleSubmit}>
-          책 등록
-        </button>
-      </div>
-
-      {/* 모달이 열리면 검색 결과 표시 */}
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>검색 결과</h3>
-            <ul>
-              {searchResults.map((result, index) => (
-                <li key={index} onClick={() => handleResultSelect(result)}>
-                  <strong>{result.title}</strong> - {result.author}
-                </li>
-              ))}
-            </ul>
-            <button onClick={() => setIsModalOpen(false)}>닫기</button>
-          </div>
-        </div>
-      )}
-    </div>
-    </>
->>>>>>> .merge_file_8N501k
   );
 };
 

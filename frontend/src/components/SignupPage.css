@@ -25,243 +25,73 @@
   .input-group {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    width: 100%;
+    gap: 10px;
+    margin-bottom: 20px;
   }
   
   .input-wrapper {
+    position: relative;
     width: 100%;
-    margin-bottom: 0;
+  }
+  
+  .icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
   }
   
   .input-field {
-    width: 100%;
-    height: 48px;
-    padding: 0 12px;
+    width: 90%;
+    padding: 12px;
+    padding-left: 35px;
     border: 1px solid #dadada;
     border-radius: 6px;
     font-size: 15px;
     outline: none;
-    box-sizing: border-box;
   }
   
   .input-field:focus {
-    border-color: #a5e6c2;
+    border-color: #03c75a;
   }
   
-/* 아이디 입력 그룹 스타일 */
-.id-input-wrapper {
-  display: flex;
-  align-items: center; /* 이 부분이 핵심! 세로 중앙 정렬 */
-  gap: 10px;
-  width: 100%;
-}
-
-/* 아이디 입력 필드 */
-.id-input-wrapper .input-field {
-  flex: 1;
-  height: 48px;
-  margin: 0;
-}
-
-/* 중복확인 버튼 */
-.check-id-button {
-  height: 48px;
-  padding: 0 15px;
-  background-color: #fff7d6;
-  color: black;
-  border: 1px solid #ffe066;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  white-space: nowrap;
-  min-width: 100px;
-  margin: 0; /* 마진 제거 */
-}
-  .check-id-button:hover {
-    background-color: #fff0b3;
+  
+  
+  .toggle-visibility {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #8e8e8e;
   }
   
   .submit-button {
     width: 100%;
-    height: 48px;
-    background-color: white !important;
-    color: black !important;
-    border: 2px solid #ffc0cb !important;
+    padding: 15px;
+    background-color: #03c75a;
+    color: white;
+    border: none;
     border-radius: 6px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px;
-    padding: 0;
   }
-
   
   .submit-button:hover {
-    background-color: #ffe6e6 !important;
+    background-color: #02b150;
   }
-/* 태블릿 화면 (1024px 이하) */
-@media screen and (max-width: 1024px) {
-  .signup-container {
-    max-width: 440px;
-    padding: 18px;
+  
+  /* 반응형 디자인 */
+  @media (max-width: 480px) {
+    .signup-container {
+      padding: 10px;
+    }
+    
+    .input-field {
+      font-size: 14px;
+    }
   }
-
-  .logo {
-    max-width: 140px;
-    margin: 0 auto 0.9rem;
-  }
-
-  .title {
-    max-width: 190px;
-    margin: 0 auto 1.8rem;
-  }
-
-  .signup-form {
-    padding: 18px;
-  }
-
-  .input-group {
-    gap: 18px;
-  }
-
-  .input-field {
-    height: 46px;
-    font-size: 14px;
-  }
-}
-
-/* 작은 태블릿 화면 (768px 이하) */
-@media screen and (max-width: 768px) {
-  .signup-container {
-    max-width: 420px;
-    padding: 15px;
-  }
-
-  .logo {
-    max-width: 130px;
-    margin: 0 auto 0.8rem;
-  }
-
-  .title {
-    max-width: 180px;
-    margin: 0 auto 1.6rem;
-  }
-
-  .signup-form {
-    padding: 15px;
-  }
-
-  .input-group {
-    gap: 15px;
-  }
-
-  .input-field {
-    height: 44px;
-    padding: 0 10px;
-    font-size: 14px;
-  }
-
-  .check-id-button {
-    height: 44px;
-    padding: 0 12px;
-    font-size: 13px;
-    min-width: 90px;
-  }
-
-  .submit-button {
-    height: 44px;
-    font-size: 15px;
-    margin-top: 18px;
-  }
-}
-
-/* 모바일 화면 (480px 이하) - 기존 미디어 쿼리 확장 */
-@media screen and (max-width: 480px) {
-  .signup-container {
-    max-width: 100%;
-    padding: 12px;
-  }
-
-  .logo {
-    max-width: 120px;
-    margin: 0 auto 0.7rem;
-  }
-
-  .title {
-    max-width: 170px;
-    margin: 0 auto 1.4rem;
-  }
-
-  .signup-form {
-    padding: 12px;
-  }
-
-  .input-group {
-    gap: 12px;
-  }
-
-  .input-field {
-    height: 42px;
-    padding: 0 8px;
-    font-size: 13px;
-  }
-
-  .check-id-button {
-    height: 42px;
-    padding: 0 10px;
-    font-size: 12px;
-    min-width: 80px;
-  }
-
-  .submit-button {
-    height: 42px;
-    font-size: 14px;
-    margin-top: 15px;
-  }
-}
-
-/* 작은 모바일 화면 (320px 이하) */
-@media screen and (max-width: 320px) {
-  .signup-container {
-    padding: 10px;
-  }
-
-  .logo {
-    max-width: 110px;
-    margin: 0 auto 0.6rem;
-  }
-
-  .title {
-    max-width: 160px;
-    margin: 0 auto 1.2rem;
-  }
-
-  .signup-form {
-    padding: 10px;
-  }
-
-  .input-group {
-    gap: 10px;
-  }
-
-  .input-field {
-    height: 40px;
-    padding: 0 6px;
-    font-size: 12px;
-  }
-
-  .check-id-button {
-    height: 40px;
-    padding: 0 8px;
-    font-size: 11px;
-    min-width: 70px;
-  }
-
-  .submit-button {
-    height: 40px;
-    font-size: 13px;
-    margin-top: 12px;
-  }
-}

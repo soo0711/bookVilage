@@ -40,13 +40,13 @@ public class AdminBO {
 	
 	
 	//책 등록 삭제
-	public Integer deleteBookRegisterById(int bookRegisterId) {
-		return bookRegisterBO.deleteBookRegisterById(bookRegisterId);
+	public Integer deleteBookRegister(int userId, int bookRegisterId) {
+		return bookRegisterBO.deleteBookRegister(userId, bookRegisterId);
 	}
 	
 	//user 수정
-	public Integer adminUpdateUser(int userId, String name, String phoneNumber, String email) {
-		return userBO.updateUser(userId, name, email, phoneNumber);
+	public Integer adminUpdateUser(String loginId, String name, String phoneNumber, String email) {
+		return userBO.updateUser(loginId, name, email, phoneNumber);
 	}
 
 	//커뮤니티 수정

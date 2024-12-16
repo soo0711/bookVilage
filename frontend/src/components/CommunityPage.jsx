@@ -6,7 +6,7 @@ import PostForm from "./PostForm";
 import Header from "./Header";
 import "./CommunityPage.css";
 
-const CommunityPage = ({ handleLogout, username, isLoggedIn }) => {
+const CommunityPage = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([
     {
@@ -51,14 +51,7 @@ const CommunityPage = ({ handleLogout, username, isLoggedIn }) => {
 
   return (
     <div>
-      {/* 헤더 컴포넌트 */}
-
-      <Header
-        isLoggedIn={isLoggedIn}
-        username={username}
-        onLogout={handleLogout}
-      />
-
+      <Header />
       <div className="community-page">
         <div className="board-header">
           <h2>커뮤니티</h2>

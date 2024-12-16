@@ -18,54 +18,18 @@ const LoginPage = ({ onLogin }) => {
     }));
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   // 로그인 처리 로직 (API 호출)
-  //   if (formData.loginId && formData.password) {
-  //     onLogin(formData.loginId);
-  //     navigate("/home-view");
-  //   } else {
-  //     alert("아이디와 비밀번호를 입력해주세요.");
-  //   }
-  // };
-
-  const handleSubmit = async (e) => {
+  // 임시 로그인 처리
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!formData.loginId || !formData.password) {
+    if (formData.loginId && formData.password) {
+      // 임시로 무조건 로그인 성공 처리
+      alert(`환영합니다, ${formData.loginId}님!`);
+      onLogin(formData.loginId);
+      navigate("/home-view");
+    } else {
       alert("아이디와 비밀번호를 입력해주세요.");
-      return;
     }
-
-    onLogin(formData.loginId);
-    alert(`환영합니다, ${formData.loginId}님!`);
-    navigate("/home-view");
-    // try {
-    //   // Spring Boot API 호출
-    //   const loginId = formData.loginId;
-    //   const password = formData.password;
-    //   const response = await axios.post("http://localhost:80/user/sign-in", {
-    //     loginId,
-    //     password,
-    //   },{
-    //     withCredentials: true,
-    //   });
-
-    //   if (response.data.code === 200) {
-    //     // 로그인 성공 처리
-    //     alert(`환영합니다, ${response.data.userName}님!`);
-    //     onLogin(formData.loginId); // 부모 컴포넌트로 로그인 ID 전달
-    //     navigate("/home-view");
-    //   } else {
-    //     // 로그인 실패 처리
-    //     alert(response.data.error_message || "로그인에 실패했습니다.");
-    //   }
-    // } catch (error) {
-    //   console.error("로그인 요청 중 에러 발생:", error);
-    //   alert("서버와의 통신에 문제가 발생했습니다.");
-    // }
   };
-
 
   const handleFindId = () => {
     // ID 찾기 페이지로 이동 또는 모달 표시
