@@ -18,6 +18,7 @@ const LoginPage = ({ onLogin }) => {
     }));
   };
 
+<<<<<<< HEAD
   // 임시 로그인 처리
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,6 +29,54 @@ const LoginPage = ({ onLogin }) => {
       navigate("/home-view");
     } else {
       alert("아이디와 비밀번호를 입력해주세요.");
+=======
+  const handleClick = () => {
+    window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
+  };
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // 로그인 처리 로직 (API 호출)
+  //   if (formData.loginId && formData.password) {
+  //     onLogin(formData.loginId);
+  //     navigate("/home-view");
+  //   } else {
+  //     alert("아이디와 비밀번호를 입력해주세요.");
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    if (!formData.loginId || !formData.password) {
+      alert("아이디와 비밀번호를 입력해주세요.");
+      return;
+    }
+  
+    try {
+      // Spring Boot API 호출
+      const loginId = formData.loginId;
+      const password = formData.password;
+      const response = await axios.post("http://localhost:80/user/sign-in", {
+        loginId,
+        password,
+      }, {
+        withCredentials: true,
+      });
+  
+      if (response.data.code === 200) {
+        // 로그인 성공 처리
+        alert(`환영합니다, ${response.data.userName}님!`);
+        onLogin(response.data.userName, response.data.userId); // 로그인 성공 시 userName과 userId 전달
+        navigate("/home-view");
+      } else {
+        // 로그인 실패 처리
+        alert(response.data.error_message || "로그인에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("로그인 요청 중 에러 발생:", error);
+      alert("서버와의 통신에 문제가 발생했습니다.");
+>>>>>>> suhyun-back
     }
   };
 
@@ -44,10 +93,11 @@ const LoginPage = ({ onLogin }) => {
   return (
     <div className="login-page">
       <div className="login-form-container">
+        <div onClick={handleClick}>
         {/* 로고와 타이틀 */}
-        <img src="/assets/logo.png" alt="로고" className="logo" />
-        <img src="/assets/title.png" alt="타이틀" className="title" />
-        
+          <img src="/assets/logo.png" alt="로고" className="logo" />
+          <img src="/assets/title.png" alt="타이틀" className="title" />
+        </div>
         <form onSubmit={handleSubmit}>
           <input
             type="text"

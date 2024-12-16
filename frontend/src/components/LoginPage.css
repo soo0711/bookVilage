@@ -68,7 +68,7 @@ input {
 }
 
 .sign-in-btn {
-  background-color: #03c75a;
+  background-color: #03c75a !important;
   color: white;
   padding: 0.75rem;
   border: none;
@@ -79,5 +79,5 @@ input {
 }
 
 .sign-in-btn:hover {
-  background-color: #02b150;
+  background-color: #02b150 !important;
 }

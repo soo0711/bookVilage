@@ -3,7 +3,9 @@ package com.example.bookVillage.message.bo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.bookVillage.message.entity.ChatRoomEntity;
 import com.example.bookVillage.message.entity.MessageEntity;
+import com.example.bookVillage.message.repository.ChatRoomRepository;
 import com.example.bookVillage.message.repository.MessageRepository;
 
 @Service
@@ -13,6 +15,9 @@ public class MessageBO {
 	
 	@Autowired
 	private ChatRoomBO chatRoomBO;
+	
+	@Autowired
+	private ChatRoomRepository chatRoomRepository;
 	
 	public Integer addChatRoom(int userId1, int userId2) {
 		return chatRoomBO.addChatRoom(userId1, userId2);
@@ -35,4 +40,16 @@ public class MessageBO {
 		 return messageEntity != null ? messageEntity : null;
 	}
 	
+<<<<<<< HEAD
+=======
+	public List<MessageEntity> getMessageListByChatRoomId(int chatRoomId){
+		return messageRepository.findByChatroomId(chatRoomId);
+	}
+	
+	
+	public List<ChatRoomEntity> getChayRommListByUserId(int userId){
+		return chatRoomRepository.findByUserId1OrUserId2(userId, userId);
+		
+	}
+>>>>>>> suhyun-back
 }

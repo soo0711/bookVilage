@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import com.example.bookVillage.message.bo.MessageBO;
 import com.example.bookVillage.message.entity.MessageEntity;
 
+
 @Controller
 public class MessageController {
 
@@ -16,11 +17,11 @@ public class MessageController {
 	
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
-	
+
 	
 	 @MessageMapping("/message")
 	    public void receiveMessage(MessageEntity messageEntity) {
-	        // 메시지 저장
+
 	        System.out.println("Received message: " + messageEntity);
 	        MessageEntity savedMessage = messageBO.addMessage(
 	            messageEntity.getChatroomId(),

@@ -1,125 +1,143 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import "./ChatPage.css";
 import Header from "./Header";
+import axios from "axios";
+import {useNavigate } from "react-router-dom";
 
-function ChatPage({ client, username, isLoggedIn }) {
-  const { targetUsername } = useParams();
+function ChatPage({ client, username, isLoggedIn, handleLogout }) {
+  const location = useLocation();
+  const { chatHistory, chatroomId, myId } = location.state || {};
   const [message, setMessage] = useState("");
-  const [chatMessages, setChatMessages] = useState([]);
-  const [roomId, setRoomId] = useState(null);
+  const [chatMessages, setChatMessages] = useState(chatHistory || []);
+  const [otherUserLoginId, setOtherUserLoginId] = useState("");
+  const [otherUserId, setOtherUserId] = useState("");
+  const messagesEndRef = useRef(null); // 스크롤 제어를 위한 ref 추가
+  const navigate = useNavigate();
 
-  // 채팅방 생성/입장
+  // 채팅 기록 및 사용자 정보 불러오기
   useEffect(() => {
-    if (client) {
-      // 채팅방 생성/입장 요청
-      client.send("/chat/room", {}, JSON.stringify({
-        message_from: username,
-        message_to: targetUsername
-      }));
+    if (chatroomId) {
+      const fetchChatHistory = async () => {
+        try {
+          const response = await axios.post(
+            "http://localhost:80/chat/record-list",
+            { chatroomId },
+            {
+              headers: { "Content-Type": "application/json" },
+              withCredentials: true,
+            }
+          );
 
-      // 채팅방 생성/입장 응답 구독
-      client.subscribe('/user/queue/room', (response) => {
-        const room = JSON.parse(response.body);
-        setRoomId(room.roomId);
-        
-        // 채팅방 메시지 구독
-        if (room.roomId) {
-          client.subscribe(`/sub/chat/room/${room.roomId}`, (message) => {
-            const newMessage = JSON.parse(message.body);
-            setChatMessages(prev => [...prev, newMessage]);
-          });
+          if (response.data.code === 200) {
+            const messages = response.data.userMessage.messageList || [];
+            const users = response.data.userMessage.userList || [];
+
+            const otherUser = users.find((user) => user.id !== myId);
+            setOtherUserLoginId(otherUser ? otherUser.loginId : "알 수 없음");
+            setOtherUserId(otherUser ? otherUser.id : "알 수 없음");
+            setChatMessages(messages);
+          } else {
+            alert("채팅 기록을 불러오는 데 실패했습니다.");
+          }
+        } catch (error) {
+          console.error("채팅 기록을 불러오는 중 에러:", error);
+          alert("채팅 기록을 불러오는 중 오류가 발생했습니다.");
         }
-      });
-    }
-  }, [client, username, targetUsername]);
-
-  const sendMessage = () => {
-    if (client && message.trim() && roomId) {
-      const messageData = {
-        message_from: username,
-        message_to: targetUsername,
-        content: message.trim(),
-        roomId: roomId
       };
 
-      // 메시지 전송
-      client.send("/pub/message", {}, JSON.stringify(messageData));
-      setMessage("");
+      fetchChatHistory();
+    }
+  }, [chatroomId, myId]);
+
+  // 스크롤을 가장 아래로 내리는 함수
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
+  const handleUserClick = (userId) => {
+    navigate(`/profile/${userId}`); // userId를 URL 파라미터로 전달
+  };
+
+  // 메시지가 추가될 때마다 스크롤 업데이트
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
+
+  // 메시지 수신
+  useEffect(() => {
+    if (client) {
+      client.subscribe(`/sub/chatroom/${chatroomId}`, (message) => {
+        const newMessage = JSON.parse(message.body);
+        setChatMessages((prev) => [...prev, newMessage]);
+      });
+    }
+  }, [client, chatroomId]);
+
+  // 메시지 전송
+  const [isSending, setIsSending] = useState(false);
+
+const sendMessage = () => {
+  if (isSending || !message.trim()) return;
+
+  setIsSending(true);
+  if (client) {
+    const payload = {
+      chatroomId: chatroomId,
+      userId: myId,
+      message: message.trim(),
+    };
+
+    client.send("/pub/message", {}, JSON.stringify(payload));
+    setMessage("");
+  }
+  setIsSending(false);
+};
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       sendMessage();
     }
   };
 
-  // 임시 테스트용 메시지 데이터
-  const testMessages = [
-    {
-      message_from: username,
-      message_to: targetUsername,
-      content: "안녕하세요! 책 교환하고 싶어서 연락드립니다.",
-      time: "14:30"
-    },
-    {
-      message_from: targetUsername,
-      message_to: username,
-      content: "네, 안녕하세요! 어떤 책을 교환하고 싶으신가요?",
-      time: "14:31"
-    }
-  ];
-
   return (
     <>
-      <Header />
+      <Header isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout}/>
       <div className="chat-container">
         <div className="chat-header">
-          <h2>{targetUsername}님과의 대화</h2>
+          <h2 onClick={() => handleUserClick(otherUserId)}  className="username-link">채팅방 - {otherUserLoginId}</h2>
           <div className="chat-info">
             <span className="user-status">● 온라인</span>
-            {roomId && <span className="room-id">방 번호: {roomId}</span>}
           </div>
         </div>
 
         <div className="messages-container">
-          {/* 서버 연동 전 테스트용 메시지 표시 */}
-          {testMessages.map((msg, index) => (
-            <div 
-              key={index} 
-              className={`message ${msg.message_from === username ? 'sent' : 'received'}`}
-            >
-              <div className="message-content">
-                <span className="sender-name">
-                  {msg.message_from === username ? '나' : msg.message_from}
-                </span>
-                <p className="message-text">{msg.content}</p>
-                <span className="message-time">{msg.time}</span>
+          {chatMessages.length > 0 ? (
+            chatMessages.map((msg, index) => (
+              <div
+                key={index}
+                className={`message ${msg.userId === parseInt(myId, 10) ? "sent" : "received"}`}
+              >
+                <div className="message-content">
+                  <span className="sender-name">
+                    {msg.userId === parseInt(myId, 10) ? "나" : msg.userLoginId}
+                  </span>
+                  <p className="message-text">{msg.message}</p>
+                  <span className="message-time">
+                    {new Date(msg.createdAt).toLocaleTimeString("ko-KR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
-          
-          {/* 실제 메시지 표시 */}
-          {chatMessages.map((msg, index) => (
-            <div 
-              key={`real-${index}`} 
-              className={`message ${msg.message_from === username ? 'sent' : 'received'}`}
-            >
-              <div className="message-content">
-                <span className="sender-name">
-                  {msg.message_from === username ? '나' : msg.message_from}
-                </span>
-                <p className="message-text">{msg.content}</p>
-                <span className="message-time">
-                  {new Date().toLocaleTimeString('ko-KR', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </span>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>채팅 기록이 없습니다.</p>
+          )}
+          {/* 스크롤 제어용 빈 div */}
+          <div ref={messagesEndRef} />
         </div>
 
         <div className="chat-input-container">
@@ -131,11 +149,7 @@ function ChatPage({ client, username, isLoggedIn }) {
             placeholder="메시지를 입력하세요..."
             className="chat-input"
           />
-          <button 
-            onClick={sendMessage}
-            className="send-button"
-            disabled={!roomId}
-          >
+          <button onClick={sendMessage} className="send-button">
             전송
           </button>
         </div>

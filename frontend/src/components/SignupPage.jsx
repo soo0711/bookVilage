@@ -14,10 +14,46 @@ const SignupPage = () => {
     phoneNumber: "",
   });
 
+  // 아이디 중복 확인 상태 추가
+  const [isIdChecked, setIsIdChecked] = useState(false);
+  const [isIdAvailable, setIsIdAvailable] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+ // 아이디 중복 확인 함수
+ const handleCheckId = async () => {
+  if (!formData.loginId) {
+    alert("아이디를 입력해주세요.");
+    return;
+  }
+
+  try {
+    const response = await axios.post("http://localhost:80/user/is-duplicated-id", {
+      loginId: formData.loginId
+    });
+
+    if (!response.data.is_duplicated) {
+      alert("사용 가능한 아이디입니다.");
+      setIsIdChecked(true);
+      setIsIdAvailable(true);
+    } else {
+      alert("이미 사용 중인 아이디입니다.");
+      setIsIdChecked(true);
+      setIsIdAvailable(false);
+    }
+  } catch (error) {
+    console.error("아이디 중복 확인 중 에러 발생:", error);
+    alert("아이디 중복 확인에 실패했습니다.");
+  }
+};
+
+  
+const handleClick = () => {
+  window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
+};
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -35,6 +71,11 @@ const SignupPage = () => {
     if (!formData.loginId) {
       alert("아이디를 입력해주세요.");
       return;
+    }
+
+    if (!isIdAvailable) {
+      alert("아이디 중복을 확인하세요.");
+      return; // 회원가입 진행하지 않음
     }
 
     if (!formData.password) {
@@ -88,24 +129,29 @@ const SignupPage = () => {
 
   return (
     <div className="signup-container">
-       <img src="/assets/logo.png" alt="로고" className="logo" />
-       <img src="/assets/title.png" alt="타이틀" className="title" />
-      
+      <div onClick={handleClick}>
+        <img src="/assets/logo.png" alt="로고" className="logo" />
+        <img src="/assets/title.png" alt="타이틀" className="title" />
+      </div>
       <form onSubmit={handleSubmit} className="signup-form">
         <div className="input-group">
-          <div className="input-wrapper">
-            <i className="icon user-icon">👤</i>
+          <div className="id-input-wrapper">
             <input 
               name="loginId" 
               placeholder="아이디" 
               onChange={handleChange} 
               className="input-field"
             />
-            
+            <button 
+              type="button" 
+              onClick={handleCheckId}
+              className="check-id-button"
+            >
+              중복확인
+            </button>
           </div>
 
           <div className="input-wrapper">
-            <i className="icon lock-icon">🔒</i>
             <input 
               type="password" 
               name="password" 
@@ -113,7 +159,6 @@ const SignupPage = () => {
               onChange={handleChange} 
               className="input-field"
             />
-            <button type="button" className="toggle-visibility">👁️</button>
           </div>
 
           <div className="input-wrapper">
@@ -149,6 +194,7 @@ const SignupPage = () => {
         </button>
       </form>
     </div>
+
   );
 };
 

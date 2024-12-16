@@ -31,6 +31,10 @@ public class BookMeetingEntity {
 	@Column(name = "hostLoginid")
 	private String hostLoginid;
 	
+	private String subject;
+	
+	private String content;
+	
 	private String schedule;
 	
 	private String place;
@@ -38,6 +42,8 @@ public class BookMeetingEntity {
 	private String closeYN;
 	
 	private int total;
+	
+	private int current;
 	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp
@@ -47,10 +53,6 @@ public class BookMeetingEntity {
 	@UpdateTimestamp
 	private Date updatedAt;
 
-	public static Object builder() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
 
 

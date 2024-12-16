@@ -37,7 +37,7 @@ margin-top: 100px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
 }
 
-.book-info {
+.book-info2 {
   flex: 0 0 300px;
   padding: 1.5rem;
   border-radius: 12px;
@@ -50,7 +50,7 @@ margin-top: 100px;
   transform: translateY(-5px);
 }
 
-.book-image {
+.book-image2 {
 display: flex;
   width: 90%;
   height: auto;
@@ -111,10 +111,14 @@ display: flex;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.user-info h3 {
+.user-info-exchangeList h3 {
   color: #2c3e50;
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
+}
+
+.user-info-exchangeList{
+  width:500px;
 }
 
 .exchange-location {
@@ -141,6 +145,7 @@ display: flex;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 3px 10px rgba(46, 204, 113, 0.2);
+
 }
 
 .chat-button:hover {

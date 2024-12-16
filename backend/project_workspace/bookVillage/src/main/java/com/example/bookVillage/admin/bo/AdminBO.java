@@ -18,9 +18,6 @@ public class AdminBO {
 	private UserBO userBO;
 	
 	@Autowired
-	private BookMeetingBO bookMeetingBO;
-	
-	@Autowired
 	private BookRegisterBO bookRegisterBO;
 	
 	@Autowired
@@ -29,11 +26,9 @@ public class AdminBO {
 	@Autowired
 	private CommunityCommentBO communityCommentBO;
 	
-	@Autowired
-	private MessageBO messageBO;
 	
 	@Autowired
-	private BookMeetingBO bookMettingBO;
+	private BookMeetingBO bookMeetingBO;
 	
 	@Autowired
 	private PersonalScheduleBO personalScheduleBO;
@@ -66,7 +61,7 @@ public class AdminBO {
 	
 	//독서 모임 삭제
 	public int adminDeletebookMeeting(int bookMeetingId) {
-		return bookMettingBO.deleteBookMeeting(bookMeetingId);
+		return bookMeetingBO.deleteBookMeeting(bookMeetingId);
 	}
 	
 	//개인 일정 삭제

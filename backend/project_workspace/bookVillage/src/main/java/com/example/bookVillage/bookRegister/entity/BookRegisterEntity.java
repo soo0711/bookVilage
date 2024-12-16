@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Entity
@@ -24,6 +25,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "book_register")
+@Setter
 public class BookRegisterEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +52,7 @@ public class BookRegisterEntity {
 	
 	private String place;
 	
-	private String stauts;
+	private String status;
 	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp

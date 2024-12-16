@@ -1,8 +1,10 @@
-package com.example.bookVillage.chat.entity;
+package com.example.bookVillage.wishList.entity;
 
 import java.util.Date;
 
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.example.bookVillage.community.entity.CommunityEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,27 +17,26 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-/*
+
 @Entity
-@Getter
-@Builder(toBuilder = true)
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
-@Table(name = "chat_room")
-public class ChatRoomEntity {
+@Table(name = "wishList")
+@Getter
+@Builder(toBuilder = true) 
+@NoArgsConstructor
+@AllArgsConstructor
+public class WishListEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name = "userId1")
-	private int userId1;
+	@Column(name = "userId")
+	private int userId;
 	
-	@Column(name = "userId2")
-	private int userId2;
+	private String isbn13;
 	
 	@Column(name = "createdAt", updatable = false)
 	@UpdateTimestamp
 	private Date createdAt;
 }
-*/

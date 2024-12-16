@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
+=======
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+>>>>>>> suhyun-back
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -140,6 +145,7 @@ public class UserRestController {
 			result.put("result", "성공");
 			result.put("userName", user.getName());
 			result.put("userLoginId", user.getLoginId());
+			result.put("userId", user.getId());
 		} else {
 			result.put("code", 500);
 			result.put("error_message", "로그인에 실패했습니다.");
@@ -188,5 +194,76 @@ public class UserRestController {
 		return result;
 	}
 	
+<<<<<<< HEAD
+=======
+	@GetMapping("/api/user-info")
+	public ResponseEntity<Map<String, Object>> getUserInfo(HttpServletRequest request) {
+	    HttpSession session = request.getSession(false); // 세션 가져오기 (세션이 없으면 null)
+	    Map<String, Object> result = new HashMap<>();
+	    
+	    if (session != null) {
+	        Integer userId = (Integer) session.getAttribute("userId");
+	        String userLoginId = (String) session.getAttribute("userLoginId");
+	        String username = (String) session.getAttribute("username");
+	        
+	        if (userId != null && userLoginId != null) {
+	            result.put("userId", userId);
+	            result.put("userLoginId", userLoginId);
+	            result.put("username", username);
+	            return ResponseEntity.ok(result);
+	        }
+	    }
+	    
+	    result.put("error", "로그인되지 않은 사용자");
+	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+	}
 	
+	@PostMapping("/myPage")
+	public Map<String, Object> myPage(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session){
+		
+		int userId = (Integer)session.getAttribute("userId");
+		
+		// db select
+		UserEntity user = userBO.getUserEntityById(userId);
+		
+		Map<String, Object> result = new HashMap<>();
+		if (user != null) {
+			result.put("userEntity",user);
+			result.put("code", 200);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "사용자 정보를 찾을 수 없습니다.");
+		}
+		
+		return result;
+	}
+>>>>>>> suhyun-back
+	
+	@PostMapping("/update")
+	public Map<String, Object> userUpdate(
+			@RequestBody Map<String, String> requestBody,
+			HttpSession session){
+		
+		int userId = (Integer)session.getAttribute("userId");
+		String name = requestBody.get("name");
+		String phoneNumber = requestBody.get("phoneNumber");
+		String email = requestBody.get("email");
+		
+		// 중복 확인 및 수정
+		Integer user = userBO.updateUser(userId, name, phoneNumber, email);
+		
+		Map<String, Object> result = new HashMap<>();
+		if (user > 0) {
+			result.put("code", 200);
+			result.put("result", "성공");
+		} else {
+			result.put("code", 500);
+			result.put("error_message", "사용자 정보 수정을 할 수 없습니다.");
+		}
+		
+		return result;
+	}
 }
