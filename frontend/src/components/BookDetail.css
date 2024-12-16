@@ -1,0 +1,274 @@
+.book-detail-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.book-detail-content {
+  display: flex;
+  gap: 40px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-image-section {
+  flex: 0 0 300px;
+}
+
+.book-cover {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.book-info-section {
+  flex: 1;
+}
+
+.book-title {
+  font-size: 24px;
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.book-meta {
+  margin-bottom: 20px;
+}
+
+.book-meta p {
+  margin: 8px 0;
+  color: #666;
+}
+
+.book-description {
+  margin-bottom: 30px;
+}
+
+.book-description h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.book-description p {
+  line-height: 1.6;
+  color: #666;
+}
+
+.review-wordcloud {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.review-button {
+  background-color: #98fefe;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 20px 0;
+  transition: background-color 0.3s;
+}
+
+.review-button:hover {
+  background-color: #357abd;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content2 {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-content2 h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.keyword-reviews-list {
+  margin-bottom: 20px;
+}
+
+.review-item {
+  padding: 15px;
+  line-height: 1.8;
+  margin-bottom: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.close-modal-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-modal-button:hover {
+  color: #333;
+}
+
+@media screen and (max-width: 1024px) {
+  .book-detail-container {
+    padding: 15px;
+  }
+
+  .book-detail-content {
+    gap: 30px;
+    padding: 25px;
+  }
+
+  .book-image-section {
+    flex: 0 0 250px;
+  }
+
+  .book-title {
+    font-size: 22px;
+  }
+
+  .modal-content2 {
+    max-width: 450px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .book-detail-content {
+    flex-direction: column;
+    gap: 25px;
+    padding: 20px;
+  }
+
+  .book-image-section {
+    flex: none;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .book-title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .review-wordcloud {
+    padding: 15px;
+  }
+
+  .modal-content2 {
+    width: 95%;
+    padding: 15px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .book-detail-container {
+    padding: 10px;
+    margin: 10px auto;
+  }
+
+  .book-detail-content {
+    padding: 15px;
+    gap: 20px;
+  }
+
+  .book-image-section {
+    max-width: 200px;
+  }
+
+  .book-title {
+    font-size: 18px;
+  }
+
+  .book-meta p {
+    font-size: 14px;
+  }
+
+  .book-description h2 {
+    font-size: 16px;
+  }
+
+  .book-description p {
+    font-size: 14px;
+  }
+
+  .review-button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .review-wordcloud {
+    padding: 10px;
+  }
+
+  .modal-content2 {
+    padding: 12px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .book-detail-container {
+    padding: 8px;
+    margin: 8px auto;
+  }
+
+  .book-detail-content {
+    padding: 12px;
+    gap: 15px;
+  }
+
+  .book-image-section {
+    max-width: 150px;
+  }
+
+  .book-title {
+    font-size: 16px;
+  }
+
+  .review-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .review-wordcloud div {
+    height: 350px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .review-wordcloud div {
+    height: 300px !important;
+  }
+}

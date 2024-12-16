@@ -57,12 +57,16 @@
   
   .book-card {
     width: 150px;
+    height: 300px; /* 고정 높이 설정 */
     padding: 10px;
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 공간을 균등하게 분배 */
   }
   
   .book-card img {
@@ -113,4 +117,133 @@
   .slide-button.right {
     right: 25px;
   }
-  
+  /* 태블릿 화면 (1024px 이하) */
+@media screen and (max-width: 1024px) {
+  .book-recommendation {
+    padding: 15px;
+  }
+
+  .book-container {
+    gap: 30px;
+  }
+
+  .book-card {
+    width: 130px;
+    height: 280px;
+  }
+
+  .slide-button {
+    width: 35px;
+    height: 35px;
+  }
+
+  .slide-button img {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* 작은 태블릿 화면 (768px 이하) */
+@media screen and (max-width: 768px) {
+  .book-container {
+    gap: 20px;
+  }
+
+  .user-book {
+    flex: 0 0 200px;
+    padding: 15px;
+  }
+
+  .user-book img {
+    width: 160px;
+  }
+
+  .book-card {
+    width: 120px;
+    height: 260px;
+  }
+
+  .slide-button.left {
+    left: -20px;
+  }
+
+  .slide-button.right {
+    right: 20px;
+  }
+}
+
+/* 모바일 화면 (480px 이하) */
+@media screen and (max-width: 480px) {
+  .book-recommendation {
+    padding: 10px;
+  }
+
+  .book-container {
+    gap: 15px;
+  }
+
+  .user-book {
+    flex: 0 0 160px;
+    padding: 12px;
+  }
+
+  .user-book img {
+    width: 130px;
+  }
+
+  .book-card {
+    width: 100px;
+    height: 240px;
+    padding: 8px;
+  }
+
+  .slide-button {
+    width: 30px;
+    height: 30px;
+  }
+
+  .slide-button img {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/* 작은 모바일 화면 (320px 이하) */
+@media screen and (max-width: 320px) {
+  .book-container {
+    gap: 10px;
+  }
+
+  .user-book {
+    flex: 0 0 140px;
+    padding: 10px;
+  }
+
+  .user-book img {
+    width: 110px;
+  }
+
+  .book-card {
+    width: 90px;
+    height: 220px;
+    padding: 6px;
+  }
+
+  .slide-button {
+    width: 25px;
+    height: 25px;
+  }
+
+  .slide-button img {
+    width: 12px;
+    height: 12px;
+  }
+
+  .slide-button.left {
+    left: -15px;
+  }
+
+  .slide-button.right {
+    right: 15px;
+  }
+}

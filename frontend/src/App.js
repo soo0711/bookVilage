@@ -15,36 +15,26 @@ import axios from "axios";
 import { Stomp } from "@stomp/stompjs";
 import Profile from "./components/Profile";
 import BookRegister from "./components/BookRegister";
+import BookRecommendation from "./components/BookRecommendation";
+
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [client, setClient] = useState(null); // WebSocket 클라이언트
+  const [userId, setUserId] = useState(null); // userId 상태 추가
 
   const handleLogin = (loginId) => {
-    setIsLoggedIn(true);
-    setUsername(loginId);
-  };
-  const handleBookRegister = (bookData) => {
-    // 여기서 책 등록 로직을 처리합니다
-    // 백엔드 연동 전까지는 임시로 콘솔에 출력
-    console.log('등록된 책 정보:', bookData);
+      setIsLoggedIn(true);
+      setUsername(loginId);
     
-    // 나중에 백엔드 연동 시 사용할 코드
-    /* try {
-      const response = await axios.post('/api/books', bookData);
-      if (response.status === 200) {
-        console.log('책이 성공적으로 등록되었습니다.');
-      }
-    } catch (error) {
-      console.error('책 등록 중 오류 발생:', error);
-    } */
   };
 
   const handleLogout = async () => {
     try {
       const response = await axios.get("http://localhost:80/user/sign-out", {
-        credentials: "include",
+        withCredentials: true  
       });
 
       if (response.data.code === 200) {
@@ -101,19 +91,11 @@ function App() {
             </>
           }
         />
-        <Route 
-          path="/book-register/create" 
-          element={
-            <>
-              <Header />
-              <BookRegister onRegister={handleBookRegister} username={username} />
-            </>
-          } 
-        />
         <Route path="/user/sign-in-view" element={<LoginPage onLogin={handleLogin} />} />
         <Route path="/user/sign-up-view" element={<SignupPage />} />
         <Route path="/find-id" element={<FindIdPage />} />
         <Route path="/find-password" element={<FindPasswordPage />} />
+<<<<<<< .merge_file_b4ecjr
         <Route path="/book-recommend" element={<BookRecommend />} />
         <Route path="/BookMeeting" element={<BookMeeting />} />
         <Route path="/community" element={<CommunityPage />} />
@@ -132,8 +114,18 @@ function App() {
           } 
         />
 
+=======
+        <Route path="/book-recommend" element={<BookRecommend username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/BookMeeting" element={<BookRecommend username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/community" element={<CommunityPage username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/exchange-list/:bookId" element={<ExchangeList username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/book-register" element={<BookRegister username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        <Route path="/recommendation" element={<BookRecommendation username={username} isLoggedIn={isLoggedIn} handleLogout={handleLogout}/>} />
+        
+        <Route path="/profile/:userId" element={<Profile />} />
+>>>>>>> .merge_file_35OeW8
         {<Route
-          path="/chat/:targetUsername"
+          path="/chat/:chatRoomId"
           element={<ChatPage client={client} username={username} isLoggedIn={isLoggedIn} />}
         /> }
         <Route path="*" element={<Navigate to="/home-view" />} />

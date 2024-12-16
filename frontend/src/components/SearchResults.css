@@ -1,0 +1,362 @@
+.search-results-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.search-info {
+  margin-bottom: 30px;
+  
+}
+
+.search-info h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+  
+}
+
+.search-info p {
+  color: #666;
+  font-size: 16px;
+}
+
+.books-grid {
+  display: flex; /* 플렉스 박스 사용 */
+  flex-wrap: wrap; /* 여러 줄로 나열 가능 */
+  gap: 20px; /* 카드 간격 */
+  justify-content: center; /* 가운데 정렬 */
+  padding: 20px 0;
+}
+
+.book-card {
+  display: flex; /* 가로 배치 */
+  flex-direction: row; /* 이미지와 텍스트를 가로로 정렬 */
+  align-items: flex-start; /* 텍스트가 이미지의 상단에 정렬되도록 */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  width: 100%;
+  max-width: 700px; /* 카드의 최대 너비 설정 */
+  padding: 15px;
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+  height: 150px;
+  align-items: center; /* 텍스트와 이미지가 수직으로 중앙 정렬 */
+  position: relative;  /* 하트 버튼의 위치 기준�� */
+}
+
+.book-card:hover {
+  transform: translateY(-5px); /* 호버 시 카드가 살짝 올라오게 */
+}
+
+.book-cover {
+  flex-shrink: 0; /* 이미지 크기가 줄어들지 않도록 설정 */
+  width: 100px; /* 고정된 너비 */
+  height: 150; /* 고정된 높이 */
+  margin-right: 15px; /* 이미지와 텍스트 간격 */
+  overflow: hidden;
+}
+
+.book-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book-info {
+  flex: 1; /* 텍스트 영역이 남은 공간을 차지하도록 설정 */
+  
+}
+
+.book-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.book-author {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.book-publisher {
+  font-size: 14px;
+  color: #888;
+}
+
+/* hover 효과 제거 */
+
+.wishlist-button {
+  position: absolute;
+  bottom: 28px;
+  right: 20px;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.wishlist-button:hover,
+.wishlist-button:focus,
+.wishlist-button:active {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* 하트 아이콘 기본 스타일 (빈 하트) */
+.wishlist-button svg {
+  font-size: 24px;
+  color: #ff4b4b;
+  stroke: #ff4b4b;
+  stroke-width: 1;
+}
+
+/* 꽉 찬 하트 스타일 */
+.heart-filled {
+  color: #ff4b4b;
+}
+
+/* 태블릿 화면 (1024px 이하) */
+@media screen and (max-width: 1024px) {
+  .search-results-container {
+    max-width: 90%;
+    padding: 18px;
+  }
+
+  .search-info {
+    margin-bottom: 25px;
+  }
+
+  .search-info h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .search-info p {
+    font-size: 15px;
+  }
+
+  .books-grid {
+    gap: 18px;
+    padding: 18px 0;
+  }
+
+  .book-card {
+    max-width: 650px;
+    padding: 13px;
+    height: 140px;
+  }
+
+  .book-cover {
+    width: 90px;
+    margin-right: 13px;
+  }
+
+  .book-title {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+
+  .book-author {
+    font-size: 15px;
+    margin-bottom: 7px;
+  }
+
+  .book-publisher {
+    font-size: 13px;
+  }
+}
+
+/* 작은 태블릿 화면 (768px 이하) */
+@media screen and (max-width: 768px) {
+  .search-results-container {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .search-info {
+    margin-bottom: 20px;
+  }
+
+  .search-info h2 {
+    font-size: 20px;
+    margin-bottom: 7px;
+  }
+
+  .search-info p {
+    font-size: 14px;
+  }
+
+  .books-grid {
+    gap: 15px;
+    padding: 15px 0;
+  }
+
+  .book-card {
+    max-width: 600px;
+    padding: 12px;
+    height: 130px;
+  }
+
+  .book-cover {
+    width: 85px;
+    margin-right: 12px;
+  }
+
+  .book-title {
+    font-size: 16px;
+    margin-bottom: 7px;
+  }
+
+  .book-author {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .book-publisher {
+    font-size: 12px;
+  }
+
+  .wishlist-button {
+    bottom: 25px;
+    right: 15px;
+  }
+
+  .wishlist-button svg {
+    font-size: 22px;
+  }
+}
+
+/* 모바일 화면 (480px 이하) */
+@media screen and (max-width: 480px) {
+  .search-results-container {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .search-info {
+    margin-bottom: 15px;
+  }
+
+  .search-info h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .search-info p {
+    font-size: 13px;
+  }
+
+  .books-grid {
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .book-card {
+    max-width: 100%;
+    padding: 10px;
+    height: 120px;
+  }
+
+  .book-cover {
+    width: 75px;
+    margin-right: 10px;
+  }
+
+  .book-title {
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .book-author {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+
+  .book-publisher {
+    font-size: 11px;
+  }
+
+  .wishlist-button {
+    bottom: 20px;
+    right: 12px;
+  }
+
+  .wishlist-button svg {
+    font-size: 20px;
+  }
+}
+
+/* 작은 모바일 화면 (320px 이하) */
+@media screen and (max-width: 320px) {
+  .search-results-container {
+    padding: 10px;
+  }
+
+  .search-info {
+    margin-bottom: 12px;
+  }
+
+  .search-info h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .search-info p {
+    font-size: 12px;
+  }
+
+  .books-grid {
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  .book-card {
+    padding: 8px;
+    height: 110px;
+  }
+
+  .book-cover {
+    width: 65px;
+    margin-right: 8px;
+  }
+
+  .book-title {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .book-author {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .book-publisher {
+    font-size: 10px;
+  }
+
+  .wishlist-button {
+    bottom: 15px;
+    right: 10px;
+  }
+
+  .wishlist-button svg {
+    font-size: 18px;
+  }
+}

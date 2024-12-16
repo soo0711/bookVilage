@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { registerUser } from "../api/auth";
 import "./SignupPage.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Axios 추가
+import axios from "axios";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -13,24 +12,56 @@ const SignupPage = () => {
     email: "",
     phoneNumber: "",
   });
+  
+  // 아이디 중복 확인 상태 추가
+  const [isIdChecked, setIsIdChecked] = useState(false);
+  const [isIdAvailable, setIsIdAvailable] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    // 아이디가 변경되면 중복확인 상태 초기화
+    if (name === 'loginId') {
+      setIsIdChecked(false);
+      setIsIdAvailable(false);
+    }
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const message = await registerUser(formData);
-  //     alert(message);
-  //   } catch (error) {
-  //     alert(error.message);
-  //   }
-  // };
+  // 아이디 중복 확인 함수
+  const handleCheckId = async () => {
+    if (!formData.loginId) {
+      alert("아이디를 입력해주세요.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:80/user/check-id", {
+        loginId: formData.loginId
+      });
+
+      if (response.data.code === 200) {
+        alert("사용 가능한 아이디입니다.");
+        setIsIdChecked(true);
+        setIsIdAvailable(true);
+      } else {
+        alert("이미 사용 중인 아이디입니다.");
+        setIsIdChecked(true);
+        setIsIdAvailable(false);
+      }
+    } catch (error) {
+      console.error("아이디 중복 확인 중 에러 발생:", error);
+      alert("아이디 중복 확인에 실패했습니다.");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 아이디 중복 확인 여부 검사
+    if (!isIdChecked || !isIdAvailable) {
+      alert("아이디 중복 확인을 해주세요.");
+      return;
+    }
 
     if (!formData.loginId) {
       alert("아이디를 입력해주세요.");
@@ -58,54 +89,50 @@ const SignupPage = () => {
     }
 
     try {
-      // Spring Boot API 호출
-      const loginId = formData.loginId;
-      const password = formData.password;
-      const name = formData.name;
-      const email = formData.email;
-      const phoneNumber = formData.phoneNumber;
       const response = await axios.post("http://localhost:80/user/sign-up", {
-        loginId,
-        password,
-        name,
-        email,
-        phoneNumber,
+        loginId: formData.loginId,
+        password: formData.password,
+        name: formData.name,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
       });
 
       if (response.data.code === 200) {
-        // 회원가입 성공 처리
         alert("회원가입 되었습니다.")
         navigate("/user/sign-in-view");
       } else {
-        // 로그인 실패 처리
-        alert(response.data.error_message || "로그인에 실패했습니다.");
+        alert(response.data.error_message || "회원가입에 실패했습니다.");
       }
     } catch (error) {
-      console.error("로그인 요청 중 에러 발생:", error);
+      console.error("회원가입 요청 중 에러 발생:", error);
       alert("서버와의 통신에 문제가 발생했습니다.");
     }
   };
 
   return (
     <div className="signup-container">
-       <img src="/assets/logo.png" alt="로고" className="logo" />
-       <img src="/assets/title.png" alt="타이틀" className="title" />
+      <img src="/assets/logo.png" alt="로고" className="logo" />
+      <img src="/assets/title.png" alt="타이틀" className="title" />
       
       <form onSubmit={handleSubmit} className="signup-form">
         <div className="input-group">
-          <div className="input-wrapper">
-            <i className="icon user-icon">👤</i>
+          <div className="id-input-wrapper">
             <input 
               name="loginId" 
               placeholder="아이디" 
               onChange={handleChange} 
               className="input-field"
             />
-            
+            <button 
+              type="button" 
+              onClick={handleCheckId}
+              className="check-id-button"
+            >
+              중복확인
+            </button>
           </div>
 
           <div className="input-wrapper">
-            <i className="icon lock-icon">🔒</i>
             <input 
               type="password" 
               name="password" 
@@ -113,7 +140,6 @@ const SignupPage = () => {
               onChange={handleChange} 
               className="input-field"
             />
-            <button type="button" className="toggle-visibility">👁️</button>
           </div>
 
           <div className="input-wrapper">

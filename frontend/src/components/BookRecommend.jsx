@@ -1,77 +1,117 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Header from "./Header";
-import BookRegisterForm from "./BookRegister";
-import BookRecommendation from "./BookRecommendation";
+import { useNavigate } from "react-router-dom";
+import "./BookRecommend.css";
 
-const BookRecommend = () => {
-  const [isBookRegistered, setIsBookRegistered] = useState(false);
-  const [userBooks, setUserBooks] = useState([]);
-  const [recommendedBooks, setRecommendedBooks] = useState([]);
+const BookRecommend = ({ handleLogout }) => {
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const [recommendedBooks, setRecommendedBooks] = useState([]); // 추천 도서 상태 추가
+  const navigate = useNavigate();
 
-  // 책 등록 핸들러 수정
-  const handleBookRegister = (book) => {
-    setUserBooks([book]); // 새로운 책으로 배열 업데이트
-    setIsBookRegistered(true);
-    
-    // 임시 추천 도서 데이터 설정
-    const tempRecommendedBooks = [
-      {
-        title: "추천도서 1",
-        author: "작가1",
-        image: "https://via.placeholder.com/150x200",
-      },
-      {
-        title: "추천도서 2",
-        author: "작가2",
-        image: "https://via.placeholder.com/150x200",
-      },
-      {
-        title: "추천도서 3",
-        author: "작가3",
-        image: "https://via.placeholder.com/150x200",
-      },
-    ];
-    setRecommendedBooks(tempRecommendedBooks);
-  };
-
-  /* 실제 API 연동 시 사용할 함수
-  const fetchRecommendedBooks = async () => {
-    if (userBooks.length > 0) {
-      try {
-        const response = await fetch(
-          `https://api.aladin.co.kr/recommend?query=${userBooks[0].title}`
-        );
-        const data = await response.json();
-        setRecommendedBooks(data.books);
-      } catch (error) {
-        console.error("추천 책을 가져오는 중 오류 발생:", error);
-      }
-    }
-  };
 
   useEffect(() => {
-    if (isBookRegistered) {
-      fetchRecommendedBooks();
+    axios
+      .get("http://localhost:80/user/api/user-info", { withCredentials: true })
+      .then((response) => {
+        if (response.data.userId && response.data.userLoginId) {
+          setIsLoggedIn(true);
+          setUsername(response.data.userLoginId);
+        }
+      })
+      .catch((error) => {
+        console.error("사용자 정보 가져오기 실패:", error);
+      });
+
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:80/book-register/list",
+          { withCredentials: true }
+        );
+
+        if (response.data.code === 200) {
+          setBooks(response.data.data || []);
+        } else {
+          alert("책 데이터를 가져오는 데 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("책 리스트 요청 중 에러 발생:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, []);
+
+  const handleBookClick = async (entry) => {
+    try {
+      // 선택한 책의 ISBN13을 사용하여 추천 도서 API 호출
+      const response = await axios.get(
+        `http://127.0.0.1:8000/recommend/${entry.book.isbn13}`,
+        { withCredentials: true }
+      );
+
+      // 추천 도서 목록을 업데이트
+      setRecommendedBooks(response.data.recommendations || []);
+
+      // 추천 도서를 BookRecommendation으로 전달
+      navigate("/recommendation", {
+        state: {
+          selectedBook: entry,
+          username,
+          recommendedBooks: response.data.recommendations || [],
+        },
+      });
+    } catch (error) {
+      console.error("추천 도서 요청 중 에러 발생:", error);
     }
-  }, [userBooks]);
-  */
+  };
+
+  if (loading) {
+    return <p>로딩 중...</p>;
+  }
 
   return (
     <>
-      <Header />
-      <div className="book-recommend-page">
-        {!isBookRegistered ? (
-          <BookRegisterForm onRegister={handleBookRegister} />
+      <Header
+        isLoggedIn={isLoggedIn}
+        username={username}
+        onLogout={handleLogout}
+        />
+
+      <div className="book-recommendation-page">
+        {books.length > 0 ? (
+          <div className="book-list">
+            <h2>내가 등록한 책</h2>
+            <div className="book-container">
+              {books.map((entry, index) => {
+                const book = entry.book;
+                return (
+                  <div key={index} className="book-card" onClick={() => handleBookClick(entry)}>
+                    <img src={book.cover} alt={book.title} />
+                    <h3>{book.title}</h3>
+                    <p>저자: {book.author}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         ) : (
-          <BookRecommendation
-            userBooks={userBooks}
-            recommendedBooks={recommendedBooks}
-            username="사용자" // 임시 사용자 이름
-          />
+          <div className="no-books">
+            <h2>등록된 책이 없습니다.</h2>
+            <p>책 등록을 먼저 진행해주세요.</p>
+          </div>
         )}
-        <footer className="footer">
-          <p>@copyright bookVillage</p>
-        </footer>
+
+        {/* 항상 책 등록 버튼을 표시 */}
+        <div className="register-button-container">
+          <button onClick={() => navigate("/book-register")}>책 등록하기</button>
+        </div>
       </div>
     </>
   );

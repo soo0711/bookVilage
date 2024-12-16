@@ -222,3 +222,169 @@ display: flex;
   transform: translateY(-2px);
 }
   
+/* 태블릿 화면 (1024px 이하) */
+@media screen and (max-width: 1024px) {
+  .exchange-list-container {
+    width: 90%;
+    padding: 2rem;
+  }
+
+  .exchange-list-title {
+    font-size: 1.8rem;
+  }
+
+  .exchange-list-content {
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  .book-info {
+    flex: 0 0 250px;
+  }
+
+  .book-details h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* 작은 태블릿 화면 (768px 이하) */
+@media screen and (max-width: 768px) {
+  .exchange-list-container {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .exchange-list-title {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .exchange-list-content {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .book-info {
+    flex: none;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .exchange-users-list {
+    width: 100%;
+  }
+
+  .exchange-user-item {
+    padding: 1.2rem;
+  }
+
+  .user-info h3 {
+    font-size: 1.1rem;
+  }
+}
+
+/* 모바일 화면 (480px 이하) */
+@media screen and (max-width: 480px) {
+  .exchange-list-container {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 80px;
+  }
+
+  .exchange-list-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .exchange-list-title::after {
+    width: 80px;
+  }
+
+  .exchange-list-content {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .book-info {
+    padding: 1rem;
+  }
+
+  .book-details h2 {
+    font-size: 1.2rem;
+  }
+
+  .book-rating {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .exchange-user-item {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .chat-button {
+    width: 100%;
+    padding: 0.7rem 1rem;
+  }
+
+  .back-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* 작은 모바일 화면 (320px 이하) */
+@media screen and (max-width: 320px) {
+  .exchange-list-container {
+    padding: 0.8rem;
+    margin-top: 70px;
+  }
+
+  .exchange-list-title {
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .exchange-list-title::after {
+    width: 60px;
+  }
+
+  .exchange-list-content {
+    padding: 0.8rem;
+  }
+
+  .book-info {
+    padding: 0.8rem;
+  }
+
+  .book-details h2 {
+    font-size: 1.1rem;
+  }
+
+  .book-rating {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .user-info h3 {
+    font-size: 1rem;
+  }
+
+  .exchange-location {
+    font-size: 0.85rem;
+  }
+
+  .chat-button {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .back-button {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}

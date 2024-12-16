@@ -178,21 +178,7 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-@media (max-width: 768px) {
-  .profile-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
 
-  .chat-button {
-    margin-top: 20px;
-  }
-
-  .book-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-}
 
 /* 애니메이션 효과 추가 */
 @keyframes fadeIn {
@@ -212,4 +198,212 @@
 
 .book-card-pro {
   animation: fadeIn 0.5s ease-out;
+}
+/* 위시리스트 섹션 스타일 */
+.wishlist-section {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  margin-top: 30px;
+}
+
+.wishlist-section h3 {
+  color: #303f9f;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e3f2fd;
+}
+
+.wishlist-card {
+  background: linear-gradient(135deg, #fff, #f8f0ff);
+  border: 1px solid #f0e6ff;
+}
+
+.wishlist-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(149, 117, 205, 0.2);
+}
+
+/* 태블릿 화면 (1024px 이하) */
+@media screen and (max-width: 1024px) {
+  .profile-container {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .profile-header {
+    padding: 20px;
+  }
+
+  .profile-info h2 {
+    font-size: 1.8em;
+  }
+
+  .preferred-locations {
+    padding: 12px;
+  }
+
+  .book-grid {
+    gap: 20px;
+  }
+}
+
+/* 작은 태블릿 화면 (768px 이하) - 기존 미디어 쿼리 확장 */
+@media screen and (max-width: 768px) {
+  .profile-container {
+    max-width: 95%;
+    padding: 12px;
+    margin: 15px auto;
+  }
+
+  .profile-header {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .profile-info h2 {
+    font-size: 1.6em;
+    margin-bottom: 12px;
+  }
+
+  .preferred-locations h3 {
+    font-size: 1rem;
+  }
+
+  .preferred-locations li {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  .books-section {
+    gap: 20px;
+  }
+
+  .exchangeable-books,
+  .completed-exchanges {
+    padding: 20px;
+  }
+
+  .exchangeable-books h3,
+  .completed-exchanges h3 {
+    font-size: 1.3em;
+    margin-bottom: 15px;
+  }
+}
+
+/* 모바일 화면 (480px 이하) */
+@media screen and (max-width: 480px) {
+  .profile-container {
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px auto;
+  }
+
+  .profile-header {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+
+  .profile-info h2 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+  }
+
+  .preferred-locations {
+    padding: 10px;
+    margin-top: 15px;
+  }
+
+  .preferred-locations li {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    margin: 3px;
+  }
+
+  .chat-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .books-section {
+    gap: 15px;
+  }
+
+  .exchangeable-books,
+  .completed-exchanges {
+    padding: 15px;
+  }
+
+  .book-grid {
+    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .book-card {
+    border-radius: 10px;
+  }
+
+  .book-card img {
+    height: 180px;
+  }
+
+  .book-info {
+    padding: 15px;
+  }
+
+  .book-info h4 {
+    font-size: 1.1em;
+  }
+}
+
+/* 작은 모바일 화면 (320px 이하) */
+@media screen and (max-width: 320px) {
+  .profile-container {
+    padding: 8px;
+    margin: 8px auto;
+  }
+
+  .profile-header {
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+
+  .profile-info h2 {
+    font-size: 1.2em;
+    margin-bottom: 8px;
+  }
+
+  .preferred-locations li {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    margin: 2px;
+  }
+
+  .chat-button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .book-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+
+  .book-card img {
+    height: 160px;
+  }
+
+  .book-info {
+    padding: 12px;
+  }
+
+  .book-info h4 {
+    font-size: 1em;
+  }
+
+  .location {
+    font-size: 0.8rem;
+  }
 }
