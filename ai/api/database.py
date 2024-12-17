@@ -4,7 +4,8 @@ import os
 
 # 데이터베이스 URL 설정
 SQLALCHEMY_DATABASE_URL = os.getenv(
-    "SQLALCHEMY_DATABASE_URL", "mysql+pymysql://root:0110@localhost:3306/bookvillage1"
+    "SQLALCHEMY_DATABASE_URL",
+    "mysql+pymysql://dbid233:dbpass233@localhost:3306/db24331",
 )
 
 # SQLAlchemy 엔진 생성
