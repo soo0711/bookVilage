@@ -506,3 +506,244 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* 태블릿 화면 (1024px 이하) */
+@media screen and (max-width: 1024px) {
+  .mypage-container {
+    max-width: 90%;
+    padding: 18px;
+  }
+
+  .profile-section {
+    padding: 18px;
+  }
+
+  .schedule-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .calendar-section,
+  .events-section {
+    flex: none;
+    width: 100%;
+  }
+
+  .react-calendar {
+    font-size: 1em;
+  }
+
+  .react-calendar__tile {
+    padding: 8px 6px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 9px;
+    font-size: 13px;
+  }
+}
+
+/* 작은 태블릿 화면 (768px 이하) */
+@media screen and (max-width: 768px) {
+  .mypage-container {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .profile-section {
+    padding: 15px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .search-group {
+    gap: 8px;
+  }
+
+  .search-group button {
+    padding: 8px 15px;
+  }
+
+  .submit-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .react-calendar {
+    font-size: 0.9em;
+  }
+
+  .react-calendar__tile {
+    padding: 7px 5px;
+  }
+
+  .event-item {
+    padding: 8px;
+  }
+
+  .event-item h5 {
+    font-size: 1em;
+  }
+}
+
+/* 모바일 화면 (480px 이하) */
+@media screen and (max-width: 480px) {
+  .mypage-container {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .profile-section {
+    padding: 12px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 7px;
+    font-size: 11px;
+  }
+
+  .search-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-group button {
+    width: 100%;
+    padding: 8px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 12px;
+  }
+
+  .react-calendar {
+    font-size: 0.8em;
+  }
+
+  .react-calendar__tile {
+    padding: 6px 4px;
+  }
+
+  .event-item {
+    padding: 6px;
+  }
+
+  .event-item h5 {
+    font-size: 0.9em;
+  }
+
+  .event-item p {
+    font-size: 0.8em;
+  }
+
+  .add-event-btn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 8px;
+    font-size: 0.9em;
+  }
+
+  .event-item button {
+    padding: 6px 12px;
+    font-size: 0.8em;
+  }
+}
+
+/* 작은 모바일 화면 (320px 이하) */
+@media screen and (max-width: 320px) {
+  .mypage-container {
+    padding: 10px;
+  }
+
+  .profile-section {
+    padding: 10px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .submit-btn {
+    padding: 7px;
+    font-size: 12px;
+  }
+
+  .modal-content {
+    padding: 10px;
+  }
+
+  .react-calendar {
+    font-size: 0.7em;
+  }
+
+  .react-calendar__tile {
+    padding: 5px 3px;
+  }
+
+  .event-item {
+    padding: 5px;
+  }
+
+  .event-item h5 {
+    font-size: 0.8em;
+  }
+
+  .event-item p {
+    font-size: 0.7em;
+  }
+
+  .add-event-btn {
+    padding: 7px;
+    font-size: 0.8em;
+  }
+
+  .event-item button {
+    padding: 5px 10px;
+    font-size: 0.7em;
+  }
+
+  .withdrawal-link {
+    font-size: 12px;
+    margin-top: 30px;
+  }
+}

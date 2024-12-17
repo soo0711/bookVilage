@@ -151,3 +151,109 @@
 .close-modal-button:hover {
   color: #333;
 }
+
+/* 태블릿 반응형 (1024px 이하) */
+@media screen and (max-width: 1024px) {
+  .book-detail-container {
+    padding: 15px;
+  }
+
+  .book-detail-content {
+    gap: 30px;
+    padding: 20px;
+  }
+
+  .book-image-section {
+    flex: 0 0 250px;
+  }
+
+  .book-title {
+    font-size: 24px;
+  }
+}
+
+/* 작은 태블릿 반응형 (768px 이하) */
+@media screen and (max-width: 768px) {
+  .book-detail-content {
+    flex-direction: column;
+  }
+
+  .book-image-section {
+    flex: none;
+    max-width: 300px;
+    margin: 0 auto 20px;
+  }
+
+  .book-title {
+    text-align: center;
+    font-size: 22px;
+  }
+
+  .review-button {
+    margin: 0 auto;
+  }
+
+  .modal-content2 {
+    width: 95%;
+    padding: 20px;
+  }
+}
+
+/* 모바일 반응형 (480px 이하) */
+@media screen and (max-width: 480px) {
+  .book-detail-container {
+    padding: 10px;
+  }
+
+  .book-detail-content {
+    padding: 15px;
+  }
+
+  .book-image-section {
+    max-width: 200px;
+  }
+
+  .book-title {
+    font-size: 20px;
+  }
+
+  .book-meta p,
+  .book-description p {
+    font-size: 14px;
+  }
+
+  .review-button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .modal-content2 {
+    padding: 15px;
+  }
+
+  .modal-content2 h2 {
+    font-size: 18px;
+  }
+
+  .review-item {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .close-modal-button {
+    font-size: 20px;
+  }
+}
+
+/* 워드 클라우드 반응형 높이 조정 */
+@media screen and (max-width: 768px) {
+  .review-wordcloud div {
+    height: 350px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .review-wordcloud div {
+    height: 300px !important;
+  }
+}

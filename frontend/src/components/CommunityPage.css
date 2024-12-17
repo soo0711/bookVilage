@@ -197,3 +197,219 @@
     background-color: #555;
   }
   
+   /* 태블릿 화면 (1024px 이하) */
+@media screen and (max-width: 1024px) {
+  .community-page {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 26px;
+    margin-bottom: 18px;
+  }
+
+  .content {
+    gap: 15px;
+  }
+
+  .post-list {
+    padding: 15px;
+  }
+
+  .post-list h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .post-detail {
+    padding: 15px;
+  }
+
+  .post-detail h2 {
+    font-size: 22px;
+  }
+}
+
+/* 작은 태블릿 화면 (768px 이하) */
+@media screen and (max-width: 768px) {
+  .community-page {
+    max-width: 95%;
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+
+  .content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .post-list {
+    padding: 12px;
+  }
+
+  .post-list h2 {
+    font-size: 18px;
+  }
+
+  .post-list li {
+    padding: 12px;
+  }
+
+  .post-detail {
+    padding: 12px;
+  }
+
+  .post-detail h2 {
+    font-size: 20px;
+  }
+
+  .comments li {
+    padding: 8px;
+  }
+
+  textarea {
+    height: 50px;
+  }
+}
+
+/* 모바일 화면 (480px 이하) */
+@media screen and (max-width: 480px) {
+  .community-page {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .board-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .board-header h2 {
+    font-size: 18px;
+  }
+
+  .write-button {
+    width: 100%;
+    padding: 8px;
+  }
+
+  .post-list {
+    padding: 10px;
+  }
+
+  .post-list h2 {
+    font-size: 16px;
+  }
+
+  .post-list li {
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+
+  .post-list h3 {
+    font-size: 16px;
+  }
+
+  .post-detail {
+    padding: 10px;
+  }
+
+  .post-detail h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .post-detail p {
+    font-size: 14px;
+  }
+
+  .comments h3 {
+    font-size: 16px;
+  }
+
+  .comments li {
+    padding: 6px;
+  }
+
+  textarea {
+    height: 45px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* 작은 모바일 화면 (320px 이하) */
+@media screen and (max-width: 320px) {
+  .community-page {
+    padding: 8px;
+  }
+
+  h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .post-list {
+    padding: 8px;
+  }
+
+  .post-list h2 {
+    font-size: 15px;
+  }
+
+  .post-list li {
+    padding: 8px;
+    margin-bottom: 6px;
+  }
+
+  .post-list h3 {
+    font-size: 15px;
+  }
+
+  .post-detail {
+    padding: 8px;
+  }
+
+  .post-detail h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .post-detail p {
+    font-size: 13px;
+  }
+
+  .comments h3 {
+    font-size: 15px;
+  }
+
+  .comments li {
+    padding: 5px;
+  }
+
+  textarea {
+    height: 40px;
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
