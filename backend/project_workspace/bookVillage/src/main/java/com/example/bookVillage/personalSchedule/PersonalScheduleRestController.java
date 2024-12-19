@@ -20,7 +20,7 @@ import com.example.bookVillage.personalSchedule.entity.PersonalScheduleEntity;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/personal-schdule")
+@RequestMapping("/api/personal-schdule")
 public class PersonalScheduleRestController {
 	
 	@Autowired

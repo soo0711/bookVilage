@@ -18,8 +18,8 @@ import com.example.bookVillage.oauth.AladinOauth;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/book")
+@CrossOrigin(origins = "http://localhost:60031")
+@RequestMapping("/api/book")
 @RestController
 public class BookRestController {
 

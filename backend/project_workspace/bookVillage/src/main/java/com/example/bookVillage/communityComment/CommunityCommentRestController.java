@@ -17,8 +17,8 @@ import com.example.bookVillage.communityComment.entity.CommunityCommentEntity;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/community-comment")
+@CrossOrigin(origins = "http://localhost:60031")
+@RequestMapping("/api/community-comment")
 @RestController
 public class CommunityCommentRestController {
 	@Autowired

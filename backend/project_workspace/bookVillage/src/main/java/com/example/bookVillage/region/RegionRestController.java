@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.bookVillage.region.bo.RegionBO;
 
 @RestController
-@RequestMapping("/region")
+@RequestMapping("/api/region")
 public class RegionRestController {
 
 	@Autowired

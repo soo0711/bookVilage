@@ -26,9 +26,9 @@ import com.example.bookVillage.card.entity.UserBookRegisterEntity;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:60031")
 @RestController
-@RequestMapping("/book-register")
+@RequestMapping("/api/book-register")
 public class BookRegisterRestCotroller {
    
    @Autowired

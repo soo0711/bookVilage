@@ -20,7 +20,7 @@ import com.example.bookVillage.message.entity.ChatRoomEntity;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 public class MessageRestController {
 
 	@Autowired

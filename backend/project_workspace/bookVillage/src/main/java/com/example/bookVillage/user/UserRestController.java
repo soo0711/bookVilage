@@ -23,8 +23,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-@RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:60031", allowCredentials = "true")
+@RequestMapping("/api/user")
 @RestController
 public class UserRestController {
 
