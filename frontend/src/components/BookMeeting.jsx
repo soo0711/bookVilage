@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import "./BookMeeting.css";
-import axios from "axios"; //
+import axios from "axios";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // 스타일 추가
+import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
+
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
 
 const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) => {
   const navigate = useNavigate();
@@ -26,7 +29,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
     sidoCd: "",
     siggCd: "",
     emdongCd: "",
-    detailedPlace: "" // 상세주소 추가
+    detailedPlace: ""
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [sidoList, setSidoList] = useState([]);
@@ -37,7 +40,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
     // 시/도 리스트 가져오기
     const fetchSidoList = async () => {
       try {
-        const response = await axios.post("http://localhost:80/region/sido");
+        const response = await axios.post(`${MAIN_API_URL}/region/sido`);
         if (response.data.code === 200) {
           setSidoList(response.data.sido);
         } else {
@@ -57,7 +60,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
     
     if (selectedSido !== "ALL") {
       try {
-        const response = await axios.post("http://localhost:80/region/sigungu", { sido: selectedSido });
+        const response = await axios.post(`${MAIN_API_URL}/region/sigungu`, { sido: selectedSido });
         if (response.data.code === 200) {
           setSigunguList(response.data.sigungu);
         } else {
@@ -78,13 +81,13 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
   
     if (selectedSigungu !== "ALL") {
       try {
-        const response = await axios.post("http://localhost:80/region/emdonge", { 
+        const response = await axios.post(`${MAIN_API_URL}/region/emdonge`, { 
           sido: formData.sidoCd, 
           sigungu: selectedSigungu 
         });
   
         if (response.data.code === 200) {
-          setEmdongList(response.data.sido); // 여기를 수정: sido -> emdong
+          setEmdongList(response.data.sido);
         } else {
           alert(response.data.error_message);
         }
@@ -104,7 +107,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
 
   useEffect(() => {
     // Header와 동일한 API를 호출하여 로그인 상태 확인
-    axios.get("http://localhost:80/user/api/user-info", {
+    axios.get(`${MAIN_API_URL}/user/api/user-info`, {
       withCredentials: true,
     })
     .then(response => {
@@ -125,7 +128,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
 
   const fetchMeetings = async () => {
     try {
-      const response = await fetch("http://localhost:80/bookMeeting/list", {
+      const response = await fetch(`${MAIN_API_URL}/bookMeeting/list`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -168,7 +171,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
       .join(" "); // 공백으로 연결
   
     try {
-      const response = await fetch("http://localhost:80/bookMeeting/create", {
+      const response = await fetch(`${MAIN_API_URL}/bookMeeting/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -213,7 +216,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
     }
   
     try {
-      const response = await axios.post("http://localhost:80/bookMeeting/listByRegion", {
+      const response = await axios.post(`${MAIN_API_URL}/bookMeeting/listByRegion`, {
         place: searchQuery,
       });
   
@@ -234,7 +237,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
 
   const handleDeleteMeeting = async (bookMeetingId) => {
     try {
-      const response = await fetch("http://localhost:80/bookMeeting/delete", {
+      const response = await fetch(`${MAIN_API_URL}/bookMeeting/delete`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -259,7 +262,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
 
   const handleShowAllMeetings = async () => {
     try {
-      const response = await fetch("http://localhost:80/bookMeeting/list", {
+      const response = await fetch(`${MAIN_API_URL}/bookMeeting/list`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -283,7 +286,7 @@ const BookMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) =>
   };
   const handleJoin = async (meetingId) => {
     try {
-      const response = await fetch("http://localhost:80/personal-schdule/create", {
+      const response = await fetch(`${MAIN_API_URL}/personal-schdule/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

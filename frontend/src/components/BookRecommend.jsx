@@ -4,18 +4,21 @@ import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 import "./BookRecommend.css";
 
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
+
 const BookRecommend = ({ handleLogout }) => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState(null);
-  const [recommendedBooks, setRecommendedBooks] = useState([]); // 추천 도서 상태 추가
+  const [recommendedBooks, setRecommendedBooks] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:80/user/api/user-info", { withCredentials: true })
+      .get(`${MAIN_API_URL}/user/api/user-info`, { withCredentials: true })
       .then((response) => {
         if (response.data.userId && response.data.userLoginId) {
           setIsLoggedIn(true);
@@ -30,7 +33,7 @@ const BookRecommend = ({ handleLogout }) => {
     const fetchBooks = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:80/book-register/list",
+          `${MAIN_API_URL}/book-register/list`,
           { withCredentials: true }
         );
 
@@ -51,16 +54,13 @@ const BookRecommend = ({ handleLogout }) => {
 
   const handleBookClick = async (entry) => {
     try {
-      // 선택한 책의 ISBN13을 사용하여 추천 도서 API 호출
       const response = await axios.get(
-        `http://127.0.0.1:8000/recommend/${entry.book.isbn13}`,
+        `${RECOMMEND_API_URL}/recommend/${entry.book.isbn13}`,
         { withCredentials: true }
       );
 
-      // 추천 도서 목록을 업데이트
       setRecommendedBooks(response.data.recommendations || []);
 
-      // 추천 도서를 BookRecommendation으로 전달
       navigate("/recommendation", {
         state: {
           selectedBook: entry,
@@ -75,16 +75,13 @@ const BookRecommend = ({ handleLogout }) => {
 
   const handleTasteClick = async (userId) => {
     try {
-      // 선택한 사용자Id을 사용하여 추천 도서 API 호출
       const response = await axios.get(
-        `http://127.0.0.1:8000/recommend_user/${userId}`,
+        `${RECOMMEND_API_URL}/recommend_user/${userId}`,
         { withCredentials: true }
       );
 
-      // 추천 도서 목록을 업데이트
       setRecommendedBooks(response.data || []);
 
-      // 추천 도서를 BookRecommendation으로 전달
       navigate("/taste", {
         state: {
           selectedBook: userId,

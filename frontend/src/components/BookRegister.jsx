@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom'; 
 import "./BookRegister.css";
-import axios from "axios"; // 백엔드 연동시 주석 해제
+import axios from "axios";
 import Header from "./Header";
+
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
 
 const BookRegister = ({ onRegister, handleLogout }) => {
   const navigate = useNavigate();
@@ -41,7 +44,7 @@ useEffect(() => {
   // 시/도 리스트 가져오기
   const fetchSidoList = async () => {
     try {
-      const response = await axios.post("http://localhost:80/region/sido");
+      const response = await axios.post(`${MAIN_API_URL}/region/sido`);
       if (response.data.code === 200) {
         setSidoList(response.data.sido);
       } else {
@@ -61,7 +64,7 @@ const handleSidoChange = async (e) => {
   
   if (selectedSido !== "ALL") {
     try {
-      const response = await axios.post("http://localhost:80/region/sigungu", { sido: selectedSido });
+      const response = await axios.post(`${MAIN_API_URL}/region/sigungu`, { sido: selectedSido });
       if (response.data.code === 200) {
         setSigunguList(response.data.sigungu);
       } else {
@@ -82,13 +85,13 @@ const handleSigunguChange = async (e) => {
 
   if (selectedSigungu !== "ALL") {
     try {
-      const response = await axios.post("http://localhost:80/region/emdonge", { 
+      const response = await axios.post(`${MAIN_API_URL}/region/emdonge`, { 
         sido: formData.sidoCd, 
         sigungu: selectedSigungu 
       });
 
       if (response.data.code === 200) {
-        setEmdongList(response.data.sido); // 여기를 수정: sido -> emdong
+        setEmdongList(response.data.sido);
       } else {
         alert(response.data.error_message);
       }
@@ -116,7 +119,7 @@ const handleEmdongChange = (e) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:80/book/search/title", {
+      const response = await axios.post(`${MAIN_API_URL}/book/search/title`, {
         title: formData.title,
       });
 
@@ -216,7 +219,7 @@ const handleEmdongChange = (e) => {
         images.forEach((image) => data.append("images", image));
       }
 
-      const response = await axios.post("http://localhost:80/book-register/create", data, {
+      const response = await axios.post(`${MAIN_API_URL}/book-register/create`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -225,7 +228,7 @@ const handleEmdongChange = (e) => {
 
       if (response.data.code === 200) {
         alert("책 등록이 완료되었습니다!");
-        window.location.href = "http://localhost:3000/book-recommend";
+        window.location.href = "/book-recommend";
       } else {
         alert(response.data.error_message || "책 등록에 실패했습니다.");
       }

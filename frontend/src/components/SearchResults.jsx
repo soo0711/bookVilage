@@ -5,6 +5,9 @@ import './SearchResults.css';
 import axios from 'axios';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
+
 const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
   const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
@@ -15,7 +18,7 @@ const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:80/user/api/user-info', { withCredentials: true })
+      .get(`${MAIN_API_URL}/user/api/user-info`, { withCredentials: true })
       .then((response) => {
         if (response.data.userId && response.data.userLoginId) {
           setIsLoggedIn(true);
@@ -31,7 +34,7 @@ const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
       const fetchWishlist = async () => {
         try {
           const response = await axios.post(
-            'http://localhost:80/wishList/list',
+            `${MAIN_API_URL}/wishList/list`,
             {},
             { withCredentials: true }
           );
@@ -61,7 +64,7 @@ const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
 
     const searchBooks = async (title) => {
       try {
-        const response = await axios.post('http://localhost:80/book/search/title', {
+        const response = await axios.post(`${MAIN_API_URL}/book/search/title`, {
           title: title,
         });
 
@@ -116,9 +119,8 @@ const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
     }
 
     try {
-      // BookDB 저장 로직
       const bookResponse = await axios.post(
-        'http://localhost:80/book/create',
+        `${MAIN_API_URL}/book/create`,
         {
           isbn13: selectedBook.isbn13,
           title: selectedBook.title,
@@ -158,7 +160,7 @@ const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
     try {
       if (wishlist.has(isbn13)) {
         const response = await axios.post(
-          'http://localhost:80/wishList/delete',
+          `${MAIN_API_URL}/wishList/delete`,
           { isbn13: isbn13 },
           { withCredentials: true }
         );
@@ -170,7 +172,7 @@ const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
         }
       } else {
         const response = await axios.post(
-          'http://localhost:80/wishList/create',
+          `${MAIN_API_URL}/wishList/create`,
           { isbn13: isbn13 },
           { withCredentials: true }
         );
@@ -188,9 +190,8 @@ const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
 
   const handleImageClick = async (selectedBook) => {
     try {
-      // 서버에 Book 정보를 전달하여 저장
       const response = await axios.post(
-        'http://localhost:80/book/create', // BookDB 저장 API 엔드포인트
+        `${MAIN_API_URL}/book/create`,
         {
           isbn13: selectedBook.isbn13,
           title: selectedBook.title,
@@ -199,7 +200,7 @@ const SearchResults = ({ isLoggedIn: propIsLoggedIn }) => {
           description: selectedBook.description,
           pubdate: selectedBook.pubdate,
           publisher: selectedBook.publisher,
-          category: selectedBook.category, // 추가된 category 데이터
+          category: selectedBook.category,
         },
         { withCredentials: true }
       );

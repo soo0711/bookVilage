@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import "./Header.css";
 
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
+
 const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout, setBooks}) => {
-  const navigate = useNavigate();  // useNavigate 훅 사용
+  const navigate = useNavigate();
   const [userId, setUserId] = useState(null);
   const [userLoginId, setUserLoginId] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(propIsLoggedIn);
@@ -12,13 +15,12 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout, setBooks}) => 
   
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      // 검색어를 URL 쿼리로 전달
       navigate(`/search?title=${searchQuery}`);
     }
   };
 
   const handleClick = () => {
-    window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
+    window.location.href = "/home-view";
   };
   
   useEffect(() => {
@@ -26,19 +28,19 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout, setBooks}) => 
   }, [propIsLoggedIn]);
 
   useEffect(() => {
-    axios.get("http://localhost:80/user/api/user-info", {
+    axios.get(`${MAIN_API_URL}/user/api/user-info`, {
       withCredentials: true,
     })
     .then(response => {
       if (response.data.userId && response.data.userLoginId) {
         setUserId(response.data.userId);
         setUserLoginId(response.data.userLoginId);
-        setIsLoggedIn(true); // API 응답이 성공하면 로그인 상태를 true로 설정
+        setIsLoggedIn(true);
       }
     })
     .catch(error => {
       console.log("로그인된 사용자 정보 불러오기 실패", error);
-      setIsLoggedIn(false); // API 호출이 실패하면 로그인 상태를 false로 설정
+      setIsLoggedIn(false);
     });
   }, [setUserId]);
 

@@ -5,6 +5,9 @@ import Header from './Header';
 import axios from "axios";
 import './BookDetail.css';
 
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
+
 const BookDetail = ({ isLoggedIn, username, handleLogout }) => {
   const navigate = useNavigate();
   const { isbn } = useParams();
@@ -20,8 +23,10 @@ const BookDetail = ({ isLoggedIn, username, handleLogout }) => {
 
   const fetchKeywordData = async () => {
     try {
-      // axios를 사용하여 API 호출
-      const response = await axios.get(`http://127.0.0.1:8000/keyword/${isbn}`, { withCredentials: true });
+      const response = await axios.get(
+        `${RECOMMEND_API_URL}/keyword/${isbn}`, 
+        { withCredentials: true }
+      );
       
       // API 응답에서 keywords와 keyword_reviews 데이터 가져오기
       const data = response.data;
@@ -60,12 +65,12 @@ const BookDetail = ({ isLoggedIn, username, handleLogout }) => {
   // 책 상세 정보를 가져오는 함수
   const fetchBookDetail = async (isbn13) => {
     try {
-      const response = await fetch('http://localhost/book/detail', {
+      const response = await fetch(`${MAIN_API_URL}/book/detail`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ isbn13 }),  // ISBN을 JSON으로 전송
+        body: JSON.stringify({ isbn13 }),
       });
 
       if (!response.ok) {

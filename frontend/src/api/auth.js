@@ -1,12 +1,21 @@
 import axios from "axios";
 
-// 서버 기본 URL 설정 (프로젝트에 맞게 수정)
-axios.defaults.baseURL = "http://localhost:3000"; // 예시: 서버 주소
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
+
+// 메인 API와 추천 API를 위한 별도의 axios 인스턴스 생성
+const mainApi = axios.create({
+  baseURL: MAIN_API_URL
+});
+
+const recommendApi = axios.create({
+  baseURL: RECOMMEND_API_URL
+});
 
 // 회원가입 API 호출 함수
 export const registerUser = async (formData) => {
   try {
-    const response = await axios.post("/api/auth/register", formData); // 회원가입 API 호출
+    const response = await mainApi.post("/api/auth/register", formData); // 회원가입 API 호출
     if (response.data.code === 200) {
       return response.data.result || "회원가입이 성공적으로 완료되었습니다.";
     } else {
@@ -21,7 +30,7 @@ export const registerUser = async (formData) => {
 // 로그인 API 호출 함수
 export const loginUser = async (credentials) => {
   try {
-    const response = await axios.post("/api/auth/login", credentials); // 로그인 API 호출
+    const response = await mainApi.post("/api/auth/login", credentials); // 로그인 API 호출
     if (response.data.code === 200) {
       return response.data.result || "로그인 성공!";
     } else {
@@ -36,7 +45,7 @@ export const loginUser = async (credentials) => {
 // 로그아웃 API 호출 함수
 export const logoutUser = async () => {
   try {
-    const response = await axios.post("/api/auth/logout"); // 로그아웃 API 호출
+    const response = await mainApi.post("/api/auth/logout"); // 로그아웃 API 호출
     if (response.data.code === 200) {
       return response.data.result || "로그아웃 성공!";
     } else {

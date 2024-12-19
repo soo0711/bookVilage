@@ -5,19 +5,21 @@ import './ChatList.css';
 import Header from './Header';
 import {useNavigate } from "react-router-dom";
 
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
 
 function ChatList({ username, isLoggedIn, handleLogout }) {
   const [chatRooms, setChatRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [myId, setMyId] = useState(null); // myId 상태 추가
+  const [myId, setMyId] = useState(null);
   const navigate = useNavigate();
-  // 서버에서 채팅방 목록을 가져오는 함수
+
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {
-        const response = await axios.post('http://localhost:80/chat/list', {}, {
-          withCredentials: true // 쿠키를 서버에 전송
+        const response = await axios.post(`${MAIN_API_URL}/chat/list`, {}, {
+          withCredentials: true
         });
   
         if (response.data.code === 200) {
@@ -26,8 +28,8 @@ function ChatList({ username, isLoggedIn, handleLogout }) {
   
           const filteredRooms = response.data.userMessageList
             .filter(item => 
-              item.userList.some(user => user.id !== myId) && // 내 ID가 아닌 유저가 포함된 채팅방
-              item.messageList.length > 0 // 메시지가 있는 채팅방만 포함
+              item.userList.some(user => user.id !== myId) &&
+              item.messageList.length > 0
             )
             .map(item => {
               const latestMessage = item.messageList.reduce((latest, current) => {
@@ -37,13 +39,12 @@ function ChatList({ username, isLoggedIn, handleLogout }) {
               return {
                 ...item.chatRoom,
                 latestMessage,
-                otherUser: item.userList.find(user => user.id !== myId) // myId와 다른 유저만 선택
+                otherUser: item.userList.find(user => user.id !== myId)
               };
             });
   
-          setChatRooms(filteredRooms); // 메시지가 있는 채팅방 목록 설정
+          setChatRooms(filteredRooms);
         } else if (response.data.code === 204) {
-          // 채팅방이 없는 경우 처리
           setChatRooms([]);
         } else {
           setError('채팅방 목록을 불러오는 데 실패했습니다.');
