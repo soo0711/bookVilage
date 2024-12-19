@@ -2,13 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./High.css";
 
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
+
 const High = () => {
   const [books, setBooks] = useState([]); // 초기 상태는 빈 배열
 
   useEffect(() => {
     // API 호출
     axios
-      .get("http://localhost:80/user-book/point-list") // 실제 API URL로 변경
+      .get(`${MAIN_API_URL}/user-book/point-list`) // 환경 변수 사용
       .then((response) => {
         if (response.data.code === 200) {
           // 서버에서 받은 데이터에서 'bookCardList'를 books 상태로 설정
@@ -29,13 +32,13 @@ const High = () => {
         <div className="books-list">
           {books.map((bookCard) => (
             <a href={`/book/${bookCard.book.isbn13}`} className="book-card-high" key={bookCard.book.isbn13}>
-            <img
-              src={bookCard.book.cover}
-              alt={bookCard.book.title}
-              className="book-image"
-            />
-            <h4 className="book-title">{bookCard.book.title}</h4>
-            <p className="book-rating">평균 ★ {bookCard.bookRegister.point}</p>
+              <img
+                src={bookCard.book.cover}
+                alt={bookCard.book.title}
+                className="book-image"
+              />
+              <h4 className="book-title">{bookCard.book.title}</h4>
+              <p className="book-rating">평균 ★ {bookCard.bookRegister.point}</p>
             </a>
           ))}
         </div>

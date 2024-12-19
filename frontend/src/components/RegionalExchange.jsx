@@ -4,6 +4,9 @@ import './RegionalExchange.css';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
+
 const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }) => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,7 +26,7 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
   const [myId, setMyId] = useState(null); // 내 userId
 
   useEffect(() => {
-    axios.get("http://localhost:80/user/api/user-info", { withCredentials: true })
+    axios.get(`${MAIN_API_URL}/user/api/user-info`, { withCredentials: true })
       .then(response => {
         if (response.data.userId && response.data.userLoginId) {
           setIsLoggedIn(true);
@@ -42,7 +45,7 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
   useEffect(() => {
     const fetchSidoList = async () => {
       try {
-        const response = await axios.post("http://localhost:80/region/sido");
+        const response = await axios.post(`${MAIN_API_URL}/region/sido`);
         if (response.data.code === 200) {
           setSidoList(response.data.sido);
         } else {
@@ -60,7 +63,7 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
     const fetchAllExchangeList = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.post('http://localhost:80/book-register/regional-exchange-list-all', {}, {
+        const response = await axios.post(`${MAIN_API_URL}/book-register/regional-exchange-list-all`, {}, {
           withCredentials: true,
         });
         const data = response.data;
@@ -83,11 +86,11 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
 
   const handleSidoChange = async (e) => {
     const selectedSido = e.target.value;
-    setFormData((prev) => ({ ...prev, sidoCd: selectedSido, siggCd: "" })); // siggCd를 빈 문자열로 설정
+    setFormData((prev) => ({ ...prev, sidoCd: selectedSido, siggCd: "" }));
   
     if (selectedSido !== "ALL") {
       try {
-        const response = await axios.post("http://localhost:80/region/sigungu", { sido: selectedSido });
+        const response = await axios.post(`${MAIN_API_URL}/region/sigungu`, { sido: selectedSido });
         if (response.data.code === 200) {
           setSigunguList(response.data.sigungu);
         } else {
@@ -107,9 +110,9 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
     const selectedSigungu = e.target.value;
     setFormData((prev) => ({ ...prev, siggCd: selectedSigungu }));
   
-    if (selectedSigungu !== "ALL" && selectedSigungu !== "") { // 빈 문자열 체크 추가
+    if (selectedSigungu !== "ALL" && selectedSigungu !== "") {
       try {
-        const response = await axios.post("http://localhost:80/region/emdonge", {
+        const response = await axios.post(`${MAIN_API_URL}/region/emdonge`, {
           sido: formData.sidoCd,
           sigungu: selectedSigungu
         });
@@ -131,8 +134,8 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
   const searchBooks = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:80/book-register/regional-exchange-list', {
-        place: `${formData.sidoCd} ${formData.siggCd || ""}`.trim(), // siggCd가 빈 문자열이면 그냥 시/도만 보내도록
+      const response = await axios.post(`${MAIN_API_URL}/book-register/regional-exchange-list`, {
+        place: `${formData.sidoCd} ${formData.siggCd || ""}`.trim(),
         title: searchTerm || null,
       }, {
         withCredentials: true,
@@ -159,7 +162,7 @@ const RegionalExchange = ({ handleLogout, username, isLoggedIn: propIsLoggedIn }
 
   const handleChatClick = async (targetUserId) => {
     try {
-      const response = await axios.post("http://localhost:80/chat/room", { fromUserId: targetUserId }, {
+      const response = await axios.post(`${MAIN_API_URL}/chat/room`, { fromUserId: targetUserId }, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });

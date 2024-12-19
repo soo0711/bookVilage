@@ -4,42 +4,44 @@ import "./ExchangeList.css";
 import Header from "./Header";
 import axios from "axios";
 
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
+
 const ExchangeList = () => {
-  const { bookId } = useParams(); // URL에서 isbn13 값 받기
-  const { state } = useLocation(); // state에서 책 정보 받기
+  const { bookId } = useParams();
+  const { state } = useLocation();
   const navigate = useNavigate();
 
-  const [exchangeUsers, setExchangeUsers] = useState([]); // 교환 가능한 사용자 리스트
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [error, setError] = useState(null); // 에러 상태
-  const [myId, setMyId] = useState(null); // 내 userId
-  const [myData, setMyData] = useState([]); // 내가 등록한 책들
+  const [exchangeUsers, setExchangeUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [myId, setMyId] = useState(null);
+  const [myData, setMyData] = useState([]);
   const defaultBook = {
     title: "",
-    cover: "", // 책 이미지로 수정
+    cover: "",
   };
   const { book = defaultBook } = state || {};
 
-  // 서버에서 데이터를 가져오는 함수
   useEffect(() => {
     const fetchExchangeList = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:80/book-register/exchange-list",
-          { isbn13: bookId }, // 요청 데이터
+          `${MAIN_API_URL}/book-register/exchange-list`,
+          { isbn13: bookId },
           {
             headers: {
               "Content-Type": "application/json",
             },
-            withCredentials: true, // 쿠키 전송 허용
+            withCredentials: true,
           }
         );
 
         const data = response.data;
         if (data.code === 200) {
-          setExchangeUsers(data.data); // 성공적으로 리스트 가져오기
-          setMyId(data.myId); // myId 상태 업데이트
-          setMyData(data.mydata); // 내가 등록한 책들 업데이트
+          setExchangeUsers(data.data);
+          setMyId(data.myId);
+          setMyData(data.mydata);
         } else {
           setError("데이터를 불러오는 데 문제가 발생했습니다.");
         }
@@ -54,19 +56,19 @@ const ExchangeList = () => {
   }, [bookId]);
 
   const handleUserClick = (userId) => {
-    navigate(`/profile/${userId}`); // userId를 URL 파라미터로 전달
+    navigate(`/profile/${userId}`);
   };
 
   const handleChatClick = async (targetUserId) => {
     try {
       const response = await axios.post(
-        "http://localhost:80/chat/room",
+        `${MAIN_API_URL}/chat/room`,
         { fromUserId: targetUserId },
         {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true, // 쿠키 전송 허용
+          withCredentials: true,
         }
       );
 
@@ -75,9 +77,9 @@ const ExchangeList = () => {
 
         navigate(`/chat/${chatRoomId}`, {
           state: {
-            targetUser: targetUserId, // 상대방 userId
-            chatroomId: chatRoomId, // 채팅방 ID
-            myId: myId, // 내 userId
+            targetUser: targetUserId,
+            chatroomId: chatRoomId,
+            myId: myId,
           },
         });
       } else {
@@ -140,7 +142,6 @@ const ExchangeList = () => {
           <div className="exchange-users-list">
             {exchangeUsers.length > 0 ? (
               exchangeUsers.map((register) => {
-                // 사용자가 원하는 책과 내가 가진 책 비교
                 const userWishlist = register.wishList || [];
                 const matchedBooks = myData.filter((book) =>
                   userWishlist.some((wish) => wish.isbn13 === book.isbn13)

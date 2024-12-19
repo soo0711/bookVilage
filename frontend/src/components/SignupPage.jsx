@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { registerUser } from "../api/auth";
 import "./SignupPage.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"; // Axios 추가
+import axios from "axios";
+
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -14,7 +17,6 @@ const SignupPage = () => {
     phoneNumber: "",
   });
 
-  // 아이디 중복 확인 상태 추가
   const [isIdChecked, setIsIdChecked] = useState(false);
   const [isIdAvailable, setIsIdAvailable] = useState(false);
 
@@ -23,47 +25,35 @@ const SignupPage = () => {
     setFormData({ ...formData, [name]: value });
   };
 
- // 아이디 중복 확인 함수
- const handleCheckId = async () => {
-  if (!formData.loginId) {
-    alert("아이디를 입력해주세요.");
-    return;
-  }
-
-  try {
-    const response = await axios.post("http://localhost:80/user/is-duplicated-id", {
-      loginId: formData.loginId
-    });
-
-    if (!response.data.is_duplicated) {
-      alert("사용 가능한 아이디입니다.");
-      setIsIdChecked(true);
-      setIsIdAvailable(true);
-    } else {
-      alert("이미 사용 중인 아이디입니다.");
-      setIsIdChecked(true);
-      setIsIdAvailable(false);
+  const handleCheckId = async () => {
+    if (!formData.loginId) {
+      alert("아이디를 입력해주세요.");
+      return;
     }
-  } catch (error) {
-    console.error("아이디 중복 확인 중 에러 발생:", error);
-    alert("아이디 중복 확인에 실패했습니다.");
-  }
-};
 
-  
-const handleClick = () => {
-  window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
-};
+    try {
+      const response = await axios.post(`${MAIN_API_URL}/user/is-duplicated-id`, {
+        loginId: formData.loginId
+      });
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const message = await registerUser(formData);
-  //     alert(message);
-  //   } catch (error) {
-  //     alert(error.message);
-  //   }
-  // };
+      if (!response.data.is_duplicated) {
+        alert("사용 가능한 아이디입니다.");
+        setIsIdChecked(true);
+        setIsIdAvailable(true);
+      } else {
+        alert("이미 사용 중인 아이디입니다.");
+        setIsIdChecked(true);
+        setIsIdAvailable(false);
+      }
+    } catch (error) {
+      console.error("아이디 중복 확인 중 에러 발생:", error);
+      alert("아이디 중복 확인에 실패했습니다.");
+    }
+  };
+
+  const handleClick = () => {
+    window.location.href = "/home-view";
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,7 +65,7 @@ const handleClick = () => {
 
     if (!isIdAvailable) {
       alert("아이디 중복을 확인하세요.");
-      return; // 회원가입 진행하지 않음
+      return;
     }
 
     if (!formData.password) {
@@ -99,13 +89,8 @@ const handleClick = () => {
     }
 
     try {
-      // Spring Boot API 호출
-      const loginId = formData.loginId;
-      const password = formData.password;
-      const name = formData.name;
-      const email = formData.email;
-      const phoneNumber = formData.phoneNumber;
-      const response = await axios.post("http://localhost:80/user/sign-up", {
+      const { loginId, password, name, email, phoneNumber } = formData;
+      const response = await axios.post(`${MAIN_API_URL}/user/sign-up`, {
         loginId,
         password,
         name,
@@ -114,11 +99,9 @@ const handleClick = () => {
       });
 
       if (response.data.code === 200) {
-        // 회원가입 성공 처리
         alert("회원가입 되었습니다.")
         navigate("/user/sign-in-view");
       } else {
-        // 로그인 실패 처리
         alert(response.data.error_message || "로그인에 실패했습니다.");
       }
     } catch (error) {

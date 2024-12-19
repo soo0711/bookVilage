@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Header";
 import "./BookMeeting.css";
-import axios from "axios"; //
+import axios from "axios";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // 스타일 추가
+import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
+
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
 
 const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) => {
   const navigate = useNavigate();
@@ -27,7 +30,7 @@ const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) 
     sidoCd: "",
     siggCd: "",
     emdongCd: "",
-    detailedPlace: "" // 상세주소 추가
+    detailedPlace: ""
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [sidoList, setSidoList] = useState([]);
@@ -35,10 +38,9 @@ const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) 
   const [emdongList, setEmdongList] = useState([]);
 
   useEffect(() => {
-    // 시/도 리스트 가져오기
     const fetchSidoList = async () => {
       try {
-        const response = await axios.post("http://localhost:80/region/sido");
+        const response = await axios.post(`${MAIN_API_URL}/region/sido`);
         if (response.data.code === 200) {
           setSidoList(response.data.sido);
         } else {
@@ -58,7 +60,7 @@ const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) 
     
     if (selectedSido !== "ALL") {
       try {
-        const response = await axios.post("http://localhost:80/region/sigungu", { sido: selectedSido });
+        const response = await axios.post(`${MAIN_API_URL}/region/sigungu`, { sido: selectedSido });
         if (response.data.code === 200) {
           setSigunguList(response.data.sigungu);
         } else {
@@ -79,13 +81,13 @@ const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) 
   
     if (selectedSigungu !== "ALL") {
       try {
-        const response = await axios.post("http://localhost:80/region/emdonge", { 
+        const response = await axios.post(`${MAIN_API_URL}/region/emdonge`, { 
           sido: formData.sidoCd, 
           sigungu: selectedSigungu 
         });
   
         if (response.data.code === 200) {
-          setEmdongList(response.data.sido); // 여기를 수정: sido -> emdong
+          setEmdongList(response.data.sido);
         } else {
           alert(response.data.error_message);
         }
@@ -102,10 +104,8 @@ const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) 
     setFormData((prev) => ({ ...prev, emdongCd: selectedEmdong }));
   };
 
-
   useEffect(() => {
-    // Header와 동일한 API를 호출하여 로그인 상태 확인
-    axios.get("http://localhost:80/user/api/user-info", {
+    axios.get(`${MAIN_API_URL}/user/api/user-info`, {
       withCredentials: true,
     })
     .then(response => {
@@ -123,79 +123,74 @@ const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) 
     });
   }, [navigate]);
 
-
   const fetchMeetings = async () => {
     try {
-      const response = await fetch("http://localhost:80/bookMeeting/detail", {
+      const response = await fetch(`${MAIN_API_URL}/bookMeeting/detail`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true, // 세션 인증 유지
-        body: JSON.stringify({ bookMeetingId: meetingId }), // 필요하면 요청 데이터를 여기에 추가
+        withCredentials: true,
+        body: JSON.stringify({ bookMeetingId: meetingId }),
       });
   
       const data = await response.json();
 
       
       if (data.code === 200) {
-          const meeting = data.bookMeetingEntity; // API 응답에서 데이터 추출
+          const meeting = data.bookMeetingEntity;
           const placeParts = meeting.place.split(" ");
           const sido = placeParts[0] || "ALL";
           const sigg = placeParts[1] || "ALL";
-          const emdong = placeParts[2] || "ALL"; // emdong 값을 우선 저장
+          const emdong = placeParts[2] || "ALL";
           const detail = placeParts.slice(3).join(" ") || "";
 
-      // '2024.12.14 : 17' 형식에서 날짜를 분리하여 ISO 형식으로 변환
       const scheduleParts = meeting.schedule.split(" : ");
-      const dateParts = scheduleParts[0].split("."); // ['2024', '12', '14']
-      const time = scheduleParts[1]; // '17'
+      const dateParts = scheduleParts[0].split(".");
+      const time = scheduleParts[1];
       
-      // 연, 월, 일, 시간 구분
       const year = dateParts[0];
-      const month = dateParts[1].padStart(2, "0"); // 월 앞에 0을 추가
-      const day = dateParts[2].padStart(2, "0"); // 일 앞에 0을 추가
-      const formattedDate = `${year}-${month}-${day}T${time}:00:00`; // ISO 8601 형식으로 변환
+      const month = dateParts[1].padStart(2, "0");
+      const day = dateParts[2].padStart(2, "0");
+      const formattedDate = `${year}-${month}-${day}T${time}:00:00`;
 
-      const schedule = new Date(formattedDate); // 새로운 Date 객체로 변환
+      const schedule = new Date(formattedDate);
 
       if (isNaN(schedule)) {
         throw new Error("잘못된 날짜 형식입니다.");
       }
         setFormData({
-          hostLoginid: meeting.hostLoginid || username, // 호스트 로그인 ID
-          subject: meeting.subject || "", // 제목
-          content: meeting.content || "", // 상세 설명
+          hostLoginid: meeting.hostLoginid || username,
+          subject: meeting.subject || "",
+          content: meeting.content || "",
           schedule: schedule,
-          place: meeting.place || "", // 장소
-          total: meeting.total || "", // 모집 인원
-          closeYN: meeting.closeYN || "N", // 마감 여부
-          sidoCd: sido || "", // 시/도 코드
-          siggCd: sigg || "", // 시/군/구 코드
-          emdongCd: emdong || "", // 읍/면/동 코드
+          place: meeting.place || "",
+          total: meeting.total || "",
+          closeYN: meeting.closeYN || "N",
+          sidoCd: sido || "",
+          siggCd: sigg || "",
+          emdongCd: emdong || "",
           detailedPlace: detail || "",
         });
   
          if (sido !== "ALL") {
-            const sigunguResponse = await axios.post("http://localhost:80/region/sigungu", { sido });
+            const sigunguResponse = await axios.post(`${MAIN_API_URL}/region/sigungu`, { sido });
             if (sigunguResponse.data.code === 200) {
             setSigunguList(sigunguResponse.data.sigungu);
             }
         }
 
         if (sigg !== "ALL") {
-            const emdongResponse = await axios.post("http://localhost:80/region/emdonge", { 
+            const emdongResponse = await axios.post(`${MAIN_API_URL}/region/emdonge`, { 
             sido, sigungu: sigg 
             });
 
             if (emdongResponse.data.code === 200) {
-            // emdongResponse.data.sido에서 emdong 리스트를 가져오는 코드
             const emdongList = emdongResponse.data.sido || [];
             setEmdongList(emdongList);
 
-            // emdongCd를 갱신: 실제 emdong 값이 '길동'이 맞다면 이를 찾고, 없으면 'ALL'로 처리
             const emdongSelected = emdongList.find(dong => {
-                return dong.trim() === emdong;  // 동 이름 비교
+                return dong.trim() === emdong;
                 }) || 'ALL';
             setFormData(prevFormData => ({
                 ...prevFormData,
@@ -230,39 +225,37 @@ const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) 
       formData.emdongCd,
       formData.detailedPlace
     ]
-      .filter(Boolean) // 빈 값 제거
-      .join(" "); // 공백으로 연결
+      .filter(Boolean)
+      .join(" ");
   
     try {
-      const response = await fetch("http://localhost:80/bookMeeting/update", {
+      const response = await fetch(`${MAIN_API_URL}/bookMeeting/update`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ ...formData, place: fullAddress , schedule: formattedSchedule, bookMeetingId: meetingId}), // place에 주소 조합 값 사용
+        body: JSON.stringify({ ...formData, place: fullAddress, schedule: formattedSchedule, bookMeetingId: meetingId }),
       });
   
       const data = await response.json();
   
       if (data.code === 200) {
         alert("독서모임이 수정되었습니다.");
-        setIsWriting(false); // 작성 폼 닫기
+        setIsWriting(false);
   
-        // 새로고침 없이 최신 데이터를 다시 가져오기
         fetchMeetings();
   
-        // 폼 초기화
         setFormData({
           hostLoginid: username,
           subject: "",
           content: "",
-          schedule: new Date(), // 초기화
+          schedule: new Date(),
           place: "",
           total: "",
           closeYN: "N",
           sidoCd: "",
           siggCd: "",
           emdongCd: "",
-          detailedPlace: "" // 상세주소 초기화
+          detailedPlace: ""
         });
       } else {
         throw new Error(data.error_message || "독서모임 생성 중 오류가 발생했습니다.");
@@ -271,7 +264,6 @@ const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) 
       alert(`생성 중 오류가 발생했습니다: ${error.message}`);
     }
   };
-
 
   return (
     <>
@@ -302,9 +294,9 @@ const ModifyMeeting = ({ isLoggedIn : propIsLoggedIn, username, handleLogout }) 
                 selected={formData.schedule}
                 onChange={(date) => setFormData({ ...formData, schedule: date })}
                 showTimeSelect
-                dateFormat="yyyy.MM.dd : HH" // 포맷 지정
-                timeFormat="HH" // 시간 포맷 지정
-                timeIntervals={60} // 시간 간격
+                dateFormat="yyyy.MM.dd : HH"
+                timeFormat="HH"
+                timeIntervals={60}
                 placeholderText="날짜와 시간을 선택하세요"
                 disabled
             />

@@ -5,6 +5,9 @@ import Header from "./Header";
 import axios from "axios";
 import {useNavigate } from "react-router-dom";
 
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
+
 function ChatPage({ client, username, isLoggedIn, handleLogout }) {
   const location = useLocation();
   const { chatHistory, chatroomId, myId } = location.state || {};
@@ -12,16 +15,15 @@ function ChatPage({ client, username, isLoggedIn, handleLogout }) {
   const [chatMessages, setChatMessages] = useState(chatHistory || []);
   const [otherUserLoginId, setOtherUserLoginId] = useState("");
   const [otherUserId, setOtherUserId] = useState("");
-  const messagesEndRef = useRef(null); // 스크롤 제어를 위한 ref 추가
+  const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
-  // 채팅 기록 및 사용자 정보 불러오기
   useEffect(() => {
     if (chatroomId) {
       const fetchChatHistory = async () => {
         try {
           const response = await axios.post(
-            "http://localhost:80/chat/record-list",
+            `${MAIN_API_URL}/chat/record-list`,
             { chatroomId },
             {
               headers: { "Content-Type": "application/json" },

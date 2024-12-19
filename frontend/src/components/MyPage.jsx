@@ -4,7 +4,10 @@ import Header from './Header';
 import './MyPage.css';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import axios from "axios"; // Axios 추가
+import axios from "axios";
+
+const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
+const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
 
 const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
   const navigate = useNavigate();
@@ -17,8 +20,7 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
   console.log(userId);
 
   useEffect(() => {
-    // Header와 동일한 API를 호출하여 로그인 상태 확인
-    axios.get("http://localhost:80/user/api/user-info", {
+    axios.get(`${MAIN_API_URL}/user/api/user-info`, {
       withCredentials: true,
     })
     .then(response => {
@@ -74,7 +76,7 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
       const fetchPersonalSchedule = async () => {
         try {
           const response = await axios.post(
-            "http://localhost:80/personal-schdule/list",
+            `${MAIN_API_URL}/personal-schdule/list`,
             {},
             { withCredentials: true }
           );
@@ -123,10 +125,9 @@ const MyPage = ({ isLoggedIn: propIsLoggedIn, username, handleLogout}) => {
     const handleDeleteEvent = async (eventId) => {
       if (window.confirm("정말로 이 일정을 삭제하시겠습니까?")) {
         try {
-          // POST 요청으로 eventId 전달
           const response = await axios.post(
-            `http://localhost:80/personal-schdule/delete`,
-            { eventId }, // 요청 본문에 eventId 포함
+            `${MAIN_API_URL}/personal-schdule/delete`,
+            { eventId },
             { withCredentials: true }
           );
     
@@ -262,9 +263,8 @@ const ManageBooks = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        // 실제 API 경로로 수정
-        const response = await axios.post("http://localhost:80/book-register/detail-list", {}, {
-          withCredentials: true, // 세션을 가져오기 위한 옵션
+        const response = await axios.post(`${MAIN_API_URL}/book-register/detail-list`, {}, {
+          withCredentials: true,
         });
   
         if (response.data.result === "성공") {
@@ -303,9 +303,9 @@ const ManageBooks = () => {
     if (window.confirm("정말로 이 책을 삭제하시겠습니까?")) {
       try {
         const response = await axios.delete(
-          "http://localhost:80/book-register/delete",
+          `${MAIN_API_URL}/book-register/delete`,
           {
-            data: { bookRegisterId: bookId },  // 'data' 키를 사용해야 합니다.
+            data: { bookRegisterId: bookId },
             withCredentials: true
           }
         );
@@ -393,7 +393,7 @@ const EditProfile = () => {
 
   useEffect(() => {
     // 사용자 정보 불러오기
-    axios.post("http://localhost:80/user/myPage", {}, { withCredentials: true })
+    axios.post(`${MAIN_API_URL}/user/myPage`, {}, { withCredentials: true })
       .then(response => {
         if (response.data.code === 200 && response.data.userEntity) {
           const user = response.data.userEntity;
@@ -425,7 +425,7 @@ const EditProfile = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     // 사용자 정보 수정 API 호출
-    axios.post("http://localhost:80/user/update", userInfo, { withCredentials: true })
+    axios.post(`${MAIN_API_URL}/user/update`, userInfo, { withCredentials: true })
       .then(response => {
         if (response.data.code === 200) {
           alert("정보 수정이 완료되었습니다.");
@@ -442,7 +442,7 @@ const EditProfile = () => {
   const handleWithdrawal = (e) => {
     e.preventDefault();
     if (window.confirm("정말로 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
-      axios.delete("http://localhost:80/user/delete", { withCredentials: true })
+      axios.delete(`${MAIN_API_URL}/user/delete`, { withCredentials: true })
         .then(() => {
           alert("회원탈퇴가 완료되었습니다.");
           navigate('/'); // 홈페이지로 이동
@@ -514,7 +514,7 @@ const WishList = () => {
     // 서버에서 위시리스트 데이터를 가져오는 API 호출
     const fetchWishlist = async () => {
       try {
-        const response = await axios.post('http://localhost:80/wishList/mypage-list', {}, {
+        const response = await axios.post(`${MAIN_API_URL}/wishList/mypage-list`, {}, {
           withCredentials: true
         });
 
@@ -539,7 +539,7 @@ const WishList = () => {
   const handleRemoveWishlist = async (isbn13) => {
     try {
       const response = await axios.post(
-        'http://localhost:80/wishList/delete',
+        `${MAIN_API_URL}/wishList/delete`,
         { isbn13 }, // 요청 데이터
         { withCredentials: true }
       );
