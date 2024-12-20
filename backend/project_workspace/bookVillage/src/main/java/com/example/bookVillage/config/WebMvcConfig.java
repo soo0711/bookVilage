@@ -2,6 +2,7 @@ package com.example.bookVillage.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.bookVillage.common.FileManagerService;
@@ -20,5 +21,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		.addResourceLocations("file:///" + FileManagerService.FILE_UPLOAD_PATH); // 실제 이미지 파일 위치
 		
 	}
+	
+	 @Override
+	    public void addViewControllers(ViewControllerRegistry registry) {
+	        registry.addViewController("/{spring:\\w+}")
+	                .setViewName("forward:/index.html");
+	        registry.addViewController("/**/{spring:\\w+}")
+	                .setViewName("forward:/index.html");
+	        registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css|\\.png|\\.jpg|\\.jpeg|\\.gif|\\.svg|\\.ico)$}")
+	                .setViewName("forward:/index.html");
+	    }
+
 
 }
