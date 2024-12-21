@@ -20,7 +20,7 @@ import lombok.ToString;
 
 @Entity
 @ToString
-@Table(name = "wishList")
+@Table(name = "wishlist")
 @Getter
 @Builder(toBuilder = true) 
 @NoArgsConstructor

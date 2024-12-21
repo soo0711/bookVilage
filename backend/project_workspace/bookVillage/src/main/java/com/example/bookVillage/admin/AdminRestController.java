@@ -15,7 +15,7 @@ import com.example.bookVillage.admin.bo.AdminBO;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:60031")
+@CrossOrigin(origins = {"http://localhost:60031", "http://ceprj.gachon.ac.kr:60031"}, allowCredentials = "true")
 @RequestMapping("/api/admin")
 @RestController
 public class AdminRestController {

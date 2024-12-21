@@ -19,7 +19,7 @@ import com.example.bookVillage.wishList.entity.WishListEntity;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:60031")
+@CrossOrigin(origins = {"http://localhost:60031", "http://ceprj.gachon.ac.kr:60031"}, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/wishList")
 public class WishListRestController {
