@@ -1,5 +1,8 @@
 package com.example.bookVillage.proxy;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,8 +27,9 @@ public class ProxyController {
     }
 
     @GetMapping("/recommend_user/{userId}")
-    public ResponseEntity<?> proxyRecommendUser(@PathVariable("userId") String userId) {
-        return ResponseEntity.ok(proxyBo.getRecommendUser(userId));
+    public ResponseEntity<List<Map<String, Object>>> proxyRecommendUser(@PathVariable("userId") String userId) {
+        List<Map<String, Object>> recommendUserList = proxyBo.getRecommendUser(userId);
+        return ResponseEntity.ok(recommendUserList);
     }
 
     @GetMapping("/keyword/{isbn}")
