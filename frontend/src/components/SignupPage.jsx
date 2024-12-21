@@ -90,7 +90,7 @@ const SignupPage = () => {
 
     try {
       const { loginId, password, name, email, phoneNumber } = formData;
-      const response = await axios.post(`${MAIN_API_URL}/user/sign-up`, {
+      const response = await axios.post(`/api/user/sign-up`, {
         loginId,
         password,
         name,

@@ -36,7 +36,7 @@ const LoginPage = ({ onLogin }) => {
     try {
       const loginId = formData.loginId;
       const password = formData.password;
-      const response = await axios.post(`${MAIN_API_URL}/user/sign-in`, {
+      const response = await axios.post(`/api/user/sign-in`, {
         loginId,
         password,
       }, {

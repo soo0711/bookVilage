@@ -45,7 +45,7 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
+/*
 // React 실행을 위한 설정
 def frontendDir = "$projectDir/src/main/frontend"
 
@@ -76,5 +76,5 @@ task copyReactBuildFiles(type: Copy) {
     from "$frontendDir/build"
     into "$projectDir/src/main/resources/static"
 }
-
+*/
 

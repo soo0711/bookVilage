@@ -45,7 +45,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get("http://localhost:80/user/sign-out", {
+      const response = await axios.get("/user/sign-out", {
         withCredentials: true  
       });
 
@@ -68,7 +68,7 @@ function App() {
 
   // WebSocket 연결 설정
   useEffect(() => {
-    const stompClient = Stomp.over(() => new WebSocket("ws://localhost:80/ws"));
+    const stompClient = Stomp.over(() => new WebSocket("ws://localhost:60031/ws"));
     stompClient.connect(
       {},
       () => {
