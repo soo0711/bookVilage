@@ -65,6 +65,7 @@ com\example\bookVillage\bookRegister\BookRegisterRestCotroller.class
 com\example\bookVillage\message\bo\ChatRoomBO.class
 com\example\bookVillage\bookRegister\entity\BookRegisterEntity.class
 com\example\bookVillage\config\WebSocketConfig.class
+com\example\bookVillage\proxy\ProxyController.class
 com\example\bookVillage\bookMeeting\bookMeetingRestController.class
 com\example\bookVillage\user\entity\UserEntity$UserEntityBuilder.class
 com\example\bookVillage\bookMeeting\entity\BookMeetingEntity$BookMeetingEntityBuilder.class

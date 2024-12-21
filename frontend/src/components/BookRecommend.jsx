@@ -55,7 +55,7 @@ const BookRecommend = ({ handleLogout }) => {
   const handleBookClick = async (entry) => {
     try {
       const response = await axios.get(
-        `${RECOMMEND_API_URL}/recommend/${entry.book.isbn13}`,
+        `http://ceprj.gachon.ac.kr:60031/api/recommend/${entry.book.isbn13}`,
         { withCredentials: true }
       );
 
@@ -76,7 +76,7 @@ const BookRecommend = ({ handleLogout }) => {
   const handleTasteClick = async (userId) => {
     try {
       const response = await axios.get(
-        `${RECOMMEND_API_URL}/recommend_user/${userId}`,
+        `http://ceprj.gachon.ac.kr:60031/api/recommend_user/${userId}`,
         { withCredentials: true }
       );
 

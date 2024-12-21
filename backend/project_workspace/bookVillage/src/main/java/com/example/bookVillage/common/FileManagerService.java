@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FileManagerService {
 	
 	// 수현 노트북 이미지 저장
-	public static final String FILE_UPLOAD_PATH = "/home/t24331/project/bookVillage/backend/project_workspace/images/";
+	public static final String FILE_UPLOAD_PATH = "/home/t24331/spring_react/bookVillage/backend/project_workspace/images/";
 	
 	//채연 노트북 이미지 저장
 	// public static final String FILE_UPLOAD_PATH = "C:\\Users\\mouse\\OneDrive\\바탕 화면\\대학교\\3-2\\p-project\\bookVilage_clone\\backend\\project_workspace\\images/";

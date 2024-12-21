@@ -24,7 +24,7 @@ const BookDetail = ({ isLoggedIn, username, handleLogout }) => {
   const fetchKeywordData = async () => {
     try {
       const response = await axios.get(
-        `${RECOMMEND_API_URL}/keyword/${isbn}`, 
+        `http://ceprj.gachon.ac.kr:60031/api/keyword/${isbn}`, 
         { withCredentials: true }
       );
       
