@@ -14,9 +14,11 @@ com\example\bookVillage\book\BookController.class
 com\example\bookVillage\communityComment\entity\CommunityCommentEntity.class
 com\example\bookVillage\card\entity\PersonalBookMeetingEntity.class
 com\example\bookVillage\wishList\repository\WishListRepository.class
+com\example\bookVillage\proxy\bo\ProxyBO$2.class
 com\example\bookVillage\bookMeeting\bo\BookMeetingServiceBO.class
 com\example\bookVillage\bookMeeting\entity\BookMeetingEntity.class
 com\example\bookVillage\bookMeeting\repository\BookMeetingRepository.class
+com\example\bookVillage\proxy\bo\ProxyBO.class
 com\example\bookVillage\communityComment\repository\CommunityCommentRepository.class
 com\example\bookVillage\test\TestController.class
 com\example\bookVillage\bookMeeting\BookMeetingController.class
@@ -47,6 +49,7 @@ com\example\bookVillage\user\bo\UserBO.class
 com\example\bookVillage\user\UserController.class
 com\example\bookVillage\bookRegister\entity\BookRegisterImageEntity$BookRegisterImageEntityBuilder.class
 com\example\bookVillage\region\bo\RegionBO.class
+com\example\bookVillage\proxy\bo\ProxyBO$3.class
 com\example\bookVillage\message\repository\MessageRepository.class
 com\example\bookVillage\interceptor\PermissionInterceptor.class
 com\example\bookVillage\bookRegister\bo\BookRegisterImageBO.class
@@ -75,6 +78,7 @@ com\example\bookVillage\user\repository\UserRepository.class
 com\example\bookVillage\message\entity\MessageEntity$MessageEntityBuilder.class
 com\example\bookVillage\message\entity\MessageEntity.class
 com\example\bookVillage\card\bo\BookWishListBO.class
+com\example\bookVillage\proxy\bo\ProxyBO$1.class
 com\example\bookVillage\card\bo\UserBookBO.class
 com\example\bookVillage\message\repository\ChatRoomRepository.class
 com\example\bookVillage\region\entity\RegionEntity.class
