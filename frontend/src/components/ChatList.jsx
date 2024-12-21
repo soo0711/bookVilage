@@ -16,7 +16,7 @@ function ChatList({ username, isLoggedIn, handleLogout }) {
   useEffect(() => {
     const fetchChatRooms = async () => {
       try {
-        const response = await axios.post('/api/chat/list', {}, {
+        const response = await axios.post('http://ceprj.gachon.ac.kr:60031/api/chat/list', {}, {
           withCredentials: true // 쿠키를 서버에 전송
         });
   

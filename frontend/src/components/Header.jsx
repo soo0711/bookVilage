@@ -3,11 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import "./Header.css";
 
-const MAIN_API_URL = process.env.REACT_APP_MAIN_API_URL;
-const RECOMMEND_API_URL = process.env.REACT_APP_RECOMMEND_API_URL;
-
 const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout, setBooks}) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate();  // useNavigate 훅 사용
   const [userId, setUserId] = useState(null);
   const [userLoginId, setUserLoginId] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(propIsLoggedIn);
@@ -15,12 +12,13 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout, setBooks}) => 
   
   const handleSearch = () => {
     if (searchQuery.trim()) {
+      // 검색어를 URL 쿼리로 전달
       navigate(`/search?title=${searchQuery}`);
     }
   };
 
   const handleClick = () => {
-    window.location.href = "/home-view";
+    window.location.href = "/home-view"; // 클릭 시 /home-view로 이동
   };
   
   useEffect(() => {
@@ -28,19 +26,19 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout, setBooks}) => 
   }, [propIsLoggedIn]);
 
   useEffect(() => {
-    axios.get(`${MAIN_API_URL}/user/api/user-info`, {
+    axios.get("http://ceprj.gachon.ac.kr:60031/api/user/api/user-info", {
       withCredentials: true,
     })
     .then(response => {
       if (response.data.userId && response.data.userLoginId) {
         setUserId(response.data.userId);
         setUserLoginId(response.data.userLoginId);
-        setIsLoggedIn(true);
+        setIsLoggedIn(true); // API 응답이 성공하면 로그인 상태를 true로 설정
       }
     })
     .catch(error => {
       console.log("로그인된 사용자 정보 불러오기 실패", error);
-      setIsLoggedIn(false);
+      setIsLoggedIn(false); // API 호출이 실패하면 로그인 상태를 false로 설정
     });
   }, [setUserId]);
 
@@ -56,7 +54,7 @@ const Header = ({ isLoggedIn: propIsLoggedIn, username, onLogout, setBooks}) => 
             <a href="#" onClick={onLogout} className="auth-link">
               로그아웃
             </a>
-            <a href="/chatlist" className="auth-link">
+            <a href="/chatlist/" className="auth-link">
               채팅방
             </a>
           </>

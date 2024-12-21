@@ -11,7 +11,7 @@ const High = () => {
   useEffect(() => {
     // API 호출
     axios
-      .get(`/api/user-book/point-list`) // 환경 변수 사용
+      .get(`http://ceprj.gachon.ac.kr:60031/api/user-book/point-list`) // 환경 변수 사용
       .then((response) => {
         if (response.data.code === 200) {
           // 서버에서 받은 데이터에서 'bookCardList'를 books 상태로 설정

@@ -36,7 +36,7 @@ const LoginPage = ({ onLogin }) => {
     try {
       const loginId = formData.loginId;
       const password = formData.password;
-      const response = await axios.post(`/api/user/sign-in`, {
+      const response = await axios.post(`http://ceprj.gachon.ac.kr:60031/api/user/sign-in`, {
         loginId,
         password,
       }, {
