@@ -17,7 +17,8 @@ import com.example.bookVillage.bookMeeting.entity.BookMeetingEntity;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:60031")
+
+@CrossOrigin(origins = {"http://localhost:60031", "http://ceprj.gachon.ac.kr:60031"}, allowCredentials = "true")
 @RequestMapping("/api/bookMeeting")
 @RestController
 public class bookMeetingRestController {

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bookVillage.card.bo.UserMessageBO;
 import com.example.bookVillage.card.entity.UserMessageEntity;
-import com.example.bookVillage.message.bo.ChatRoomBO;
 import com.example.bookVillage.message.bo.MessageBO;
 import com.example.bookVillage.message.entity.ChatRoomEntity;
 
@@ -21,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/chat")
+@CrossOrigin(origins = {"http://localhost:60031", "http://ceprj.gachon.ac.kr:60031"}, allowCredentials = "true")
 public class MessageRestController {
 
 	@Autowired
