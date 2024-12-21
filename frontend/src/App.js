@@ -68,7 +68,7 @@ function App() {
 
   // WebSocket 연결 설정
   useEffect(() => {
-    const stompClient = Stomp.over(() => new WebSocket("ws://localhost:60031/ws"));
+    const stompClient = Stomp.over(() => new WebSocket("ws://ceprj.gachon.ac.kr:60031/ws"));
     stompClient.connect(
       {},
       () => {
