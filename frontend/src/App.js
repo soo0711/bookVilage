@@ -45,7 +45,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get("http://ceprj.gachon.ac.kr:60031/user/sign-out", {
+      const response = await axios.get("http://ceprj.gachon.ac.kr:60031/api/user/sign-out", {
         withCredentials: true  
       });
 

@@ -26,7 +26,7 @@ const Profile = ({ handleLogout }) => {
     const fetchUserInfo = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:80/user-book/user-profile",
+          "http://ceprj.gachon.ac.kr:60031/api/user-book/user-profile",
           { userId }, // userId를 요청 본문에 포함
           {
             headers: {
@@ -72,7 +72,7 @@ const Profile = ({ handleLogout }) => {
     try {
       // 백엔드로 chatRoomId 요청
       const response = await axios.post(
-        "http://localhost:80/chat/room", 
+        "http://ceprj.gachon.ac.kr:60031/api/chat/room", 
         { fromUserId: userId },  // 상대방 userId를 포함한 요청
         {
           headers: {
