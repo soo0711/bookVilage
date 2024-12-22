@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from sqlalchemy import select
 from database import get_db
@@ -6,21 +6,30 @@ from recommend import PrecomputedRecommender
 from models import Book, Reviews, BookRegister, Keywords, KeywordReviews
 from config import DEFAULT_MODEL_NAME
 from starlette.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, JSONResponse
+from pathlib import Path
+import requests
 
 app = FastAPI()
 
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:80", "*"],
+    allow_origins=["http://ceprj.gachon.ac.kr:60031"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+
+
+
 # 기본 모델 이름 설정
 default_model_name = DEFAULT_MODEL_NAME
 recommender = PrecomputedRecommender(model_name=default_model_name)
+
+
 
 
 @app.get("/recommend/{isbn13}")
@@ -119,3 +128,4 @@ def get_keywords(
         "keywords": keyword_counts,
         "keyword_reviews": keyword_reviews,
     }
+
